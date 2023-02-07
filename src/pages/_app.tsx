@@ -1,4 +1,6 @@
+import 'react-calendar/dist/Calendar.css'; // css import
 import '@/styles/globals.css';
+import '@/styles/calendar.css';
 
 import type { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
