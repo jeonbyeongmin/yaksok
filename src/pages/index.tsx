@@ -7,18 +7,18 @@ import {
   Select,
   Text,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
 
 import { BsCalendarEvent } from 'react-icons/bs';
 import Layout from '@/components/Layout';
+import TimeSelector from '@/components/TimeSelector';
 import dayjs from 'dayjs';
 import dynamic from 'next/dynamic';
+import { useState } from 'react';
 
 const Calendar = dynamic(() => import('react-calendar'), { ssr: false });
 
 export default function Home() {
   const [value, setValue] = useState<Date>();
-  console.log('🚀 ~ file: index.tsx:20 ~ Home ~ value', value);
 
   return (
     <Layout>
@@ -36,6 +36,7 @@ export default function Home() {
               w="3.5rem"
               pointerEvents="none"
               alignSelf="center"
+              color="gray.700"
             >
               <BsCalendarEvent />
             </InputLeftElement>
@@ -56,7 +57,11 @@ export default function Home() {
               placeholder="이름을 입력해주세요"
               _placeholder={{ color: 'gray.500' }}
             />
-            <Select placeholder="인원수를 선택해주세요" bgColor="white">
+            <Select
+              placeholder="인원수를 선택해주세요"
+              bgColor="white"
+              color="black"
+            >
               <option value="option1">1</option>
               <option value="option2">2</option>
               <option value="option3">3</option>
@@ -98,12 +103,12 @@ export default function Home() {
             </Text>
           </Flex>
           <Flex align="center" gap={2}>
-            <Input type="time" step="300" />
-            <Text flexShrink={0}>부터</Text>
+            <TimeSelector />
+            <Text>부터</Text>
           </Flex>
           <Flex align="center" gap={2}>
-            <Input type="time" step="300" required />
-            <Text flexShrink={0}>까지</Text>
+            <TimeSelector />
+            <Text>까지</Text>
           </Flex>
         </Flex>
       </Flex>
