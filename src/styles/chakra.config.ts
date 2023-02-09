@@ -195,11 +195,9 @@ const semanticTokens = {
     success: 'green.500',
     primary: {
       default: '#58B8EE',
-      _dark: 'red.400',
     },
     secondary: {
       default: '#CCE9FA',
-      _dark: 'red.700',
     },
   },
 };

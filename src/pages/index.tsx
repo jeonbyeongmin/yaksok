@@ -1,5 +1,5 @@
 import {
-  Box,
+  Button,
   Flex,
   Input,
   InputGroup,
@@ -7,18 +7,61 @@ import {
   Select,
   Text,
 } from '@chakra-ui/react';
+import { ChangeEvent, useMemo, useState } from 'react';
 
 import { BsCalendarEvent } from 'react-icons/bs';
 import Layout from '@/components/Layout';
 import TimeSelector from '@/components/TimeSelector';
 import dayjs from 'dayjs';
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
 
 const Calendar = dynamic(() => import('react-calendar'), { ssr: false });
 
 export default function Home() {
-  const [value, setValue] = useState<Date>();
+  const [title, setTitle] = useState<string>('');
+  const [participantsNumber, setParticipantsNumber] = useState<number>();
+  const [date, setDate] = useState<Date>();
+  const [startTime, setStartTime] = useState<string>('0');
+  const [endTime, setEndTime] = useState<string>('1');
+
+  const handleTitle = (e: ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  };
+
+  const handleParticipantsNumber = (e: ChangeEvent<HTMLSelectElement>) => {
+    setParticipantsNumber(Number(e.target.value));
+  };
+
+  const handleStartTime = (e: ChangeEvent<HTMLSelectElement>) => {
+    setStartTime(e.target.value);
+
+    if (Number(e.target.value) >= Number(endTime)) {
+      setEndTime(String(Number(e.target.value) + 1));
+    }
+  };
+
+  const handleEndTime = (e: ChangeEvent<HTMLSelectElement>) => {
+    setEndTime(e.target.value);
+  };
+
+  const isAvailable = useMemo(() => {
+    if (
+      title &&
+      participantsNumber &&
+      date &&
+      startTime &&
+      endTime &&
+      Number(startTime) < Number(endTime)
+    ) {
+      return true;
+    }
+    return false;
+  }, [date, endTime, participantsNumber, startTime, title]);
+
+  console.log(
+    '🚀 ~ file: index.tsx:48 ~ isAvailable ~ isAvailable',
+    isAvailable
+  );
 
   return (
     <Layout>
@@ -46,7 +89,10 @@ export default function Home() {
               w="lg"
               pl="3rem"
               bgColor="white"
+              color="black"
               placeholder="이벤트 제목을 입력해주세요"
+              onChange={handleTitle}
+              value={title}
               _placeholder={{ color: 'gray.500' }}
             />
           </InputGroup>
@@ -54,6 +100,7 @@ export default function Home() {
             <Input
               w="sm"
               bgColor="white"
+              color="black"
               placeholder="이름을 입력해주세요"
               _placeholder={{ color: 'gray.500' }}
             />
@@ -61,21 +108,22 @@ export default function Home() {
               placeholder="인원수를 선택해주세요"
               bgColor="white"
               color="black"
+              onChange={handleParticipantsNumber}
+              value={participantsNumber}
             >
-              <option value="option1">1</option>
-              <option value="option2">2</option>
-              <option value="option3">3</option>
-              <option value="option4">4</option>
-              <option value="option5">5</option>
-              <option value="option6">6</option>
-              <option value="option7">7</option>
-              <option value="option8">8</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
             </Select>
           </Flex>
         </Flex>
       </Flex>
 
-      <Flex gap={10}>
+      <Flex gap={20} w="full" justify="center" py={20}>
         <Flex flexDirection="column" gap={1}>
           <Flex flexDirection="column">
             <Text fontSize="lg" color="gray.500" fontWeight="bold">
@@ -86,13 +134,13 @@ export default function Home() {
             </Text>
           </Flex>
           <Calendar
-            onChange={setValue}
+            onChange={setDate}
             formatDay={(locale, date) => dayjs(date).format('D')}
-            value={value}
+            value={date}
             selectRange={true}
             allowPartialRange={true}
-            minDate={value ? dayjs(value).toDate() : undefined}
-            maxDate={value ? dayjs(value).add(6, 'day').toDate() : undefined}
+            minDate={date ? dayjs(date).toDate() : undefined}
+            maxDate={date ? dayjs(date).add(6, 'day').toDate() : undefined}
             showNeighboringMonth={false}
           />
         </Flex>
@@ -103,14 +151,33 @@ export default function Home() {
             </Text>
           </Flex>
           <Flex align="center" gap={2}>
-            <TimeSelector />
-            <Text>부터</Text>
+            <TimeSelector
+              handleValue={handleStartTime}
+              value={startTime}
+              enableTime={[0, 23]}
+            />
+            <Text flexShrink={0}>부터</Text>
           </Flex>
           <Flex align="center" gap={2}>
-            <TimeSelector />
-            <Text>까지</Text>
+            <TimeSelector
+              handleValue={handleEndTime}
+              value={endTime}
+              enableTime={[Number(startTime) + 1, 24]}
+            />
+            <Text flexShrink={0}>까지</Text>
           </Flex>
         </Flex>
+      </Flex>
+      <Flex w="full" justify="center">
+        <Button
+          borderRadius="full"
+          size="lg"
+          bgColor="primary"
+          color="white"
+          isDisabled={!isAvailable}
+        >
+          이벤트 만들기
+        </Button>
       </Flex>
     </Layout>
   );
