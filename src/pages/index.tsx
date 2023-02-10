@@ -10,22 +10,28 @@ import {
 import { ChangeEvent, useMemo, useState } from 'react';
 
 import { BsCalendarEvent } from 'react-icons/bs';
+import Calendar from '@/components/Calendar';
+import { CreateEventAPI } from '@/api/events/create-event';
+import { CreateParticipantAPI } from '@/api/participants/create-participant';
 import Layout from '@/components/Layout';
 import TimeSelector from '@/components/TimeSelector';
-import dayjs from 'dayjs';
-import dynamic from 'next/dynamic';
-
-const Calendar = dynamic(() => import('react-calendar'), { ssr: false });
 
 export default function Home() {
   const [title, setTitle] = useState<string>('');
+  const [name, setName] = useState<string>('');
   const [participantsNumber, setParticipantsNumber] = useState<number>();
-  const [date, setDate] = useState<Date>();
+  const [date, setDate] = useState<
+    Date | [Date | null, Date | null] | null | undefined
+  >();
   const [startTime, setStartTime] = useState<string>('0');
   const [endTime, setEndTime] = useState<string>('1');
 
-  const handleTitle = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
+  };
+
+  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
   };
 
   const handleParticipantsNumber = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -47,6 +53,7 @@ export default function Home() {
   const isAvailable = useMemo(() => {
     if (
       title &&
+      name &&
       participantsNumber &&
       date &&
       startTime &&
@@ -56,12 +63,25 @@ export default function Home() {
       return true;
     }
     return false;
-  }, [date, endTime, participantsNumber, startTime, title]);
+  }, [date, endTime, name, participantsNumber, startTime, title]);
 
-  console.log(
-    '🚀 ~ file: index.tsx:48 ~ isAvailable ~ isAvailable',
-    isAvailable
-  );
+  const handleCreateEvent = async () => {
+    if (!isAvailable) return;
+    const [startDate, endDate] = date as [Date, Date];
+
+    const event = await CreateEventAPI({
+      title,
+      startDate,
+      endDate,
+      participantsNumber: participantsNumber ?? 2,
+      startTime: Number(startTime),
+      endTime: Number(endTime),
+    });
+
+    const { _id } = event.data;
+
+    await CreateParticipantAPI({ name, eventID: _id });
+  };
 
   return (
     <Layout>
@@ -91,7 +111,7 @@ export default function Home() {
               bgColor="white"
               color="black"
               placeholder="이벤트 제목을 입력해주세요"
-              onChange={handleTitle}
+              onChange={handleTitleChange}
               value={title}
               _placeholder={{ color: 'gray.500' }}
             />
@@ -102,6 +122,8 @@ export default function Home() {
               bgColor="white"
               color="black"
               placeholder="이름을 입력해주세요"
+              onChange={handleNameChange}
+              value={name}
               _placeholder={{ color: 'gray.500' }}
             />
             <Select
@@ -133,16 +155,7 @@ export default function Home() {
               최대 7일까지 가능합니다
             </Text>
           </Flex>
-          <Calendar
-            onChange={setDate}
-            formatDay={(locale, date) => dayjs(date).format('D')}
-            value={date}
-            selectRange={true}
-            allowPartialRange={true}
-            minDate={date ? dayjs(date).toDate() : undefined}
-            maxDate={date ? dayjs(date).add(6, 'day').toDate() : undefined}
-            showNeighboringMonth={false}
-          />
+          <Calendar date={date} setDate={setDate} />
         </Flex>
         <Flex flexDirection="column" gap={1}>
           <Flex flexDirection="column">
@@ -175,6 +188,7 @@ export default function Home() {
           bgColor="primary"
           color="white"
           isDisabled={!isAvailable}
+          onClick={handleCreateEvent}
         >
           이벤트 만들기
         </Button>
