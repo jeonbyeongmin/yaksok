@@ -1,8 +1,9 @@
 import { Participant } from 'server/inerfaces/Participant.interface';
 import mongoose from 'mongoose';
 
-const EventSchema = new mongoose.Schema<Participant>({
+const ParticipantScheme = new mongoose.Schema<Participant>({
   name: String,
+  eventID: String,
   possibleDates: [
     {
       startDate: Date,
@@ -11,4 +12,5 @@ const EventSchema = new mongoose.Schema<Participant>({
   ],
 });
 
-export default mongoose.models.Event || mongoose.model('Event', EventSchema);
+export default mongoose.models.Participant ||
+  mongoose.model('Participant', ParticipantScheme);

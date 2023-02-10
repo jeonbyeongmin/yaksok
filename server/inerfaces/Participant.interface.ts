@@ -5,5 +5,6 @@ interface PossibleDate {
 
 export interface Participant {
   name: string;
-  possibleDates: PossibleDate[];
+  eventID: string;
+  possibleDates?: PossibleDate[];
 }
