@@ -15,13 +15,15 @@ interface CalendarProps {
 function Calendar({ date, setDate }: CalendarProps) {
   const minDate = useMemo(() => {
     if (!date) return undefined;
-    const [min] = date as [Date | null, Date | null];
-    if (min) return dayjs(min).subtract(6, 'day').toDate();
+    const [min, max] = date as [Date | null, Date | null];
+    if (max) return undefined;
+    if (min) return dayjs(min).toDate();
   }, [date]);
 
   const maxDate = useMemo(() => {
     if (!date) return undefined;
-    const [min] = date as [Date | null, Date | null];
+    const [min, max] = date as [Date | null, Date | null];
+    if (max) return undefined;
     if (min) return dayjs(min).add(6, 'day').toDate();
   }, [date]);
 
