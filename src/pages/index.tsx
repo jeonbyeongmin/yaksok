@@ -15,8 +15,11 @@ import { CreateEventAPI } from '@/api/events/create-event';
 import { CreateParticipantAPI } from '@/api/participants/create-participant';
 import Layout from '@/components/Layout';
 import TimeSelector from '@/components/TimeSelector';
+import { useRouter } from 'next/router';
 
 export default function Home() {
+  const router = useRouter();
+
   const [title, setTitle] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [participantsNumber, setParticipantsNumber] = useState<number>();
@@ -81,6 +84,8 @@ export default function Home() {
     const { _id } = event.data;
 
     await CreateParticipantAPI({ name, eventID: _id });
+
+    router.push(`/${_id}`);
   };
 
   return (
