@@ -6,6 +6,7 @@ import type { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
 import NextNProgress from 'nextjs-progressbar';
 import { Noto_Sans } from '@next/font/google';
+import { SWRConfig } from 'swr';
 import { theme } from '@/styles/chakra.config';
 
 const notoSans = Noto_Sans({
@@ -18,7 +19,17 @@ export default function App({ Component, pageProps }: AppProps) {
     <main className={notoSans.className}>
       <NextNProgress />
       <ChakraProvider theme={theme}>
-        <Component {...pageProps} />
+        <SWRConfig
+          value={{
+            revalidateOnFocus: false,
+            fetcher: (resource, init) => {
+              console.log(`fetching ${resource}`);
+              return fetch(resource, init).then((res) => res.json());
+            },
+          }}
+        >
+          <Component {...pageProps} />
+        </SWRConfig>
       </ChakraProvider>
     </main>
   );
