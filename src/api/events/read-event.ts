@@ -8,7 +8,7 @@ type ReadEventData = Event & { _id: string };
 
 export interface ReadEventReturn {
   success: boolean;
-  data: ReadEventData;
+  event: ReadEventData;
 }
 
 export const ReadEventPath = ({ eventID }: ReadEventParams) =>

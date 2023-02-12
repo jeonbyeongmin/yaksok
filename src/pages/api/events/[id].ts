@@ -21,7 +21,7 @@ export default async function handler(
         if (!event) {
           return res.status(400).json({ success: false });
         }
-        res.status(200).json({ success: true, data: event });
+        res.status(200).json({ success: true, event });
       } catch (error) {
         res.status(400).json({ success: false });
       }
@@ -36,7 +36,7 @@ export default async function handler(
         if (!event) {
           return res.status(400).json({ success: false });
         }
-        res.status(200).json({ success: true, data: event });
+        res.status(200).json({ success: true,  event });
       } catch (error) {
         res.status(400).json({ success: false });
       }
@@ -48,7 +48,7 @@ export default async function handler(
         if (!deletedEvent) {
           return res.status(400).json({ success: false });
         }
-        res.status(200).json({ success: true, data: {} });
+        res.status(200).json({ success: true, event: {} });
       } catch (error) {
         res.status(400).json({ success: false });
       }
