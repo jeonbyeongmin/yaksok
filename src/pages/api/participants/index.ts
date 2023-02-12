@@ -35,7 +35,7 @@ export default async function handler(
 
         res.setHeader(
           'set-cookie',
-          `participantID=${participant._id}; path=/; httponly; sameSite=lax; max-age=86400`
+          `${participant.eventID}-participantID=${participant._id}; path=/; httponly; sameSite=lax; max-age=86400`
         );
 
         res.status(201).json({ success: true, participant });

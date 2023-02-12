@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { BsCalendarEvent } from 'react-icons/bs';
 import { GetServerSideProps } from 'next';
 import Layout from '@/components/Layout';
+import ParticipationModal from '@/components/ParticipationModal';
 import TimeTable from '@/components/TimeTable';
 import dayjs from 'dayjs';
 import nookies from 'nookies';
@@ -17,9 +18,20 @@ interface EventProps {
 
 function Event({ eventID, participantID }: EventProps) {
   const { event } = useEvent({ eventID });
-  const { participant } = useParticipant({ participantID });
+  const { participant } = useParticipant({
+    participantID: participantID ?? '',
+  });
 
   const [timeTable, setTimeTable] = useState<boolean[][]>([]);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const handleTimeTableChange = (timeTable: boolean[][]) => {
+    setTimeTable(timeTable);
+  };
+
+  const handleModalClose = () => {
+    setIsOpen(false);
+  };
 
   useEffect(() => {
     if (!event) return;
@@ -31,10 +43,6 @@ function Event({ eventID, participantID }: EventProps) {
 
     setTimeTable(newTimeTable);
   }, [event]);
-
-  const handleTimeTableChange = (timeTable: boolean[][]) => {
-    setTimeTable(timeTable);
-  };
 
   return (
     <Layout>
@@ -65,13 +73,24 @@ function Event({ eventID, participantID }: EventProps) {
           />
         </Flex>
       </Flex>
+
+      <ParticipationModal
+        eventID={eventID}
+        eventTitle={event?.title ?? ''}
+        participantID={participantID}
+      />
     </Layout>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.params as { id: string };
-  const { participantID } = nookies.get(ctx) as { participantID: string };
+  let participantID = null;
+  const cookies = nookies.get(ctx);
+
+  if (cookies[`${id}-participantID`]) {
+    participantID = cookies[`${id}-participantID`];
+  }
 
   return {
     props: {
