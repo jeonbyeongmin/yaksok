@@ -45,7 +45,7 @@ export default function Home() {
     setStartTime(e.target.value);
 
     if (Number(e.target.value) >= Number(endTime)) {
-      setEndTime(String(Number(e.target.value) + 1));
+      setEndTime(String(Number(e.target.value)));
     }
   };
 
@@ -83,7 +83,9 @@ export default function Home() {
 
     const { _id } = event.data;
 
-    await CreateParticipantAPI({ name, eventID: _id });
+    const participant = await CreateParticipantAPI({ name, eventID: _id });
+
+    // cookie에 particiapntID 저장
 
     router.push(`/${_id}`);
   };
@@ -180,7 +182,7 @@ export default function Home() {
             <TimeSelector
               handleValue={handleEndTime}
               value={endTime}
-              enableTime={[Number(startTime) + 1, 24]}
+              enableTime={[Number(startTime), 23]}
             />
             <Text flexShrink={0}>까지</Text>
           </Flex>
