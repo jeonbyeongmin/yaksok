@@ -4,7 +4,7 @@ type CreateParticipantParams = Participant;
 
 interface CreateParticipantReturn {
   success: boolean;
-  data: Participant;
+  participant: Participant;
 }
 
 export const CreateParticipantPath = () => '/api/participants';
