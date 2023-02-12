@@ -1,125 +1,63 @@
-import { Box, Flex, Text } from '@chakra-ui/react';
-import { ReadEventPath, ReadEventReturn } from '@/api/events/read-event';
+import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import { useEffect, useMemo, useState } from 'react';
 
+import { BsCalendarEvent } from 'react-icons/bs';
 import Layout from '@/components/Layout';
+import TimeTable from '@/components/TimeTable';
 import dayjs from 'dayjs';
+import { useEvent } from '@/hooks/useEvent';
 import { useRouter } from 'next/router';
-import useSWR from 'swr';
 
 function Event() {
   const router = useRouter();
   const eventID = useMemo(() => router.query.id as string, [router.query]);
 
-  const { data } = useSWR<ReadEventReturn>(
-    eventID ? ReadEventPath({ eventID }) : null
-  );
-
-  const [selected, setSelected] = useState<boolean[][]>([]);
-
-  const dates = useMemo(() => {
-    if (!data) return [];
-
-    const { startDate, endDate } = data.data;
-    const dates = [];
-
-    for (
-      let date = dayjs(startDate);
-      date.isBefore(dayjs(endDate));
-      date = date.add(1, 'day')
-    ) {
-      dates.push(date);
-    }
-
-    return dates;
-  }, [data]);
-
-  const times = useMemo(() => {
-    if (!data) return [];
-
-    const { startTime, endTime } = data.data;
-    const times = [];
-
-    for (let time = startTime; time <= endTime; time++) {
-      times.push(time);
-    }
-
-    return times;
-  }, [data]);
+  const { event } = useEvent({ eventID });
+  const [timeTable, setTimeTable] = useState<boolean[][]>([]);
 
   useEffect(() => {
-    if (!data) return;
+    if (!event) return;
 
-    const { startDate, endDate, startTime, endTime } = data.data;
-
-    const rowLength = endTime - startTime + 1;
-    const colLength = dayjs(endDate).diff(dayjs(startDate), 'day') + 1;
-
-    const newSelected = Array.from(Array(rowLength * 2), () =>
-      new Array(colLength).fill(false)
+    const { startDate, endDate, startTime, endTime } = event;
+    const newTimeTable = Array.from(Array((endTime - startTime + 1) * 2), () =>
+      new Array(dayjs(endDate).diff(dayjs(startDate), 'day') + 1).fill(false)
     );
 
-    setSelected(newSelected);
-  }, [data]);
+    setTimeTable(newTimeTable);
+  }, [event]);
 
-  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    const { row, col } = e.currentTarget.dataset;
-
-    const newSelected = [...selected];
-
-    newSelected[Number(row)][Number(col)] =
-      !newSelected[Number(row)][Number(col)];
-
-    setSelected(newSelected);
-  };
-
-  const handleMouseOver = (e: React.MouseEvent<HTMLDivElement>) => {
-    const { row, col } = e.currentTarget.dataset;
-
-    if (e.buttons !== 1) return;
-
-    const newSelected = [...selected];
-
-    newSelected[Number(row)][Number(col)] =
-      !newSelected[Number(row)][Number(col)];
-
-    setSelected(newSelected);
+  const handleTimeTableChange = (timeTable: boolean[][]) => {
+    setTimeTable(timeTable);
   };
 
   return (
     <Layout>
-      <Flex flexDir="column" userSelect="none">
-        {selected.map((row, rowIndex) => (
-          <Flex key={rowIndex} gap={4}>
-            <Flex w="100px" h="30px" align="start" justify="end">
-              <Text hidden={rowIndex % 2 !== 0} color="#A8A8A8" fontSize="sm">
-                {times[rowIndex / 2] + ':00'}
-              </Text>
+      <Flex w="full" py={20} align="center" justify="center">
+        <Flex w="50rem" alignItems="center" flexDirection="column" gap={10}>
+          <Flex w="full" align="center" justify="space-between">
+            <Flex alignItems="center" gap={2}>
+              <BsCalendarEvent size={24} />
+              <Text fontSize="2xl">{event?.title}</Text>
             </Flex>
-            <Flex>
-              {row.map((col, colIndex) => (
-                <Flex key={colIndex} flexDir="column">
-                  <Box
-                    data-row={rowIndex}
-                    data-col={colIndex}
-                    w="100px"
-                    h="30px"
-                    borderTop={rowIndex === 0 ? '1px' : '0px'}
-                    borderLeft={colIndex === 0 ? '1px' : '0px'}
-                    borderRight="1px"
-                    borderBottom={
-                      rowIndex % 2 !== 0 ? '1px solid' : '1px dashed'
-                    }
-                    borderColor="#DBDBDB"
-                    onMouseDown={handleMouseDown}
-                    onMouseOver={handleMouseOver}
-                    bgColor={col ? 'rgba(88, 184, 238, 0.2)' : 'white'}
-                  />
-                </Flex>
-              ))}
-            </Flex>
+
+            <Button
+              borderRadius="full"
+              size="md"
+              bgColor="primary"
+              color="white"
+            >
+              완료하기
+            </Button>
           </Flex>
-        ))}
+          <TimeTable
+            startDate={event?.startDate ?? new Date()}
+            endDate={event?.endDate ?? new Date()}
+            startTime={event?.startTime ?? 0}
+            endTime={event?.endTime ?? 0}
+            timeTable={timeTable}
+            handleTimeTableChange={handleTimeTableChange}
+          />
+        </Flex>
       </Flex>
     </Layout>
   );
