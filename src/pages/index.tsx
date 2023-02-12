@@ -7,7 +7,7 @@ import {
   Select,
   Text,
 } from '@chakra-ui/react';
-import { ChangeEvent, useMemo, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 import { BsCalendarEvent } from 'react-icons/bs';
 import Calendar from '@/components/Calendar';
@@ -15,6 +15,7 @@ import { CreateEventAPI } from '@/api/events/create-event';
 import { CreateParticipantAPI } from '@/api/participants/create-participant';
 import Layout from '@/components/Layout';
 import TimeSelector from '@/components/TimeSelector';
+import { parseCookies } from 'nookies';
 import { useRouter } from 'next/router';
 
 export default function Home() {
@@ -53,7 +54,7 @@ export default function Home() {
     setEndTime(e.target.value);
   };
 
-  const isAvailable = useMemo(() => {
+  const isAvailable = () => {
     if (
       title &&
       name &&
@@ -66,10 +67,10 @@ export default function Home() {
       return true;
     }
     return false;
-  }, [date, endTime, name, participantsNumber, startTime, title]);
+  };
 
   const handleCreateEvent = async () => {
-    if (!isAvailable) return;
+    if (!isAvailable()) return;
     const [startDate, endDate] = date as [Date, Date];
 
     const event = await CreateEventAPI({
@@ -83,9 +84,7 @@ export default function Home() {
 
     const { _id } = event.data;
 
-    const participant = await CreateParticipantAPI({ name, eventID: _id });
-
-    // cookie에 particiapntID 저장
+    await CreateParticipantAPI({ name, eventID: _id });
 
     router.push(`/${_id}`);
   };
@@ -194,7 +193,7 @@ export default function Home() {
           size="lg"
           bgColor="primary"
           color="white"
-          isDisabled={!isAvailable}
+          isDisabled={!isAvailable()}
           onClick={handleCreateEvent}
         >
           이벤트 만들기
