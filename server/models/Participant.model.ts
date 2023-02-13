@@ -4,12 +4,7 @@ import mongoose from 'mongoose';
 const ParticipantScheme = new mongoose.Schema<Participant>({
   name: String,
   eventID: String,
-  possibleDates: [
-    {
-      startDate: Date,
-      endDate: Date,
-    },
-  ],
+  availableIndexes: [String],
 });
 
 export default mongoose.models.Participant ||
