@@ -16,18 +16,25 @@ import { useRouter } from 'next/router';
 
 interface EventProps {
   eventID: string;
-  participantID: string;
+  participantCID: string;
 }
 
-function Event({ eventID, participantID }: EventProps) {
+function Event({ eventID, participantCID }: EventProps) {
   const router = useRouter();
+
+  const [timeTable, setTimeTable] = useState<number[][]>([]);
+  const [participantID, setParticipantID] = useState<string>(
+    participantCID ?? ''
+  );
 
   const { event } = useEvent({ eventID });
   const { participant } = useParticipant({
     participantID: participantID ?? '',
   });
 
-  const [timeTable, setTimeTable] = useState<number[][]>([]);
+  const handleParticipantIDChange = (participantID: string) => {
+    setParticipantID(participantID);
+  };
 
   const handleTimeTableChange = (timeTable: number[][]) => {
     setTimeTable(timeTable);
@@ -46,14 +53,22 @@ function Event({ eventID, participantID }: EventProps) {
     });
 
     try {
-      await updateParticipant({
+      const { success } = await updateParticipant({
         participantID,
         availableIndexes,
       });
+
+      if (success) {
+        router.push(`/${eventID}/result`);
+      }
     } catch (error) {
       logOnBrowser(error);
     }
   };
+
+  useEffect(() => {
+    if (participantCID) setParticipantID(participantCID);
+  }, [participantCID]);
 
   useEffect(() => {
     if (!event) return;
@@ -108,6 +123,7 @@ function Event({ eventID, participantID }: EventProps) {
         eventID={eventID}
         eventTitle={event?.title ?? ''}
         participantID={participantID}
+        handleParticipantIDChange={handleParticipantIDChange}
       />
     </Layout>
   );
@@ -115,17 +131,17 @@ function Event({ eventID, participantID }: EventProps) {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.params as { id: string };
-  let participantID = null;
+  let participantCID = null;
   const cookies = nookies.get(ctx);
 
   if (cookies[`${id}-participantID`]) {
-    participantID = cookies[`${id}-participantID`];
+    participantCID = cookies[`${id}-participantID`];
   }
 
   return {
     props: {
       eventID: id,
-      participantID,
+      participantCID,
     },
   };
 };

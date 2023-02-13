@@ -17,12 +17,14 @@ interface ParticipationModalProps {
   eventID: string;
   eventTitle: string;
   participantID: string;
+  handleParticipantIDChange: (participantID: string) => void;
 }
 
 function ParticipationModal({
   eventID,
   eventTitle,
   participantID,
+  handleParticipantIDChange,
 }: ParticipationModalProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [name, setName] = useState<string>('');
@@ -39,6 +41,7 @@ function ParticipationModal({
       });
 
       if (participant) {
+        handleParticipantIDChange(participant._id);
         setIsOpen(false);
       }
     } catch (error) {}
