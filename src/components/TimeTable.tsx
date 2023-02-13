@@ -9,9 +9,8 @@ interface TimeTableProps {
   endDate: Date;
   startTime: number;
   endTime: number;
-  timeTable: boolean[][];
-  handleTimeTableChange: (timeTable: boolean[][]) => void;
-  readonly?: boolean;
+  timeTable: number[][];
+  handleTimeTableChange?: (timeTable: number[][]) => void;
 }
 
 function TimeTable({
@@ -21,11 +20,14 @@ function TimeTable({
   endTime,
   timeTable,
   handleTimeTableChange,
-  readonly = false,
 }: TimeTableProps) {
   const startRow = useRef<number>(0);
   const startCol = useRef<number>(0);
-  const startTimeTable = useRef<boolean[][]>([]);
+  const startTimeTable = useRef<number[][]>([]);
+
+  const readOnly = useMemo(() => {
+    return !handleTimeTableChange;
+  }, [handleTimeTableChange]);
 
   const dates = useMemo(() => {
     const dates = [];
@@ -53,12 +55,17 @@ function TimeTable({
 
   const handleMouseDown = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
+      if (!handleTimeTableChange) return;
+
       const { row, col } = e.currentTarget.dataset;
       const newTimeTable = deepCopy2DArray(timeTable);
       startTimeTable.current = deepCopy2DArray(timeTable);
 
-      newTimeTable[Number(row)][Number(col)] =
-        !startTimeTable.current[Number(row)][Number(col)];
+      newTimeTable[Number(row)][Number(col)] = !!startTimeTable.current[
+        Number(row)
+      ][Number(col)]
+        ? 0
+        : 1;
 
       startRow.current = Number(row);
       startCol.current = Number(col);
@@ -70,6 +77,8 @@ function TimeTable({
 
   const handleMouseOver = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
+      if (!handleTimeTableChange) return;
+
       const { row, col } = e.currentTarget.dataset;
 
       if (e.buttons !== 1) return;
@@ -84,7 +93,7 @@ function TimeTable({
 
       for (let i = startRowNum; i <= endRowNum; i++) {
         for (let j = startColNum; j <= endColNum; j++) {
-          newTimeTable[i][j] = !startTimeTable.current[i][j];
+          newTimeTable[i][j] = !!startTimeTable.current[i][j] ? 0 : 1;
         }
       }
 
@@ -136,8 +145,8 @@ function TimeTable({
                   borderRight="1px"
                   borderBottom={rowIndex % 2 !== 0 ? '1px solid' : '1px dashed'}
                   borderColor="#DBDBDB"
-                  onMouseDown={readonly ? undefined : handleMouseDown}
-                  onMouseOver={readonly ? undefined : handleMouseOver}
+                  onMouseDown={!readOnly ? handleMouseDown : undefined}
+                  onMouseOver={!readOnly ? handleMouseOver : undefined}
                   bgColor={col ? 'rgba(88, 184, 238, 0.2)' : 'white'}
                 />
               </Flex>

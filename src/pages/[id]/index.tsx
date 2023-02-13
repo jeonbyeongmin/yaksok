@@ -7,9 +7,12 @@ import Layout from '@/components/Layout';
 import ParticipationModal from '@/components/ParticipationModal';
 import TimeTable from '@/components/TimeTable';
 import dayjs from 'dayjs';
+import { logOnBrowser } from '@/utils/log';
 import nookies from 'nookies';
+import { updateParticipant } from '@/api/participants/update-participant';
 import { useEvent } from '@/hooks/useEvent';
 import { useParticipant } from '@/hooks/useParticipant';
+import { useRouter } from 'next/router';
 
 interface EventProps {
   eventID: string;
@@ -17,20 +20,39 @@ interface EventProps {
 }
 
 function Event({ eventID, participantID }: EventProps) {
+  const router = useRouter();
+
   const { event } = useEvent({ eventID });
   const { participant } = useParticipant({
     participantID: participantID ?? '',
   });
 
-  const [timeTable, setTimeTable] = useState<boolean[][]>([]);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [timeTable, setTimeTable] = useState<number[][]>([]);
 
-  const handleTimeTableChange = (timeTable: boolean[][]) => {
+  const handleTimeTableChange = (timeTable: number[][]) => {
     setTimeTable(timeTable);
   };
 
-  const handleModalClose = () => {
-    setIsOpen(false);
+  const handleSubmitButtonClick = async () => {
+    const availableIndexes: string[] = [];
+
+    timeTable.forEach((row, rowIndex) => {
+      row.forEach((col, colIndex) => {
+        if (col) {
+          const index = `${rowIndex}-${colIndex}`;
+          availableIndexes.push(index);
+        }
+      });
+    });
+
+    try {
+      await updateParticipant({
+        participantID,
+        availableIndexes,
+      });
+    } catch (error) {
+      logOnBrowser(error);
+    }
   };
 
   useEffect(() => {
@@ -38,11 +60,18 @@ function Event({ eventID, participantID }: EventProps) {
 
     const { startDate, endDate, startTime, endTime } = event;
     const newTimeTable = Array.from(Array((endTime - startTime + 1) * 2), () =>
-      new Array(dayjs(endDate).diff(dayjs(startDate), 'day') + 1).fill(false)
+      new Array(dayjs(endDate).diff(dayjs(startDate), 'day') + 1).fill(0)
     );
 
+    if (participant && participant.availableIndexes) {
+      participant?.availableIndexes.forEach((index) => {
+        const [row, col] = index.split('-').map((v) => Number(v));
+        newTimeTable[row][col] = 1;
+      });
+    }
+
     setTimeTable(newTimeTable);
-  }, [event]);
+  }, [event, participant]);
 
   return (
     <Layout>
@@ -59,6 +88,7 @@ function Event({ eventID, participantID }: EventProps) {
               size="md"
               bgColor="primary"
               color="white"
+              onClick={handleSubmitButtonClick}
             >
               완료
             </Button>
