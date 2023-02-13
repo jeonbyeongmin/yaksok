@@ -10,6 +10,7 @@ interface TimeTableProps {
   startTime: number;
   endTime: number;
   timeTable: number[][];
+  participantsNumber?: number;
   handleTimeTableChange?: (timeTable: number[][]) => void;
 }
 
@@ -19,6 +20,7 @@ function TimeTable({
   startTime,
   endTime,
   timeTable,
+  participantsNumber = 1,
   handleTimeTableChange,
 }: TimeTableProps) {
   const startRow = useRef<number>(0);
@@ -147,7 +149,13 @@ function TimeTable({
                   borderColor="#DBDBDB"
                   onMouseDown={!readOnly ? handleMouseDown : undefined}
                   onMouseOver={!readOnly ? handleMouseOver : undefined}
-                  bgColor={col ? 'rgba(88, 184, 238, 0.2)' : 'white'}
+                  bgColor={
+                    col
+                      ? `rgba(88, 184, 238, ${
+                          (0.4 * col) / participantsNumber
+                        })`
+                      : 'white'
+                  }
                 />
               </Flex>
             ))}
