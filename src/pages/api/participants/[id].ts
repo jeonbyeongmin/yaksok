@@ -15,40 +15,29 @@ export default async function handler(
   await dbConnect();
 
   switch (method) {
-    case 'GET' /* Get a model by its ID */:
+    case 'GET':
       try {
         const participant = await Participant.findById(id);
         if (!participant) {
           return res.status(400).json({ success: false });
         }
-        res.status(200).json({ success: true, data: participant });
+        res.status(200).json({ success: true, participant });
       } catch (error) {
         res.status(400).json({ success: false });
       }
       break;
 
-    case 'PUT' /* Edit a model by its ID */:
+    case 'PATCH':
       try {
-        const participant = await Participant.findByIdAndUpdate(id, req.body, {
-          new: true,
-          runValidators: true,
-        });
-        if (!participant) {
-          return res.status(400).json({ success: false });
-        }
-        res.status(200).json({ success: true, data: participant });
-      } catch (error) {
-        res.status(400).json({ success: false });
-      }
-      break;
-
-    case 'DELETE' /* Delete a model by its ID */:
-      try {
-        const deletedParticipant = await Participant.deleteOne({ _id: id });
-        if (!deletedParticipant) {
-          return res.status(400).json({ success: false });
-        }
-        res.status(200).json({ success: true, data: {} });
+        const participant = await Participant.findByIdAndUpdate(
+          id,
+          { $set: req.body },
+          {
+            new: true,
+            runValidators: true,
+          }
+        );
+        res.status(200).json({ success: true, participant });
       } catch (error) {
         res.status(400).json({ success: false });
       }

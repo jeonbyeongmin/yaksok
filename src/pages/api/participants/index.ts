@@ -29,6 +29,7 @@ export default async function handler(
         res.status(400).json({ success: false });
       }
       break;
+
     case 'POST':
       try {
         const participant = await Participant.create(req.body);
@@ -43,6 +44,7 @@ export default async function handler(
         res.status(400).json({ success: false });
       }
       break;
+
     default:
       res.status(400).json({ success: false });
       break;
