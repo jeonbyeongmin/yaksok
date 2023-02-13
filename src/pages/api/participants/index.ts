@@ -7,23 +7,17 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { method } = req;
+  const {
+    query: { eventID },
+    method,
+  } = req;
 
   await dbConnect();
 
   switch (method) {
     case 'GET':
       try {
-        const participantIDs = req.body.participantIDs;
-
-        if (participantIDs) {
-          const participants = await Participant.find({
-            _id: { $in: participantIDs },
-          });
-          return res.status(200).json({ success: true, participants });
-        }
-
-        const participants = await Participant.find({});
+        const participants = await Participant.find({ eventID });
         res.status(200).json({ success: true, participants });
       } catch (error) {
         res.status(400).json({ success: false });
