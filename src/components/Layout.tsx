@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react';
+import { Box } from '@/components/primitive/Box';
 import Head from 'next/head';
 import Header from 'src/components/Header';
 import { ReactNode } from 'react';
@@ -8,7 +8,7 @@ interface LayoutProps {
   title?: string;
 }
 
-function Layout({ children, title = 'FROM' }: LayoutProps) {
+function Layout({ children, title = 'YAKSOK' }: LayoutProps) {
   return (
     <>
       <Head>
@@ -17,7 +17,7 @@ function Layout({ children, title = 'FROM' }: LayoutProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Box w="full" h="full">
+      <Box>
         <Header />
         {children}
       </Box>
