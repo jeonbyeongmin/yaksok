@@ -1,21 +1,19 @@
-import {
-  Button,
-  Flex,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Select,
-  Text,
-} from '@chakra-ui/react';
 import { ChangeEvent, useState } from 'react';
+import { Select, SelectItem } from '@/components/primitive/Select';
 
-import { BsCalendarEvent } from 'react-icons/bs';
+import { Box } from '@/components/primitive/Box';
+import { Button } from '@/components/primitive/Button';
 import Calendar from '@/components/Calendar';
+import { CalendarIcon } from '@/components/assets/CalendarIcon';
 import { CreateEventAPI } from '@/api/events/create-event';
 import { CreateParticipantAPI } from '@/api/participants/create-participant';
+import { Flex } from '@/components/primitive/Flex';
+import { Grid } from '@/components/primitive/Grid';
+import { Input } from '@/components/primitive/Input';
 import Layout from '@/components/Layout';
+import { Text } from '@/components/primitive/Text';
 import TimeSelector from '@/components/TimeSelector';
-import { parseCookies } from 'nookies';
+import { styled } from '@/styles/stitches.config';
 import { useRouter } from 'next/router';
 
 export default function Home() {
@@ -23,7 +21,7 @@ export default function Home() {
 
   const [title, setTitle] = useState<string>('');
   const [name, setName] = useState<string>('');
-  const [participantsNumber, setParticipantsNumber] = useState<number>();
+  const [participantsNumber, setParticipantsNumber] = useState<string>();
   const [date, setDate] = useState<
     Date | [Date | null, Date | null] | null | undefined
   >();
@@ -38,20 +36,20 @@ export default function Home() {
     setName(e.target.value);
   };
 
-  const handleParticipantsNumber = (e: ChangeEvent<HTMLSelectElement>) => {
-    setParticipantsNumber(Number(e.target.value));
+  const handleParticipantsNumber = (value: string) => {
+    setParticipantsNumber(value);
   };
 
-  const handleStartTime = (e: ChangeEvent<HTMLSelectElement>) => {
-    setStartTime(e.target.value);
+  const handleStartTime = (value: string) => {
+    setStartTime(value);
 
-    if (Number(e.target.value) >= Number(endTime)) {
-      setEndTime(String(Number(e.target.value)));
+    if (Number(value) >= Number(endTime)) {
+      setEndTime(value);
     }
   };
 
-  const handleEndTime = (e: ChangeEvent<HTMLSelectElement>) => {
-    setEndTime(e.target.value);
+  const handleEndTime = (value: string) => {
+    setEndTime(value);
   };
 
   const isAvailable = () => {
@@ -62,7 +60,7 @@ export default function Home() {
       date &&
       startTime &&
       endTime &&
-      Number(startTime) < Number(endTime)
+      Number(startTime) <= Number(endTime)
     ) {
       return true;
     }
@@ -77,7 +75,7 @@ export default function Home() {
       title,
       startDate,
       endDate,
-      participantsNumber: participantsNumber ?? 2,
+      participantsNumber: Number(participantsNumber) ?? 2,
       startTime: Number(startTime),
       endTime: Number(endTime),
     });
@@ -91,114 +89,135 @@ export default function Home() {
 
   return (
     <Layout>
-      <Flex w="full" bgColor="secondary" justify="center" align="center">
-        <Flex
-          py={10}
-          justify="center"
-          align="center"
-          flexDirection="column"
-          gap={10}
-        >
-          <InputGroup w="full">
-            <InputLeftElement
-              h="full"
-              w="3.5rem"
-              pointerEvents="none"
-              alignSelf="center"
-              color="gray.700"
-            >
-              <BsCalendarEvent />
-            </InputLeftElement>
+      <TopsideWrapper justify="center" align="center">
+        <Flex justify="center" align="center" direction="column" gap={30}>
+          <Input
+            leftElement={<CalendarIcon size={30} />}
+            placeholder="약속 제목을 입력해주세요"
+            value={title}
+            onChange={handleTitleChange}
+            variant="blurred"
+            scale="lg"
+            radius="pill"
+            width="50rem"
+          />
+          <Flex direction="column" gap={7}>
             <Input
-              rounded="full"
-              size="lg"
-              w="lg"
-              pl="3rem"
-              bgColor="white"
-              color="black"
-              placeholder="이벤트 제목을 입력해주세요"
-              onChange={handleTitleChange}
-              value={title}
-              _placeholder={{ color: 'gray.500' }}
-            />
-          </InputGroup>
-          <Flex flexDirection="column" gap={3}>
-            <Input
-              w="sm"
-              bgColor="white"
-              color="black"
               placeholder="이름을 입력해주세요"
               onChange={handleNameChange}
               value={name}
-              _placeholder={{ color: 'gray.500' }}
+              width="24rem"
+              variant="blurred"
             />
             <Select
               placeholder="인원수를 선택해주세요"
-              bgColor="white"
-              color="black"
-              onChange={handleParticipantsNumber}
+              onValueChange={handleParticipantsNumber}
               value={participantsNumber}
+              variant="blurred"
             >
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
+              <SelectItem value="2">2명</SelectItem>
+              <SelectItem value="3">3명</SelectItem>
+              <SelectItem value="4">4명</SelectItem>
+              <SelectItem value="5">5명</SelectItem>
+              <SelectItem value="6">6명</SelectItem>
+              <SelectItem value="7">7명</SelectItem>
+              <SelectItem value="8">8명</SelectItem>
             </Select>
           </Flex>
         </Flex>
-      </Flex>
-
-      <Flex gap={20} w="full" justify="center" py={20}>
-        <Flex flexDirection="column" gap={1}>
-          <Flex flexDirection="column">
-            <Text fontSize="lg" color="gray.500" fontWeight="bold">
-              날짜를 입력해주세요
-            </Text>
-            <Text fontSize="xs" color="gray.400">
-              최대 7일까지 가능합니다
-            </Text>
-          </Flex>
-          <Calendar date={date} setDate={setDate} />
-        </Flex>
-        <Flex flexDirection="column" gap={1}>
-          <Flex flexDirection="column">
-            <Text fontSize="lg" color="gray.500" fontWeight="bold">
-              시간을 선택해주세요
-            </Text>
-          </Flex>
-          <Flex align="center" gap={2}>
-            <TimeSelector
-              handleValue={handleStartTime}
-              value={startTime}
-              enableTime={[0, 23]}
+      </TopsideWrapper>
+      <BottomsideWrapper>
+        <Grid columns={2} align="start" justify="center">
+          <CalendarWrapper direction="column" gap={2}>
+            <Divider />
+            <Text
+              content="날짜를 입력해주세요"
+              size="lg"
+              color="gray700"
+              weight="bold"
             />
-            <Text flexShrink={0}>부터</Text>
-          </Flex>
-          <Flex align="center" gap={2}>
-            <TimeSelector
-              handleValue={handleEndTime}
-              value={endTime}
-              enableTime={[Number(startTime), 23]}
+            <Text
+              content="최대 7일까지 선택 가능합니다"
+              size="xs"
+              color="gray400"
             />
-            <Text flexShrink={0}>까지</Text>
-          </Flex>
-        </Flex>
-      </Flex>
-      <Flex w="full" justify="center">
-        <Button
-          borderRadius="full"
-          size="lg"
-          bgColor="primary"
-          color="white"
-          isDisabled={!isAvailable()}
-          onClick={handleCreateEvent}
-        >
-          이벤트 만들기
+            <Calendar date={date} setDate={setDate} />
+          </CalendarWrapper>
+          <TimeSelectorContainer direction="column" gap={2}>
+            <Divider />
+            <Text
+              content="시간을 선택해주세요"
+              size="lg"
+              color="gray700"
+              weight="bold"
+            />
+            <TimeSelectorWrapper align="center">
+              <TimeSelector
+                handleValue={handleStartTime}
+                value={startTime}
+                enableTime={[0, 23]}
+              />
+              <Text content="부터" weight="bold" color="gray500" />
+            </TimeSelectorWrapper>
+            <TimeSelectorWrapper align="center">
+              <TimeSelector
+                handleValue={handleEndTime}
+                value={endTime}
+                enableTime={[Number(startTime), 23]}
+              />
+              <Text content="까지" weight="bold" color="gray500" />
+            </TimeSelectorWrapper>
+          </TimeSelectorContainer>
+        </Grid>
+      </BottomsideWrapper>
+      <ButtonWrapper justify="center">
+        <Button size="lg" onClick={handleCreateEvent} br="pill" color="primary">
+          <Text content="약속 만들기" color="white" size="lg" weight="bold" />
         </Button>
-      </Flex>
+      </ButtonWrapper>
     </Layout>
   );
 }
+
+const TopsideWrapper = styled(Flex, {
+  pt: '$30',
+  h: '$200',
+  bg: '$linearLightBg100',
+});
+
+const BottomsideWrapper = styled(Box, {
+  maxW: '$400',
+  m: '0 auto',
+  py: '$20',
+});
+
+const CalendarWrapper = styled(Flex, {
+  boxShadow: '$1',
+  p: '$10',
+  borderRadius: '$md',
+});
+
+const TimeSelectorContainer = styled(Flex, {
+  boxShadow: '$1',
+  p: '$10',
+  borderRadius: '$md',
+  w: '34rem',
+});
+
+const TimeSelectorWrapper = styled(Flex, {
+  borderRadius: '$md',
+  w: '$full',
+  gap: '$6',
+  mt: '$4',
+});
+
+const ButtonWrapper = styled(Flex, {
+  mt: '$10',
+});
+
+const Divider = styled(Box, {
+  w: '$full',
+  h: '1px',
+  bg: '$gray200',
+  my: '$4',
+});
