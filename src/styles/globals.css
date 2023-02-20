@@ -1,22 +1,35 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  line-height: 1.6;
-  font-size: 10px;
-}
-
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-a:hover {
-  text-decoration: underline;
+html {
+  font-size: 10px;
 }
 
-img {
-  max-width: 100%;
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1;
+}
+
+svg {
   display: block;
+}
+
+html,
+body,
+#root,
+#__next,
+#__next > div,
+#__next > main,
+.theme-0 {
+  height: 100%;
+}
+
+#__next {
+  position: relative;
+  z-index: 0;
 }

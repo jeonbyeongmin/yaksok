@@ -48,6 +48,7 @@ export const {
       lighten100: '#86CCF3',
       lighten200: '#B5DFF7',
       lighten300: '#E3F3FC',
+      lighten400: '#F2F9FE',
 
       darken100: '#106A9D',
       darken200: '#0B4B6F',
@@ -55,6 +56,10 @@ export const {
       darken400: '#020C12',
 
       // gradients
+      linearLightBg100:
+        'linear-gradient(93.62deg, rgba(88, 184, 238, 0.48) 4.12%, rgba(236, 211, 255, 0.8) 58.48%, rgba(227, 243, 252, 0.8) 100.53%)',
+      linearLightBg200:
+        'linear-gradient(316.01deg, rgba(88, 184, 238, 0.5) -16.21%, rgba(236, 227, 255, 0.5) 56.62%, rgba(227, 243, 252, 0) 117.77%, rgba(227, 243, 252, 0.5) 117.77%)',
     },
 
     /**
@@ -194,6 +199,7 @@ export const {
       500: '100rem',
 
       // Semantic sizes
+      container: '100rem',
       full: '100%',
       max: 'max-content',
       min: 'min-content',
@@ -266,7 +272,8 @@ export const {
     },
 
     shadows: {
-      1: '0 0.4rem 3.2rem 0 rgba(0, 0, 0, 0.1)',
+      1: '0 0 1.5rem rgba(0, 0, 0, 0.1)',
+      2: '0 0.4rem 3.2rem 0 rgba(0, 0, 0, 0.1)',
     },
 
     transitions: {
@@ -312,12 +319,7 @@ export const {
       maxHeight: value,
     }),
 
-    size: (value: Stitches.ScaleValue<'sizes'>) => ({
-      width: value,
-      height: value,
-    }),
-
-    fslh: (value: Stitches.ScaleValue<'fontSizes'>) => ({
+    fs: (value: Stitches.ScaleValue<'fontSizes'>) => ({
       fontSize: value,
       lineHeight: value,
     }),

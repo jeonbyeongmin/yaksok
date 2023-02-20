@@ -1,14 +1,17 @@
 import { Head, Html, Main, NextScript } from 'next/document';
 
-import { ColorModeScript } from '@chakra-ui/react';
-import { theme } from '@/styles/chakra.config';
+import { getCssText } from '@/styles/stitches.config';
 
 export default function Document() {
   return (
     <Html lang="ko">
-      <Head />
+      <Head>
+        <style
+          id="stitches"
+          dangerouslySetInnerHTML={{ __html: getCssText() }}
+        />
+      </Head>
       <body>
-        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <Main />
         <NextScript />
       </body>
