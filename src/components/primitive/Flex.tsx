@@ -44,6 +44,8 @@ export const Flex = styled('div', {
       8: { gap: '$8' },
       9: { gap: '$9' },
       10: { gap: '$10' },
+      20: { gap: '$20' },
+      30: { gap: '$30' },
     },
 
     px: {
