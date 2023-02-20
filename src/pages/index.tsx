@@ -217,7 +217,7 @@ const TimeSelectorWrapper = styled(Flex, {
 });
 
 const ButtonWrapper = styled(Flex, {
-  mt: '$10',
+  my: '$20',
 });
 
 const Divider = styled(Box, {

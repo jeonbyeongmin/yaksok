@@ -3,7 +3,6 @@ import '@/styles/globals.css';
 import '@/styles/calendar.css';
 
 import type { AppProps } from 'next/app';
-import { ChakraProvider } from '@chakra-ui/react';
 import NextNProgress from 'nextjs-progressbar';
 import { Noto_Sans } from '@next/font/google';
 import { SWRConfig } from 'swr';
@@ -15,7 +14,7 @@ const notoSans = Noto_Sans({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <main className={notoSans.className}>
+    <div className={notoSans.className}>
       <NextNProgress />
       <SWRConfig
         value={{
@@ -28,6 +27,6 @@ export default function App({ Component, pageProps }: AppProps) {
       >
         <Component {...pageProps} />
       </SWRConfig>
-    </main>
+    </div>
   );
 }

@@ -5,7 +5,7 @@ import { styled } from '@/styles/stitches.config';
 
 function Header() {
   return (
-    <HeaderWrapper align="center" justify="center">
+    <HeaderWrapper>
       <HeaderInner justify="between">
         <Link href="/">
           <Logo />
@@ -15,7 +15,10 @@ function Header() {
   );
 }
 
-const HeaderWrapper = styled(Flex, {
+const HeaderWrapper = styled('header', {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
   w: '$full',
   h: '$30',
   px: '$10',

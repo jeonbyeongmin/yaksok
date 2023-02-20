@@ -230,7 +230,7 @@ export const {
       min: 'min-content',
       fit: 'fit-content',
       screenW: '100vw',
-      screneH: '100vh',
+      screenH: '100vh',
     },
 
     /**

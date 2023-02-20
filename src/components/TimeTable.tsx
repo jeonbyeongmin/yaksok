@@ -131,12 +131,13 @@ function TimeTable({
       {timeTable.map((row, rowIndex) => (
         <Flex key={rowIndex} gap={6}>
           <Cell align="start" justify="end" size="sm">
-            <Text
-              hidden={rowIndex % 2 !== 0}
-              color="gray400"
-              size="sm"
-              content={times[rowIndex / 2] + ':00'}
-            />
+            {rowIndex % 2 === 0 && (
+              <Text
+                color="gray400"
+                size="sm"
+                content={times[rowIndex / 2] + ':00'}
+              />
+            )}
           </Cell>
           <Flex>
             {row.map((col, colIndex) => (

@@ -5,7 +5,7 @@ import { styled } from '@/styles/stitches.config';
 
 function Footer() {
   return (
-    <FooterWrapper align="center" justify="center">
+    <FooterWrapper>
       <FooterInner align="center">
         <Logo />
         <Divider />
@@ -36,13 +36,15 @@ function Footer() {
   );
 }
 
-const FooterWrapper = styled(Flex, {
+const FooterWrapper = styled('footer', {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
   w: '$full',
   h: '$40',
   px: '$10',
   userSelect: 'none',
   bgColor: '$white',
-  backdropFilter: 'blur(5px)',
   borderTop: '1px solid $gray200',
 });
 

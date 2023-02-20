@@ -121,12 +121,12 @@ function Event({ eventID, participantCID }: EventProps) {
         </EventPagePaper>
       </EventPageContainer>
 
-      <ParticipationModal
+      {/* <ParticipationModal
         eventID={eventID}
         eventTitle={event?.title ?? ''}
         participantID={participantID}
         handleParticipantIDChange={handleParticipantIDChange}
-      />
+      /> */}
     </Layout>
   );
 }
@@ -157,7 +157,7 @@ const EventPageContainer = styled(Flex, {
 const EventPagePaper = styled(Flex, {
   w: '100%',
   bg: 'rgba(255, 255, 255, 0.6)',
-  pt: '$50',
+  py: '$50',
   maxW: '$container',
 });
 
