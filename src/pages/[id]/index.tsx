@@ -1,14 +1,17 @@
-import { Button, Flex, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
-import { BsCalendarEvent } from 'react-icons/bs';
+import { Button } from '@/components/primitive/Button';
+import { CalendarIcon } from '@/components/assets/CalendarIcon';
+import { Flex } from '@/components/primitive/Flex';
 import { GetServerSideProps } from 'next';
 import Layout from '@/components/Layout';
 import ParticipationModal from '@/components/ParticipationModal';
+import { Text } from '@/components/primitive/Text';
 import TimeTable from '@/components/TimeTable';
 import dayjs from 'dayjs';
 import { logOnBrowser } from '@/utils/log';
 import nookies from 'nookies';
+import { styled } from '@/styles/stitches.config';
 import { updateParticipant } from '@/api/participants/update-participant';
 import { useEvent } from '@/hooks/useEvent';
 import { useParticipant } from '@/hooks/useParticipant';
@@ -90,24 +93,23 @@ function Event({ eventID, participantCID }: EventProps) {
 
   return (
     <Layout>
-      <Flex w="full" py={20} align="center" justify="center">
-        <Flex w="50rem" alignItems="center" flexDirection="column" gap={10}>
-          <Flex w="full" align="center" justify="space-between">
-            <Flex alignItems="center" gap={2}>
-              <BsCalendarEvent size={24} />
-              <Text fontSize="2xl">{event?.title}</Text>
+      <EventPageContainer justify="center">
+        <EventPagePaper align="center" direction="column" gap={20}>
+          <EventPageTop align="center" justify="between" isFull>
+            <Flex align="center" gap={2}>
+              <CalendarIcon size={36} />
+              <Text content={event?.title ?? ''} size="2xl" weight="bold" />
             </Flex>
 
             <Button
-              borderRadius="full"
-              size="md"
-              bgColor="primary"
-              color="white"
+              radius="pill"
+              size="xl"
+              color="primary"
               onClick={handleSubmitButtonClick}
             >
-              완료
+              <Text content="제출하기" color="white" size="xl" weight="bold" />
             </Button>
-          </Flex>
+          </EventPageTop>
           <TimeTable
             startDate={event?.startDate ?? new Date()}
             endDate={event?.endDate ?? new Date()}
@@ -116,8 +118,8 @@ function Event({ eventID, participantCID }: EventProps) {
             timeTable={timeTable}
             handleTimeTableChange={handleTimeTableChange}
           />
-        </Flex>
-      </Flex>
+        </EventPagePaper>
+      </EventPageContainer>
 
       <ParticipationModal
         eventID={eventID}
@@ -145,5 +147,22 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     },
   };
 };
+
+const EventPageContainer = styled(Flex, {
+  w: '$full',
+  h: '$full',
+  bg: '$linearLightBg200',
+});
+
+const EventPagePaper = styled(Flex, {
+  w: '100%',
+  bg: 'rgba(255, 255, 255, 0.6)',
+  pt: '$50',
+  maxW: '$container',
+});
+
+const EventPageTop = styled(Flex, {
+  maxW: '$350',
+});
 
 export default Event;

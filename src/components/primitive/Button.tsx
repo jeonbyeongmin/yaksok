@@ -28,11 +28,19 @@ const CustomButton = styled('button', {
   fontWeight: '$regular',
   fontVariantNumeric: 'tabular-nums',
 
+  cursor: 'pointer',
+
   '&:disabled': {
-    backgroundColor: '$slate2',
+    backgroundColor: '$gray300',
     boxShadow: 'inset 0 0 0 1px $colors $slate7',
     color: '$slate8',
     pointerEvents: 'none',
+  },
+
+  '@hover': {
+    '&:hover:not(:disabled)': {
+      opacity: 0.8,
+    },
   },
 
   transition: '$fast',
@@ -74,7 +82,7 @@ const CustomButton = styled('button', {
       '2xl': { fs: '$2xl' },
     },
 
-    br: {
+    radius: {
       xs: { borderRadius: '$xs' },
       sm: { borderRadius: '$sm' },
       md: { borderRadius: '$md' },
@@ -159,7 +167,7 @@ const CustomButton = styled('button', {
   defaultVariants: {
     size: 'md',
     fontSize: 'md',
-    br: 'md',
+    radius: 'md',
     color: 'gray',
   },
 });

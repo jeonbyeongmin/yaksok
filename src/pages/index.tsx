@@ -82,7 +82,7 @@ export default function Home() {
 
     const { _id } = event.data;
 
-    await CreateParticipantAPI({ name, eventID: _id });
+    await CreateParticipantAPI({ name, eventID: _id, availableIndexes: [] });
 
     router.push(`/${_id}`);
   };
@@ -171,8 +171,13 @@ export default function Home() {
         </Grid>
       </BottomsideWrapper>
       <ButtonWrapper justify="center">
-        <Button size="lg" onClick={handleCreateEvent} br="pill" color="primary">
-          <Text content="약속 만들기" color="white" size="lg" weight="bold" />
+        <Button
+          size="2xl"
+          onClick={handleCreateEvent}
+          radius="pill"
+          color="primary"
+        >
+          <Text content="약속 만들기" color="white" size="xl" weight="bold" />
         </Button>
       </ButtonWrapper>
     </Layout>

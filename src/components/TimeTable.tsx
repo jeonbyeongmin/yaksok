@@ -1,8 +1,10 @@
-import { Box, Flex, Text } from '@chakra-ui/react';
 import { useCallback, useMemo, useRef } from 'react';
 
+import { Flex } from '@/components/primitive/Flex';
+import { Text } from '@/components/primitive/Text';
 import dayjs from 'dayjs';
 import { deepCopy2DArray } from '@/utils/copy';
+import { styled } from '@/styles/stitches.config';
 
 interface TimeTableProps {
   startDate: Date;
@@ -105,65 +107,107 @@ function TimeTable({
   );
 
   return (
-    <Flex flexDir="column" userSelect="none">
-      <Flex gap={4} mb={3}>
-        <Flex w="30px" />
+    <TimeTableWrapper direction="column">
+      <DateRow gap={4}>
+        <Cell size="sm" />
         <Flex>
           {dates.map((date, index) => (
-            <Flex
+            <DateCell
               key={index}
-              w="100px"
               align="center"
               justify="center"
-              flexDir="column"
+              direction="column"
             >
-              <Text fontSize="sm" color="#A8A8A8">
-                {date.format('MM/DD')}
-              </Text>
-              <Text fontSize="md" color="#A8A8A8">
-                {date.format('ddd')}
-              </Text>
-            </Flex>
+              <Text size="sm" color="gray400" content={date.format('MM/DD')} />
+              <Text
+                size="md"
+                color="gray400"
+                content={'일월화수목금토'.charAt(date.get('day'))}
+              />
+            </DateCell>
           ))}
         </Flex>
-      </Flex>
+      </DateRow>
       {timeTable.map((row, rowIndex) => (
-        <Flex key={rowIndex} gap={4}>
-          <Flex w="30px" h="30px" align="start" justify="end">
-            <Text hidden={rowIndex % 2 !== 0} color="#A8A8A8" fontSize="sm">
-              {times[rowIndex / 2] + ':00'}
-            </Text>
-          </Flex>
+        <Flex key={rowIndex} gap={6}>
+          <Cell align="start" justify="end" size="sm">
+            <Text
+              hidden={rowIndex % 2 !== 0}
+              color="gray400"
+              size="sm"
+              content={times[rowIndex / 2] + ':00'}
+            />
+          </Cell>
           <Flex>
             {row.map((col, colIndex) => (
-              <Flex key={colIndex} flexDir="column">
-                <Box
+              <Flex key={colIndex} direction="column">
+                <Cell
                   data-row={rowIndex}
                   data-col={colIndex}
-                  w="100px"
-                  h="30px"
-                  borderTop={rowIndex === 0 ? '1px' : '0px'}
-                  borderLeft={colIndex === 0 ? '1px' : '0px'}
-                  borderRight="1px"
-                  borderBottom={rowIndex % 2 !== 0 ? '1px solid' : '1px dashed'}
-                  borderColor="#DBDBDB"
+                  borderTop={rowIndex === 0}
+                  borderLeft={colIndex === 0}
+                  borderRight={true}
+                  borderBottom={rowIndex % 2 !== 0}
                   onMouseDown={!readOnly ? handleMouseDown : undefined}
                   onMouseOver={!readOnly ? handleMouseOver : undefined}
-                  bgColor={
-                    col
+                  css={{
+                    bgColor: col
                       ? `rgba(88, 184, 238, ${
                           (0.4 * col) / participantsNumber
                         })`
-                      : 'white'
-                  }
+                      : 'white',
+                  }}
                 />
               </Flex>
             ))}
           </Flex>
         </Flex>
       ))}
-    </Flex>
+    </TimeTableWrapper>
   );
 }
+
+const TimeTableWrapper = styled(Flex, {
+  userSelect: 'none',
+});
+
+const DateRow = styled(Flex, {
+  w: '$100',
+  mb: '$3',
+});
+
+const DateCell = styled(Flex, {
+  w: '$45',
+});
+
+const Cell = styled(Flex, {
+  w: '$45',
+  h: '$14',
+  flexShrink: 0,
+
+  variants: {
+    size: {
+      sm: {
+        w: '$25',
+      },
+    },
+    borderTop: {
+      true: { borderTop: '1px solid $gray200' },
+      false: { borderTop: '0px' },
+    },
+    borderLeft: {
+      true: { borderLeft: '1px solid $gray200' },
+      false: { borderLeft: '0px' },
+    },
+    borderRight: {
+      true: { borderRight: '1px solid $gray200' },
+      false: { borderRight: '0px' },
+    },
+    borderBottom: {
+      true: { borderBottom: '1px solid $gray200' },
+      false: { borderBottom: '1px dashed $gray200' },
+    },
+  },
+});
 
 export default TimeTable;

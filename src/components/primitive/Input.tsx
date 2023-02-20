@@ -73,6 +73,25 @@ const CustomInput = styled('input', {
   bgColor: '$transparent',
   outline: 'none',
   color: '$black',
+  border: 0,
+
+  variants: {
+    scale: {
+      sm: {
+        fs: '$sm',
+      },
+      md: {
+        fs: '$md',
+      },
+      lg: {
+        fs: '$lg',
+      },
+    },
+  },
+
+  defaultVariants: {
+    scale: 'md',
+  },
 });
 
 // component
@@ -91,7 +110,7 @@ const Input = forwardRef<ElementRef<typeof CustomInput>, IInput>(
         }}
       >
         {leftElement}
-        <CustomInput ref={forwardedRef} {...props} />
+        <CustomInput ref={forwardedRef} scale={scale} {...props} />
         {rightElement}
       </InputWrapper>
     );

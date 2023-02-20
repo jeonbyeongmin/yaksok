@@ -5,6 +5,11 @@ export const Flex = styled('div', {
   display: 'flex',
 
   variants: {
+    isFull: {
+      true: {
+        width: '$full',
+      },
+    },
     direction: {
       row: { flexDirection: 'row' },
       column: { flexDirection: 'column' },
