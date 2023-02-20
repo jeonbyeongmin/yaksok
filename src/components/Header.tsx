@@ -16,14 +16,16 @@ function Header() {
 }
 
 const HeaderWrapper = styled(Flex, {
-  w: 'full',
+  w: '$full',
+  h: '$30',
   px: '$10',
   userSelect: 'none',
-  bg: 'linear-gradient(90.7deg, #FFFFFF 8.81%, rgba(255, 255, 255, 0) 109.85%)',
+  bgColor: 'rgba(255, 255, 255, 0.5)',
+  backdropFilter: 'blur(5px)',
+  position: 'fixed',
 });
 
 const HeaderInner = styled(Flex, {
-  w: 'full',
   minW: '$500',
 });
 
