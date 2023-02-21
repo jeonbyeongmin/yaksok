@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from 'react';
 import { Select, SelectItem } from '@/components/primitive/Select';
 
+import AnimateContainer from '@/components/AnimateContainer';
 import { Box } from '@/components/primitive/Box';
 import { Button } from '@/components/primitive/Button';
 import Calendar from '@/components/Calendar';
@@ -90,85 +91,89 @@ export default function Home() {
   return (
     <Layout>
       <TopsideWrapper justify="center" align="center">
-        <Flex justify="center" align="center" direction="column" gap={30}>
-          <Input
-            leftElement={<CalendarIcon size={30} />}
-            placeholder="약속 제목을 입력해주세요"
-            value={title}
-            onChange={handleTitleChange}
-            variant="blurred"
-            scale="lg"
-            radius="pill"
-            width="50rem"
-          />
-          <Flex direction="column" gap={7}>
+        <AnimateContainer>
+          <Flex justify="center" align="center" direction="column" gap={30}>
             <Input
-              placeholder="이름을 입력해주세요"
-              onChange={handleNameChange}
-              value={name}
-              width="24rem"
+              leftElement={<CalendarIcon size={30} />}
+              placeholder="약속 제목을 입력해주세요"
+              value={title}
+              onChange={handleTitleChange}
               variant="blurred"
+              scale="lg"
+              radius="pill"
+              width="50rem"
             />
-            <Select
-              placeholder="인원수를 선택해주세요"
-              onValueChange={handleParticipantsNumber}
-              value={participantsNumber}
-              variant="blurred"
-            >
-              <SelectItem value="2">2명</SelectItem>
-              <SelectItem value="3">3명</SelectItem>
-              <SelectItem value="4">4명</SelectItem>
-              <SelectItem value="5">5명</SelectItem>
-              <SelectItem value="6">6명</SelectItem>
-              <SelectItem value="7">7명</SelectItem>
-              <SelectItem value="8">8명</SelectItem>
-            </Select>
+            <Flex direction="column" gap={7}>
+              <Input
+                placeholder="이름을 입력해주세요"
+                onChange={handleNameChange}
+                value={name}
+                width="24rem"
+                variant="blurred"
+              />
+              <Select
+                placeholder="인원수를 선택해주세요"
+                onValueChange={handleParticipantsNumber}
+                value={participantsNumber}
+                variant="blurred"
+              >
+                <SelectItem value="2">2명</SelectItem>
+                <SelectItem value="3">3명</SelectItem>
+                <SelectItem value="4">4명</SelectItem>
+                <SelectItem value="5">5명</SelectItem>
+                <SelectItem value="6">6명</SelectItem>
+                <SelectItem value="7">7명</SelectItem>
+                <SelectItem value="8">8명</SelectItem>
+              </Select>
+            </Flex>
           </Flex>
-        </Flex>
+        </AnimateContainer>
       </TopsideWrapper>
       <BottomsideWrapper>
-        <Grid columns={2} align="start" justify="center">
-          <CalendarWrapper direction="column" gap={2}>
-            <Divider />
-            <Text
-              content="날짜를 입력해주세요"
-              size="lg"
-              color="gray700"
-              weight="bold"
-            />
-            <Text
-              content="최대 7일까지 선택 가능합니다"
-              size="xs"
-              color="gray400"
-            />
-            <Calendar date={date} setDate={setDate} />
-          </CalendarWrapper>
-          <TimeSelectorContainer direction="column" gap={2}>
-            <Divider />
-            <Text
-              content="시간을 선택해주세요"
-              size="lg"
-              color="gray700"
-              weight="bold"
-            />
-            <TimeSelectorWrapper align="center">
-              <TimeSelector
-                handleValue={handleStartTime}
-                value={startTime}
-                enableTime={[0, 23]}
+        <BottomsideInnerWrapper>
+          <Grid columns={2} align="start" justify="center">
+            <CalendarWrapper direction="column" gap={2}>
+              <Divider />
+              <Text
+                content="날짜를 입력해주세요"
+                size="lg"
+                color="gray700"
+                weight="bold"
               />
-              <Text content="부터" weight="bold" color="gray500" />
-            </TimeSelectorWrapper>
-            <TimeSelectorWrapper align="center">
-              <TimeSelector
-                handleValue={handleEndTime}
-                value={endTime}
-                enableTime={[Number(startTime), 23]}
+              <Text
+                content="최대 7일까지 선택 가능합니다"
+                size="xs"
+                color="gray400"
               />
-              <Text content="까지" weight="bold" color="gray500" />
-            </TimeSelectorWrapper>
-          </TimeSelectorContainer>
-        </Grid>
+              <Calendar date={date} setDate={setDate} />
+            </CalendarWrapper>
+            <TimeSelectorContainer direction="column" gap={2}>
+              <Divider />
+              <Text
+                content="시간을 선택해주세요"
+                size="lg"
+                color="gray700"
+                weight="bold"
+              />
+              <TimeSelectorWrapper align="center">
+                <TimeSelector
+                  handleValue={handleStartTime}
+                  value={startTime}
+                  enableTime={[0, 23]}
+                />
+                <Text content="부터" weight="bold" color="gray500" />
+              </TimeSelectorWrapper>
+              <TimeSelectorWrapper align="center">
+                <TimeSelector
+                  handleValue={handleEndTime}
+                  value={endTime}
+                  enableTime={[Number(startTime), 23]}
+                />
+                <Text content="까지" weight="bold" color="gray500" />
+              </TimeSelectorWrapper>
+            </TimeSelectorContainer>
+          </Grid>
+        </BottomsideInnerWrapper>
       </BottomsideWrapper>
       <ButtonWrapper justify="center">
         <Button
@@ -177,7 +182,7 @@ export default function Home() {
           radius="pill"
           color="primary"
         >
-          <Text content="약속 만들기" color="white" size="xl" weight="bold" />
+          <Text content="약속 만들기" color="white" size="2xl" weight="bold" />
         </Button>
       </ButtonWrapper>
     </Layout>
@@ -191,9 +196,14 @@ const TopsideWrapper = styled(Flex, {
 });
 
 const BottomsideWrapper = styled(Box, {
+  w: '100%',
+  py: '$20',
+  bgColor: '$white',
+});
+
+const BottomsideInnerWrapper = styled(Box, {
   maxW: '$400',
   m: '0 auto',
-  py: '$20',
 });
 
 const CalendarWrapper = styled(Flex, {
