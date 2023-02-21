@@ -14,6 +14,7 @@ interface TimeTableProps {
   timeTable: number[][];
   participantsNumber?: number;
   handleTimeTableChange?: (timeTable: number[][]) => void;
+  width?: number | string;
 }
 
 function TimeTable({
@@ -24,6 +25,7 @@ function TimeTable({
   timeTable,
   participantsNumber = 1,
   handleTimeTableChange,
+  width = '100%',
 }: TimeTableProps) {
   const startRow = useRef<number>(0);
   const startCol = useRef<number>(0);
@@ -35,7 +37,6 @@ function TimeTable({
 
   const dates = useMemo(() => {
     const dates = [];
-
     for (
       let date = dayjs(startDate);
       date.isBefore(dayjs(endDate));
@@ -43,17 +44,14 @@ function TimeTable({
     ) {
       dates.push(date);
     }
-
     return dates;
   }, [endDate, startDate]);
 
   const times = useMemo(() => {
     const times = [];
-
     for (let time = startTime; time <= endTime; time++) {
       times.push(time);
     }
-
     return times;
   }, [endTime, startTime]);
 
@@ -98,8 +96,17 @@ function TimeTable({
       const endRowNum = Math.max(startRow.current, Number(row));
       const endColNum = Math.max(startCol.current, Number(col));
 
-      for (let i = startRowNum; i <= endRowNum; i++) {
-        for (let j = startColNum; j <= endColNum; j++) {
+      for (let i = 0; i < newTimeTable.length; i++) {
+        for (let j = 0; j < newTimeTable[0].length; j++) {
+          if (
+            i < startRowNum ||
+            i > endRowNum ||
+            j < startColNum ||
+            j > endColNum
+          ) {
+            newTimeTable[i][j] = startTimeTable.current[i][j];
+            continue;
+          }
           newTimeTable[i][j] = !!startTimeTable.current[i][j] ? 0 : 1;
         }
       }
@@ -110,10 +117,15 @@ function TimeTable({
   );
 
   return (
-    <TimeTableWrapper direction="column">
-      <DateRow gap={4}>
-        <Cell size="sm" />
-        <Flex>
+    <TimeTableWrapper
+      direction="column"
+      css={{
+        width,
+      }}
+    >
+      <DateRow gap={4} isFull>
+        <BlankCell />
+        <Flex isFull>
           {dates.map((date, index) => (
             <DateCell
               key={index}
@@ -132,8 +144,8 @@ function TimeTable({
         </Flex>
       </DateRow>
       {timeTable.map((row, rowIndex) => (
-        <Flex key={rowIndex} gap={6}>
-          <Cell align="start" justify="end" size="sm">
+        <Flex key={rowIndex} gap={6} isFull>
+          <BlankCell align="start" justify="end">
             {rowIndex % 2 === 0 && (
               <Text
                 color="gray400"
@@ -141,10 +153,10 @@ function TimeTable({
                 content={times[rowIndex / 2] + ':00'}
               />
             )}
-          </Cell>
-          <Flex>
+          </BlankCell>
+          <Flex isFull>
             {row.map((col, colIndex) => (
-              <Flex key={colIndex} direction="column">
+              <Flex key={colIndex} direction="column" isFull>
                 <Cell
                   data-row={rowIndex}
                   data-col={colIndex}
@@ -157,7 +169,7 @@ function TimeTable({
                   css={{
                     bgColor: col
                       ? `rgba(88, 184, 238, ${
-                          (0.4 * col) / participantsNumber
+                          (0.2 * col) / participantsNumber
                         })`
                       : 'white',
                   }}
@@ -181,20 +193,20 @@ const DateRow = styled(Flex, {
 });
 
 const DateCell = styled(Flex, {
-  w: '$45',
+  flex: 1,
+});
+
+const BlankCell = styled(Flex, {
+  w: '$25',
+  minH: '$14',
+  flexShrink: 0,
 });
 
 const Cell = styled(Flex, {
-  w: '$45',
+  flex: 1,
   h: '$14',
-  flexShrink: 0,
 
   variants: {
-    size: {
-      sm: {
-        w: '$25',
-      },
-    },
     borderTop: {
       true: { borderTop: '1px solid $gray200' },
       false: { borderTop: '0px' },
