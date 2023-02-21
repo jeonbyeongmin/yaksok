@@ -94,30 +94,37 @@ function Event({ eventID, participantCID }: EventProps) {
   return (
     <Layout>
       <EventPageContainer justify="center">
-        <EventPagePaper align="center" direction="column" gap={20}>
-          <EventPageTop align="center" justify="between" isFull>
-            <Flex align="center" gap={2}>
-              <CalendarIcon size={36} />
-              <Text content={event?.title ?? ''} size="2xl" weight="bold" />
-            </Flex>
+        <EventPagePaper align="center" direction="column">
+          <PaperInner direction="column" gap={20}>
+            <Flex align="center" justify="between" isFull>
+              <Flex align="center" gap={2}>
+                <CalendarIcon size={36} />
+                <Text content={event?.title ?? ''} size="2xl" weight="bold" />
+              </Flex>
 
-            <Button
-              radius="pill"
-              size="xl"
-              color="primary"
-              onClick={handleSubmitButtonClick}
-            >
-              <Text content="제출하기" color="white" size="xl" weight="bold" />
-            </Button>
-          </EventPageTop>
-          <TimeTable
-            startDate={event?.startDate ?? new Date()}
-            endDate={event?.endDate ?? new Date()}
-            startTime={event?.startTime ?? 0}
-            endTime={event?.endTime ?? 0}
-            timeTable={timeTable}
-            handleTimeTableChange={handleTimeTableChange}
-          />
+              <Button
+                radius="pill"
+                size="xl"
+                color="primary"
+                onClick={handleSubmitButtonClick}
+              >
+                <Text
+                  content="제출하기"
+                  color="white"
+                  size="xl"
+                  weight="bold"
+                />
+              </Button>
+            </Flex>
+            <TimeTable
+              startDate={event?.startDate ?? new Date()}
+              endDate={event?.endDate ?? new Date()}
+              startTime={event?.startTime ?? 0}
+              endTime={event?.endTime ?? 0}
+              timeTable={timeTable}
+              handleTimeTableChange={handleTimeTableChange}
+            />
+          </PaperInner>
         </EventPagePaper>
       </EventPageContainer>
 
@@ -161,8 +168,8 @@ const EventPagePaper = styled(Flex, {
   maxW: '$container',
 });
 
-const EventPageTop = styled(Flex, {
-  maxW: '$350',
+const PaperInner = styled(Flex, {
+  minW: '$400',
 });
 
 export default Event;
