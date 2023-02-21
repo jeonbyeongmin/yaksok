@@ -3,6 +3,7 @@ import { styled } from '@/styles/stitches.config';
 export const Grid = styled('div', {
   boxSizing: 'border-box',
   display: 'grid',
+  w: '$full',
 
   variants: {
     align: {
@@ -46,6 +47,8 @@ export const Grid = styled('div', {
       8: { gap: '$8' },
       9: { gap: '$9' },
       10: { gap: '$10' },
+      20: { gap: '$20' },
+      30: { gap: '$30' },
     },
 
     gapX: {

@@ -14,7 +14,7 @@ const CustomItem = styled(Item, {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  color: '$gray900',
+  color: '$gray800',
   borderRadius: '$md',
   p: '$4 $7',
   userSelect: 'none',

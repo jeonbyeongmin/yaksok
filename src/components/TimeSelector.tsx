@@ -38,6 +38,7 @@ function TimeSelector({ handleValue, value, enableTime }: TimeSelectorProps) {
         <LabelWrapper>
           <SelectLabel>오전</SelectLabel>
         </LabelWrapper>
+        <SelectSeparator />
         {am.map((time) => (
           <SelectItem
             value={time}
@@ -52,11 +53,12 @@ function TimeSelector({ handleValue, value, enableTime }: TimeSelectorProps) {
           </SelectItem>
         ))}
       </SelectGroup>
-      <SelectSeparator />
+      <SelectSeparator size="lg" />
       <SelectGroup>
         <LabelWrapper>
           <SelectLabel>오후</SelectLabel>
         </LabelWrapper>
+        <SelectSeparator />
         {pm.map((time) => (
           <SelectItem
             value={time}
@@ -76,7 +78,7 @@ function TimeSelector({ handleValue, value, enableTime }: TimeSelectorProps) {
 }
 
 const LabelWrapper = styled(Box, {
-  p: '$4',
+  p: '$4 $7',
   color: '$gray500',
 });
 

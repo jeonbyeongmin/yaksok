@@ -4,11 +4,11 @@ export interface ReadParticipantsParams {
   eventID?: string;
 }
 
-type ReadParticipantData = Participant & { _id: string };
+export type ParticipantData = Participant & { _id: string };
 
 export interface ReadParticipantsReturn {
   success: boolean;
-  participants: ReadParticipantData[];
+  participants: ParticipantData[];
 }
 
 export const ReadParticipantsPath = ({ eventID }: ReadParticipantsParams) => {
