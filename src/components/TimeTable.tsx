@@ -59,9 +59,11 @@ function TimeTable({
 
   const handleMouseDown = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!handleTimeTableChange) return;
-
       const { row, col } = e.currentTarget.dataset;
+
+      if (!handleTimeTableChange) return;
+      if (!row || !col) return;
+
       const newTimeTable = deepCopy2DArray(timeTable);
       startTimeTable.current = deepCopy2DArray(timeTable);
 
@@ -81,11 +83,12 @@ function TimeTable({
 
   const handleMouseOver = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!handleTimeTableChange) return;
-
       const { row, col } = e.currentTarget.dataset;
 
+      if (!handleTimeTableChange) return;
       if (e.buttons !== 1) return;
+      if (!row || !col) return;
+      if (startTimeTable.current.length === 0) return;
 
       const newTimeTable = deepCopy2DArray(timeTable);
 
