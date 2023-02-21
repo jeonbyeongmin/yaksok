@@ -121,12 +121,12 @@ function Event({ eventID, participantCID }: EventProps) {
         </EventPagePaper>
       </EventPageContainer>
 
-      {/* <ParticipationModal
+      <ParticipationModal
         eventID={eventID}
         eventTitle={event?.title ?? ''}
         participantID={participantID}
         handleParticipantIDChange={handleParticipantIDChange}
-      /> */}
+      />
     </Layout>
   );
 }

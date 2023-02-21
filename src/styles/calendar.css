@@ -74,3 +74,10 @@ abbr[title] {
 .react-calendar__tile--rangeEnd {
   background: #f8f8fa;
 }
+
+.react-calendar__navigation__prev2-button {
+  visibility: hidden;
+}
+.react-calendar__navigation__next2-button {
+  visibility: hidden;
+}

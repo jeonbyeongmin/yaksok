@@ -28,6 +28,10 @@ const InputWrapper = styled(Flex, {
 
   variants: {
     variant: {
+      outline: {
+        border: '1px solid $gray200',
+      },
+
       blurred: {
         bgColor: 'rgba(255, 255, 255, 0.5)',
         border: '1px solid $white',
@@ -63,6 +67,7 @@ const InputWrapper = styled(Flex, {
   },
 
   defaultVariants: {
+    variant: 'outline',
     radius: 'sm',
     scale: 'md',
   },

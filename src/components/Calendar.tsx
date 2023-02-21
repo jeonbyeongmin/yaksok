@@ -33,6 +33,7 @@ function Calendar({ date, setDate }: CalendarProps) {
       formatDay={(_, date) => dayjs(date).format('D')}
       value={date}
       selectRange={true}
+      calendarType="US"
       allowPartialRange={true}
       minDate={minDate}
       maxDate={maxDate}

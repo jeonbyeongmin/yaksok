@@ -23,7 +23,7 @@ const HeaderWrapper = styled('header', {
   h: '$30',
   px: '$10',
   userSelect: 'none',
-  bgColor: 'rgba(255, 255, 255, 0.5)',
+  bgColor: 'rgba(255, 255, 255, 0.4)',
   backdropFilter: 'blur(5px)',
   position: 'fixed',
 });

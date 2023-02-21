@@ -105,11 +105,4 @@ export const Flex = styled('div', {
       10: { my: '$10' },
     },
   },
-
-  defaultVariants: {
-    direction: 'row',
-    align: 'stretch',
-    justify: 'start',
-    wrap: 'noWrap',
-  },
 });
