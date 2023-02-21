@@ -60,6 +60,18 @@ export const {
         'linear-gradient(93.62deg, rgba(88, 184, 238, 0.48) 4.12%, rgba(236, 211, 255, 0.8) 58.48%, rgba(227, 243, 252, 0.8) 100.53%)',
       linearLightBg200:
         'linear-gradient(316.01deg, rgba(88, 184, 238, 0.5) -16.21%, rgba(236, 227, 255, 0.5) 56.62%, rgba(227, 243, 252, 0) 117.77%, rgba(227, 243, 252, 0.5) 117.77%)',
+      linearOvall100:
+        'linear-gradient(129.33deg, rgba(84, 183, 238, 0.6) 14.58%, rgba(211, 118, 255, 0.2) 59.4%, rgba(255, 255, 255, 0.65) 103.67%)',
+      linearOvall200:
+        'linear-gradient(124.76deg, #8FBCFF 18.26%, #E6F3FF 100.02%)',
+      linearOvall300:
+        'linear-gradient(124.76deg, rgba(224, 209, 255, 0) -4.74%, #8FD7FF 85.94%)',
+      linearOvall400:
+        'linear-gradient(126.84deg, #71C3FF 0%, #88CDFF 0.01%, #FFFFFF 119.13%)',
+      linearOvall500:
+        'linear-gradient(141.47deg, rgba(240, 250, 255, 0) -8.27%, #27AAF4 106.7%)',
+      linearOvall600:
+        'linear-gradient(48.62deg, #71C3FF 0%, rgba(191, 140, 255, 0.5) 53.59%, rgba(240, 250, 255, 0) 107.18%)',
     },
 
     /**
