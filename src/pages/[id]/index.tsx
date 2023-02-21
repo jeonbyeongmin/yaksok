@@ -5,6 +5,8 @@ import { CalendarIcon } from '@/components/assets/CalendarIcon';
 import { Flex } from '@/components/primitive/Flex';
 import { GetServerSideProps } from 'next';
 import Layout from '@/components/Layout';
+import { Page } from '@/components/primitive/Page';
+import { Paper } from '@/components/primitive/Paper';
 import ParticipationModal from '@/components/ParticipationModal';
 import { Text } from '@/components/primitive/Text';
 import TimeTable from '@/components/TimeTable';
@@ -93,14 +95,26 @@ function Event({ eventID, participantCID }: EventProps) {
 
   return (
     <Layout>
-      <EventPageContainer justify="center">
-        <EventPagePaper align="center" direction="column">
-          <PaperInner direction="column" gap={20}>
+      <Page>
+        <Paper>
+          <Inner direction="column" gap={20}>
             <Flex align="center" justify="between" isFull>
-              <Flex align="center" gap={2}>
-                <CalendarIcon size={36} />
-                <Text content={event?.title ?? ''} size="2xl" weight="bold" />
-              </Flex>
+              {participant && (
+                <Flex gap={3} direction="column">
+                  <Flex align="center" gap={2}>
+                    <CalendarIcon size={36} />
+                    <Text
+                      content={event?.title ?? ''}
+                      size="2xl"
+                      weight="bold"
+                    />
+                  </Flex>
+                  <Flex gap={2}>
+                    <Text content={participant?.name ?? ''} weight="bold" />
+                    <Text content="님의 시간표" />
+                  </Flex>
+                </Flex>
+              )}
 
               <Button
                 radius="pill"
@@ -124,9 +138,9 @@ function Event({ eventID, participantCID }: EventProps) {
               timeTable={timeTable}
               handleTimeTableChange={handleTimeTableChange}
             />
-          </PaperInner>
-        </EventPagePaper>
-      </EventPageContainer>
+          </Inner>
+        </Paper>
+      </Page>
 
       <ParticipationModal
         eventID={eventID}
@@ -155,20 +169,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   };
 };
 
-const EventPageContainer = styled(Flex, {
-  w: '$full',
-  h: '$full',
-  bg: '$linearLightBg200',
-});
-
-const EventPagePaper = styled(Flex, {
-  w: '100%',
-  bg: 'rgba(255, 255, 255, 0.6)',
-  py: '$50',
-  maxW: '$container',
-});
-
-const PaperInner = styled(Flex, {
+const Inner = styled(Flex, {
   minW: '$400',
 });
 

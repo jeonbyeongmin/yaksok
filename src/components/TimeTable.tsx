@@ -1,10 +1,12 @@
+import { VariantProps, styled } from '@/styles/stitches.config';
 import { useCallback, useMemo, useRef } from 'react';
 
 import { Flex } from '@/components/primitive/Flex';
 import { Text } from '@/components/primitive/Text';
 import dayjs from 'dayjs';
 import { deepCopy2DArray } from '@/utils/copy';
-import { styled } from '@/styles/stitches.config';
+
+type CellSize = VariantProps<typeof Cell>;
 
 interface TimeTableProps {
   startDate: Date;
@@ -13,8 +15,9 @@ interface TimeTableProps {
   endTime: number;
   timeTable: number[][];
   participantsNumber?: number;
+  isSimple?: boolean;
+  cellHeight?: CellSize['cellHeight'];
   handleTimeTableChange?: (timeTable: number[][]) => void;
-  width?: number | string;
 }
 
 function TimeTable({
@@ -24,11 +27,14 @@ function TimeTable({
   endTime,
   timeTable,
   participantsNumber = 1,
+  cellHeight = 'md',
   handleTimeTableChange,
-  width = '100%',
+
+  isSimple = false,
 }: TimeTableProps) {
   const startRow = useRef<number>(0);
   const startCol = useRef<number>(0);
+  const selectMode = useRef<number>(0);
   const startTimeTable = useRef<number[][]>([]);
 
   const readOnly = useMemo(() => {
@@ -65,11 +71,13 @@ function TimeTable({
       const newTimeTable = deepCopy2DArray(timeTable);
       startTimeTable.current = deepCopy2DArray(timeTable);
 
-      newTimeTable[Number(row)][Number(col)] = !!startTimeTable.current[
-        Number(row)
-      ][Number(col)]
-        ? 0
-        : 1;
+      if (!!startTimeTable.current[Number(row)][Number(col)]) {
+        newTimeTable[Number(row)][Number(col)] = 0;
+        selectMode.current = 0;
+      } else {
+        newTimeTable[Number(row)][Number(col)] = 1;
+        selectMode.current = 1;
+      }
 
       startRow.current = Number(row);
       startCol.current = Number(col);
@@ -107,7 +115,7 @@ function TimeTable({
             newTimeTable[i][j] = startTimeTable.current[i][j];
             continue;
           }
-          newTimeTable[i][j] = !!startTimeTable.current[i][j] ? 0 : 1;
+          newTimeTable[i][j] = selectMode.current;
         }
       }
 
@@ -117,47 +125,53 @@ function TimeTable({
   );
 
   return (
-    <TimeTableWrapper
-      direction="column"
-      css={{
-        width,
-      }}
-    >
-      <DateRow gap={4} isFull>
-        <BlankCell />
-        <Flex isFull>
-          {dates.map((date, index) => (
-            <DateCell
-              key={index}
-              align="center"
-              justify="center"
-              direction="column"
-            >
-              <Text size="sm" color="gray400" content={date.format('MM/DD')} />
-              <Text
-                size="md"
-                color="gray400"
-                content={'일월화수목금토'.charAt(date.get('day'))}
-              />
-            </DateCell>
-          ))}
-        </Flex>
-      </DateRow>
+    <TimeTableWrapper direction="column" isFull>
+      {!isSimple ? (
+        <DateRow gap={4} isFull>
+          <BlankCell cellHeight={cellHeight} />
+          <Flex isFull>
+            {dates.map((date, index) => (
+              <DateCell
+                key={index}
+                align="center"
+                justify="center"
+                direction="column"
+              >
+                <Text
+                  size="sm"
+                  color="gray400"
+                  content={date.format('MM/DD')}
+                />
+                <Text
+                  size="md"
+                  color="gray400"
+                  content={'일월화수목금토'.charAt(date.get('day'))}
+                />
+              </DateCell>
+            ))}
+          </Flex>
+        </DateRow>
+      ) : null}
+
       {timeTable.map((row, rowIndex) => (
         <Flex key={rowIndex} gap={6} isFull>
-          <BlankCell align="start" justify="end">
-            {rowIndex % 2 === 0 && (
-              <Text
-                color="gray400"
-                size="sm"
-                content={times[rowIndex / 2] + ':00'}
-              />
-            )}
-          </BlankCell>
+          {!isSimple ? (
+            <BlankCell align="start" justify="end" cellHeight={cellHeight}>
+              {rowIndex % 2 === 0 && (
+                <Text
+                  color="gray400"
+                  size="sm"
+                  content={times[rowIndex / 2] + ':00'}
+                />
+              )}
+            </BlankCell>
+          ) : null}
+
           <Flex isFull>
             {row.map((col, colIndex) => (
               <Flex key={colIndex} direction="column" isFull>
                 <Cell
+                  cellHeight={cellHeight}
                   data-row={rowIndex}
                   data-col={colIndex}
                   borderTop={rowIndex === 0}
@@ -200,13 +214,43 @@ const BlankCell = styled(Flex, {
   w: '$25',
   minH: '$14',
   flexShrink: 0,
-});
-
-const Cell = styled(Flex, {
-  flex: 1,
-  h: '$14',
 
   variants: {
+    cellHeight: {
+      sm: {
+        minH: '$10',
+      },
+      md: {
+        minH: '$14',
+      },
+      lg: {
+        minH: '$16',
+      },
+    },
+  },
+
+  defaultVariants: {
+    cellHeight: 'md',
+  },
+});
+
+const Cell = styled('div', {
+  display: 'flex',
+  flex: 1,
+
+  variants: {
+    cellHeight: {
+      sm: {
+        minH: '$10',
+      },
+      md: {
+        minH: '$14',
+      },
+      lg: {
+        minH: '$16',
+      },
+    },
+
     borderTop: {
       true: { borderTop: '1px solid $gray200' },
       false: { borderTop: '0px' },
@@ -223,6 +267,10 @@ const Cell = styled(Flex, {
       true: { borderBottom: '1px solid $gray200' },
       false: { borderBottom: '1px dashed $gray200' },
     },
+  },
+
+  defaultVariants: {
+    cellHeight: 'md',
   },
 });
 
