@@ -4,42 +4,41 @@ import { useCallback, useMemo, useRef } from 'react';
 import { Flex } from '@/components/primitive/Flex';
 import { Text } from '@/components/primitive/Text';
 import dayjs from 'dayjs';
-import { deepCopy2DArray } from '@/utils/copy';
+import { deepCopy2DArray } from 'common/utils/copy';
 
 type CellSize = VariantProps<typeof Cell>;
 
-interface TimeTableProps {
+interface TimetableProps {
   startDate: Date;
   endDate: Date;
   startTime: number;
   endTime: number;
-  timeTable: number[][];
+  timetable: number[][];
   participantsNumber?: number;
   isSimple?: boolean;
   cellHeight?: CellSize['cellHeight'];
-  handleTimeTableChange?: (timeTable: number[][]) => void;
+  handleTimetableChange?: (timetable: number[][]) => void;
 }
 
-function TimeTable({
+function Timetable({
   startDate,
   endDate,
   startTime,
   endTime,
-  timeTable,
+  timetable,
   participantsNumber = 1,
   cellHeight = 'md',
-  handleTimeTableChange,
-
+  handleTimetableChange,
   isSimple = false,
-}: TimeTableProps) {
+}: TimetableProps) {
   const startRow = useRef<number>(0);
   const startCol = useRef<number>(0);
   const selectMode = useRef<number>(0);
   const startTimeTable = useRef<number[][]>([]);
 
   const readOnly = useMemo(() => {
-    return !handleTimeTableChange;
-  }, [handleTimeTableChange]);
+    return !handleTimetableChange;
+  }, [handleTimetableChange]);
 
   const dates = useMemo(() => {
     const dates = [];
@@ -65,11 +64,11 @@ function TimeTable({
     (e: React.MouseEvent<HTMLDivElement>) => {
       const { row, col } = e.currentTarget.dataset;
 
-      if (!handleTimeTableChange) return;
+      if (!handleTimetableChange) return;
       if (!row || !col) return;
 
-      const newTimeTable = deepCopy2DArray(timeTable);
-      startTimeTable.current = deepCopy2DArray(timeTable);
+      const newTimeTable = deepCopy2DArray(timetable);
+      startTimeTable.current = deepCopy2DArray(timetable);
 
       if (!!startTimeTable.current[Number(row)][Number(col)]) {
         newTimeTable[Number(row)][Number(col)] = 0;
@@ -82,21 +81,21 @@ function TimeTable({
       startRow.current = Number(row);
       startCol.current = Number(col);
 
-      handleTimeTableChange(newTimeTable);
+      handleTimetableChange(newTimeTable);
     },
-    [handleTimeTableChange, timeTable]
+    [handleTimetableChange, timetable]
   );
 
   const handleMouseOver = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       const { row, col } = e.currentTarget.dataset;
 
-      if (!handleTimeTableChange) return;
+      if (!handleTimetableChange) return;
       if (e.buttons !== 1) return;
       if (!row || !col) return;
       if (startTimeTable.current.length === 0) return;
 
-      const newTimeTable = deepCopy2DArray(timeTable);
+      const newTimeTable = deepCopy2DArray(timetable);
 
       const startRowNum = Math.min(startRow.current, Number(row));
       const startColNum = Math.min(startCol.current, Number(col));
@@ -119,13 +118,13 @@ function TimeTable({
         }
       }
 
-      handleTimeTableChange(newTimeTable);
+      handleTimetableChange(newTimeTable);
     },
-    [handleTimeTableChange, timeTable]
+    [handleTimetableChange, timetable]
   );
 
   return (
-    <TimeTableWrapper direction="column" isFull>
+    <TimetableWrapper direction="column" isFull>
       {!isSimple ? (
         <DateRow gap={4} isFull>
           <BlankCell cellHeight={cellHeight} />
@@ -153,7 +152,7 @@ function TimeTable({
         </DateRow>
       ) : null}
 
-      {timeTable.map((row, rowIndex) => (
+      {timetable.map((row, rowIndex) => (
         <Flex key={rowIndex} gap={6} isFull>
           {!isSimple ? (
             <BlankCell align="start" justify="end" cellHeight={cellHeight}>
@@ -183,7 +182,7 @@ function TimeTable({
                   css={{
                     bgColor: col
                       ? `rgba(88, 184, 238, ${
-                          (0.2 * col) / participantsNumber
+                          (0.5 * col) / participantsNumber
                         })`
                       : 'white',
                   }}
@@ -193,11 +192,11 @@ function TimeTable({
           </Flex>
         </Flex>
       ))}
-    </TimeTableWrapper>
+    </TimetableWrapper>
   );
 }
 
-const TimeTableWrapper = styled(Flex, {
+const TimetableWrapper = styled(Flex, {
   userSelect: 'none',
 });
 
@@ -274,4 +273,4 @@ const Cell = styled('div', {
   },
 });
 
-export default TimeTable;
+export default Timetable;

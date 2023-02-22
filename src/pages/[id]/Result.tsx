@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { CalendarIcon } from '@/components/assets/CalendarIcon';
 import { Flex } from '@/components/primitive/Flex';
@@ -7,47 +7,29 @@ import { Grid } from '@/components/primitive/Grid';
 import Layout from '@/components/Layout';
 import { Page } from '@/components/primitive/Page';
 import { Paper } from '@/components/primitive/Paper';
-import { ParticipantData } from '@/api/participants/read-participants';
 import { Text } from '@/components/primitive/Text';
-import TimeTable from '@/components/TimeTable';
-import dayjs from 'dayjs';
-import { deepCopy2DArray } from '@/utils/copy';
+import Timetable from '@/components/Timetable';
 import { styled } from '@/styles/stitches.config';
-import { useEvent } from '@/hooks/useEvent';
-import { useParticipants } from '@/hooks/useParticipants';
+import { useEventSWR } from '@/hooks/useEventSWR';
+import { useParticipantsSWR } from '@/hooks/useParticipantsSWR';
+import { useTimetable } from '@/hooks/useTimetable';
 
 interface EventResultProps {
   eventID: string;
 }
 
 function EventResult({ eventID }: EventResultProps) {
-  const { event } = useEvent({ eventID });
-  const { participants } = useParticipants({ eventID });
+  const { event } = useEventSWR({ eventID });
+  const { participants } = useParticipantsSWR({ eventID });
 
-  const [timeTable, setTimeTable] = useState<number[][]>([]);
+  const {
+    timetable,
+    completeTimetable,
+    timetablePartitions,
+    handleTimetableChange,
+    paintTimetable,
+  } = useTimetable(event, participants);
   const [selectedParticipant, setSelectedParticipant] = useState<string[]>([]);
-
-  const plainTimeTable = useMemo(() => {
-    if (!event) return [];
-    const { startDate, endDate, startTime, endTime } = event;
-    const newTimeTable = Array.from(Array((endTime - startTime + 1) * 2), () =>
-      new Array(dayjs(endDate).diff(dayjs(startDate), 'day') + 1).fill(0)
-    );
-
-    return newTimeTable;
-  }, [event]);
-
-  const paintTimeTable = useCallback(
-    (newParticipants: ParticipantData[], timeTable: number[][]) => {
-      newParticipants.forEach((participant) => {
-        participant.availableIndexes.forEach((index) => {
-          const [rowIndex, colIndex] = index.split('-');
-          timeTable[Number(rowIndex)][Number(colIndex)] += 1;
-        });
-      });
-    },
-    []
-  );
 
   const isSelected = useCallback(
     (participantID: string) => {
@@ -59,9 +41,6 @@ function EventResult({ eventID }: EventResultProps) {
   const handleSelectParticipant = useCallback(
     (participantID: string) => {
       if (!participants) return;
-
-      const newTimeTable = deepCopy2DArray(plainTimeTable);
-
       if (selectedParticipant.includes(participantID)) {
         setSelectedParticipant((selectedParticipant) => {
           const newSelectedParticipant = selectedParticipant.filter(
@@ -70,7 +49,8 @@ function EventResult({ eventID }: EventResultProps) {
           const newSelectedParticipants = participants.filter((participant) =>
             newSelectedParticipant.includes(participant._id)
           );
-          paintTimeTable(newSelectedParticipants, newTimeTable);
+          const newTimetable = paintTimetable(newSelectedParticipants);
+          handleTimetableChange(newTimetable);
 
           return newSelectedParticipant;
         });
@@ -83,14 +63,14 @@ function EventResult({ eventID }: EventResultProps) {
           const newSelectedParticipants = participants.filter((participant) =>
             newSelectedParticipant.includes(participant._id)
           );
-          paintTimeTable(newSelectedParticipants, newTimeTable);
+          const newTimetable = paintTimetable(newSelectedParticipants);
+          handleTimetableChange(newTimetable);
 
           return newSelectedParticipant;
         });
       }
-      setTimeTable(newTimeTable);
     },
-    [paintTimeTable, participants, plainTimeTable, selectedParticipant]
+    [handleTimetableChange, paintTimetable, participants, selectedParticipant]
   );
 
   useEffect(() => {
@@ -100,11 +80,8 @@ function EventResult({ eventID }: EventResultProps) {
   }, [participants]);
 
   useEffect(() => {
-    if (!participants) return;
-    const newTimeTable = deepCopy2DArray(plainTimeTable);
-    paintTimeTable(participants, newTimeTable);
-    setTimeTable(newTimeTable);
-  }, [paintTimeTable, participants, plainTimeTable]);
+    handleTimetableChange(completeTimetable);
+  }, [completeTimetable, handleTimetableChange, participants]);
 
   return (
     <Layout>
@@ -134,20 +111,18 @@ function EventResult({ eventID }: EventResultProps) {
                           content={participant.name}
                           size="xs"
                           color={
-                            isSelected(participant._id)
-                              ? 'lighten300'
-                              : 'darken200'
+                            isSelected(participant._id) ? 'white' : 'darken200'
                           }
                         />
                       </Badge>
                     ))}
                   </Flex>
-                  <TimeTable
+                  <Timetable
                     startDate={event?.startDate ?? new Date()}
                     endDate={event?.endDate ?? new Date()}
                     startTime={event?.startTime ?? 0}
                     endTime={event?.endTime ?? 0}
-                    timeTable={timeTable}
+                    timetable={timetable}
                     participantsNumber={participants?.length}
                     cellHeight="sm"
                     isSimple

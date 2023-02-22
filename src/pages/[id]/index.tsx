@@ -9,15 +9,15 @@ import { Page } from '@/components/primitive/Page';
 import { Paper } from '@/components/primitive/Paper';
 import ParticipationModal from '@/components/ParticipationModal';
 import { Text } from '@/components/primitive/Text';
-import TimeTable from '@/components/TimeTable';
-import dayjs from 'dayjs';
-import { logOnBrowser } from '@/utils/log';
+import Timetable from '@/components/Timetable';
+import { logOnBrowser } from 'common/utils/log';
 import nookies from 'nookies';
 import { styled } from '@/styles/stitches.config';
 import { updateParticipant } from '@/api/participants/update-participant';
-import { useEvent } from '@/hooks/useEvent';
-import { useParticipant } from '@/hooks/useParticipant';
+import { useEventSWR } from '@/hooks/useEventSWR';
+import { useParticipantSWR } from '@/hooks/useParticipantSWR';
 import { useRouter } from 'next/router';
+import { useTimetable } from '@/hooks/useTimetable';
 
 interface EventProps {
   eventID: string;
@@ -26,29 +26,24 @@ interface EventProps {
 
 function Event({ eventID, participantCID }: EventProps) {
   const router = useRouter();
-
-  const [timeTable, setTimeTable] = useState<number[][]>([]);
-  const [participantID, setParticipantID] = useState<string>(
-    participantCID ?? ''
-  );
-
-  const { event } = useEvent({ eventID });
-  const { participant } = useParticipant({
+  const [participantID, setParticipantID] = useState(participantCID ?? '');
+  const { event } = useEventSWR({ eventID });
+  const { participant } = useParticipantSWR({
     participantID: participantID ?? '',
   });
+  const { timetable, completeTimetable, handleTimetableChange } = useTimetable(
+    event,
+    participant
+  );
 
   const handleParticipantIDChange = (participantID: string) => {
     setParticipantID(participantID);
   };
 
-  const handleTimeTableChange = (timeTable: number[][]) => {
-    setTimeTable(timeTable);
-  };
-
   const handleSubmitButtonClick = async () => {
     const availableIndexes: string[] = [];
 
-    timeTable.forEach((row, rowIndex) => {
+    timetable.forEach((row, rowIndex) => {
       row.forEach((col, colIndex) => {
         if (col) {
           const index = `${rowIndex}-${colIndex}`;
@@ -76,22 +71,8 @@ function Event({ eventID, participantCID }: EventProps) {
   }, [participantCID]);
 
   useEffect(() => {
-    if (!event) return;
-
-    const { startDate, endDate, startTime, endTime } = event;
-    const newTimeTable = Array.from(Array((endTime - startTime + 1) * 2), () =>
-      new Array(dayjs(endDate).diff(dayjs(startDate), 'day') + 1).fill(0)
-    );
-
-    if (participant && participant.availableIndexes) {
-      participant?.availableIndexes.forEach((index) => {
-        const [row, col] = index.split('-').map((v) => Number(v));
-        newTimeTable[row][col] = 1;
-      });
-    }
-
-    setTimeTable(newTimeTable);
-  }, [event, participant]);
+    handleTimetableChange(completeTimetable);
+  }, [completeTimetable, handleTimetableChange, participant]);
 
   return (
     <Layout>
@@ -130,13 +111,13 @@ function Event({ eventID, participantCID }: EventProps) {
                 />
               </Button>
             </Flex>
-            <TimeTable
+            <Timetable
               startDate={event?.startDate ?? new Date()}
               endDate={event?.endDate ?? new Date()}
               startTime={event?.startTime ?? 0}
               endTime={event?.endTime ?? 0}
-              timeTable={timeTable}
-              handleTimeTableChange={handleTimeTableChange}
+              timetable={timetable}
+              handleTimetableChange={handleTimetableChange}
             />
           </Inner>
         </Paper>
