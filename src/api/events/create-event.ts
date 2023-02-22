@@ -1,10 +1,10 @@
-import { Event } from 'server/inerfaces/Event.interface';
+import { Event } from 'common/inerfaces/Event.interface';
 
-type CreateEventParams = Event;
+type CreateEventParams = Omit<Event, '_id'>;
 
 interface CreateEventsReturn {
   success: boolean;
-  data: Event & { _id: string };
+  data: Event;
 }
 
 export const CreateEventPath = () => '/api/events';

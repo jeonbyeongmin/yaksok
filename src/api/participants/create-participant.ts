@@ -1,12 +1,10 @@
-import { Participant } from 'server/inerfaces/Participant.interface';
+import { Participant } from 'common/inerfaces/Participant.interface';
 
-type CreateParticipantParams = Participant;
-
-type CreateParticipantData = Participant & { _id: string };
+type CreateParticipantParams = Omit<Participant, '_id'>;
 
 interface CreateParticipantReturn {
   success: boolean;
-  participant: CreateParticipantData;
+  participant: Participant;
 }
 
 export const CreateParticipantPath = () => '/api/participants';

@@ -1,14 +1,12 @@
-import { Event } from 'server/inerfaces/Event.interface';
+import { Event } from 'common/inerfaces/Event.interface';
 
 interface ReadEventParams {
   eventID: string;
 }
 
-type ReadEventData = Event & { _id: string };
-
 export interface ReadEventReturn {
   success: boolean;
-  event: ReadEventData;
+  event: Event;
 }
 
 export const ReadEventPath = ({ eventID }: ReadEventParams) =>

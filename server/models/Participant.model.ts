@@ -1,4 +1,4 @@
-import { Participant } from 'server/inerfaces/Participant.interface';
+import { Participant } from 'common/inerfaces/Participant.interface';
 import mongoose from 'mongoose';
 
 const ParticipantScheme = new mongoose.Schema<Participant>({

@@ -1,4 +1,4 @@
-import { Event } from 'server/inerfaces/Event.interface';
+import { Event } from 'common/inerfaces/Event.interface';
 import mongoose from 'mongoose';
 
 const EventSchema = new mongoose.Schema<Event>({

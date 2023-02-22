@@ -1,14 +1,12 @@
-import { Participant } from 'server/inerfaces/Participant.interface';
+import { Participant } from 'common/inerfaces/Participant.interface';
 
 export interface ReadParticipantsParams {
   eventID?: string;
 }
 
-export type ParticipantData = Participant & { _id: string };
-
 export interface ReadParticipantsReturn {
   success: boolean;
-  participants: ParticipantData[];
+  participants: Participant[];
 }
 
 export const ReadParticipantsPath = ({ eventID }: ReadParticipantsParams) => {
