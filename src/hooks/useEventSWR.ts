@@ -6,7 +6,7 @@ interface UseEventParams {
   eventID: string;
 }
 
-export function useEvent({ eventID }: UseEventParams) {
+export function useEventSWR({ eventID }: UseEventParams) {
   const { data, isValidating } = useSWR<ReadEventReturn>(
     eventID ? ReadEventPath({ eventID }) : null
   );

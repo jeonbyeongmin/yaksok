@@ -8,7 +8,7 @@ import useSWR from 'swr';
 
 type UseParticipantParams = ReadParticipantsParams & {};
 
-export function useParticipants({ eventID }: UseParticipantParams) {
+export function useParticipantsSWR({ eventID }: UseParticipantParams) {
   const { data, isValidating } = useSWR<ReadParticipantsReturn>(
     ReadParticipantsPath({ eventID })
   );
