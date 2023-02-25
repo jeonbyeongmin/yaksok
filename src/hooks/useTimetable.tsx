@@ -2,14 +2,8 @@ import { useCallback, useMemo, useState } from 'react';
 
 import { Event } from 'common/inerfaces/Event.interface';
 import { Participant } from 'common/inerfaces/Participant.interface';
+import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
 import dayjs from 'dayjs';
-
-type TimetablePartition = {
-  col: number;
-  startRow: number;
-  endRow: number;
-  participantIDs: string[];
-};
 
 export function useTimetable(
   event: Event | undefined,
@@ -108,6 +102,7 @@ export function useTimetable(
 
       if (tempParticipants.length > 0) {
         partitions.push({
+          id: `${startRow}-${endRow}-${col}`,
           col,
           startRow,
           endRow,

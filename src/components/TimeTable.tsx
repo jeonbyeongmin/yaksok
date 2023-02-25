@@ -3,10 +3,11 @@ import { useCallback, useMemo, useRef } from 'react';
 
 import { Flex } from '@/components/primitive/Flex';
 import { Text } from '@/components/primitive/Text';
+import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
 import dayjs from 'dayjs';
 import { deepCopy2DArray } from 'common/utils/copy';
 
-type CellSize = VariantProps<typeof Cell>;
+type CellType = VariantProps<typeof Cell>;
 
 interface TimetableProps {
   startDate: Date;
@@ -16,7 +17,8 @@ interface TimetableProps {
   timetable: number[][];
   participantsNumber?: number;
   isSimple?: boolean;
-  cellHeight?: CellSize['cellHeight'];
+  cellHeight?: CellType['cellHeight'];
+  selectedTimetablePartition?: TimetablePartition;
   handleTimetableChange?: (timetable: number[][]) => void;
 }
 
@@ -28,8 +30,9 @@ function Timetable({
   timetable,
   participantsNumber = 1,
   cellHeight = 'md',
-  handleTimetableChange,
   isSimple = false,
+  selectedTimetablePartition,
+  handleTimetableChange,
 }: TimetableProps) {
   const startRow = useRef<number>(0);
   const startCol = useRef<number>(0);
@@ -42,11 +45,7 @@ function Timetable({
 
   const dates = useMemo(() => {
     const dates = [];
-    for (
-      let date = dayjs(startDate);
-      date.isBefore(dayjs(endDate));
-      date = date.add(1, 'day')
-    ) {
+    for (let date = dayjs(startDate); date.isBefore(dayjs(endDate)); date = date.add(1, 'day')) {
       dates.push(date);
     }
     return dates;
@@ -59,6 +58,38 @@ function Timetable({
     }
     return times;
   }, [endTime, startTime]);
+
+  const timetablePallet = useCallback(
+    (row: number, column: number) => {
+      let borderTop: CellType['borderTop'] = row === 0 ? 'solidGray' : 'none';
+      let borderLeft: CellType['borderLeft'] = column === 0 ? 'solidGray' : 'none';
+      let borderRight: CellType['borderRight'] = 'solidGray';
+      let borderBottom: CellType['borderBottom'] = row % 2 !== 0 ? 'solidGray' : 'dashedGray';
+
+      if (!selectedTimetablePartition) return { borderTop, borderLeft, borderRight, borderBottom };
+
+      if (
+        selectedTimetablePartition.startRow === row &&
+        selectedTimetablePartition.col === column
+      ) {
+        borderTop = 'solidDarken';
+      }
+      if (selectedTimetablePartition.endRow === row && selectedTimetablePartition.col === column) {
+        borderBottom = 'solidDarken';
+      }
+      if (
+        selectedTimetablePartition.startRow <= row &&
+        selectedTimetablePartition.endRow >= row &&
+        selectedTimetablePartition.col === column
+      ) {
+        borderLeft = 'solidDarken';
+        borderRight = 'solidDarken';
+      }
+
+      return { borderTop, borderLeft, borderRight, borderBottom };
+    },
+    [selectedTimetablePartition]
+  );
 
   const handleMouseDown = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -105,12 +136,7 @@ function Timetable({
 
       for (let i = 0; i < newTimeTable.length; i++) {
         for (let j = 0; j < newTimeTable[0].length; j++) {
-          if (
-            i < startRowNum ||
-            i > endRowNum ||
-            j < startColNum ||
-            j > endColNum
-          ) {
+          if (i < startRowNum || i > endRowNum || j < startColNum || j > endColNum) {
             newTimeTable[i][j] = startTimeTable.current[i][j];
             continue;
           }
@@ -130,17 +156,8 @@ function Timetable({
           <BlankCell cellHeight={cellHeight} />
           <Flex isFull>
             {dates.map((date, index) => (
-              <DateCell
-                key={index}
-                align="center"
-                justify="center"
-                direction="column"
-              >
-                <Text
-                  size="sm"
-                  color="gray400"
-                  content={date.format('MM/DD')}
-                />
+              <DateCell key={index} align="center" justify="center" direction="column">
+                <Text size="sm" color="gray400" content={date.format('MM/DD')} />
                 <Text
                   size="md"
                   color="gray400"
@@ -157,11 +174,7 @@ function Timetable({
           {!isSimple ? (
             <BlankCell align="start" justify="end" cellHeight={cellHeight}>
               {rowIndex % 2 === 0 && (
-                <Text
-                  color="gray400"
-                  size="sm"
-                  content={times[rowIndex / 2] + ':00'}
-                />
+                <Text color="gray400" size="sm" content={times[rowIndex / 2] + ':00'} />
               )}
             </BlankCell>
           ) : null}
@@ -173,18 +186,16 @@ function Timetable({
                   cellHeight={cellHeight}
                   data-row={rowIndex}
                   data-col={colIndex}
-                  borderTop={rowIndex === 0}
-                  borderLeft={colIndex === 0}
-                  borderRight={true}
-                  borderBottom={rowIndex % 2 !== 0}
+                  borderTop={timetablePallet(rowIndex, colIndex).borderTop}
+                  borderLeft={timetablePallet(rowIndex, colIndex).borderLeft}
+                  borderRight={timetablePallet(rowIndex, colIndex).borderRight}
+                  borderBottom={timetablePallet(rowIndex, colIndex).borderBottom}
                   onMouseDown={!readOnly ? handleMouseDown : undefined}
                   onMouseOver={!readOnly ? handleMouseOver : undefined}
                   css={{
                     bgColor: col
-                      ? `rgba(88, 184, 238, ${
-                          (0.5 * col) / participantsNumber
-                        })`
-                      : 'white',
+                      ? `rgba(88, 184, 238, ${(0.5 * col) / participantsNumber})`
+                      : 'transparent',
                   }}
                 />
               </Flex>
@@ -216,18 +227,11 @@ const BlankCell = styled(Flex, {
 
   variants: {
     cellHeight: {
-      sm: {
-        minH: '$10',
-      },
-      md: {
-        minH: '$14',
-      },
-      lg: {
-        minH: '$16',
-      },
+      sm: { minH: '$10' },
+      md: { minH: '$14' },
+      lg: { minH: '$16' },
     },
   },
-
   defaultVariants: {
     cellHeight: 'md',
   },
@@ -239,35 +243,32 @@ const Cell = styled('div', {
 
   variants: {
     cellHeight: {
-      sm: {
-        minH: '$10',
-      },
-      md: {
-        minH: '$14',
-      },
-      lg: {
-        minH: '$16',
-      },
+      sm: { minH: '$10' },
+      md: { minH: '$14' },
+      lg: { minH: '$16' },
     },
 
     borderTop: {
-      true: { borderTop: '1px solid $gray200' },
-      false: { borderTop: '0px' },
+      solidGray: { borderTop: '1px solid $gray200' },
+      solidDarken: { borderTop: '2px solid $darken200' },
+      none: { borderTop: '0px' },
     },
     borderLeft: {
-      true: { borderLeft: '1px solid $gray200' },
-      false: { borderLeft: '0px' },
+      solidGray: { borderLeft: '1px solid $gray200' },
+      solidDarken: { borderLeft: '2px solid $darken200' },
+      none: { borderLeft: '0px' },
     },
     borderRight: {
-      true: { borderRight: '1px solid $gray200' },
-      false: { borderRight: '0px' },
+      solidGray: { borderRight: '1px solid $gray200' },
+      solidDarken: { borderRight: '2px solid $darken200' },
+      none: { borderRight: '0px' },
     },
     borderBottom: {
-      true: { borderBottom: '1px solid $gray200' },
-      false: { borderBottom: '1px dashed $gray200' },
+      solidGray: { borderBottom: '1px solid $gray200' },
+      solidDarken: { borderBottom: '2px solid $darken200' },
+      dashedGray: { borderBottom: '1px dashed $gray200' },
     },
   },
-
   defaultVariants: {
     cellHeight: 'md',
   },

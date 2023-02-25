@@ -10,6 +10,7 @@ import { Page } from '@/components/primitive/Page';
 import { Paper } from '@/components/primitive/Paper';
 import { Text } from '@/components/primitive/Text';
 import Timetable from '@/components/Timetable';
+import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
 import { styled } from '@/styles/stitches.config';
 import { useEventSWR } from '@/hooks/useEventSWR';
 import { useParticipantsSWR } from '@/hooks/useParticipantsSWR';
@@ -34,6 +35,8 @@ function EventResult({ eventID }: EventResultProps) {
   } = useTimetable(event, participants);
 
   const [selectedParticipant, setSelectedParticipant] = useState<string[]>([]);
+  const [selectedTimetablePartition, setSelectedTimetablePartition] =
+    useState<TimetablePartition>();
 
   const isSelected = useCallback(
     (participantID: string) => {
@@ -42,7 +45,7 @@ function EventResult({ eventID }: EventResultProps) {
     [selectedParticipant]
   );
 
-  const handleSelectParticipant = useCallback(
+  const handleParticipantSelect = useCallback(
     (participantID: string) => {
       if (!participants) return;
       if (selectedParticipant.includes(participantID)) {
@@ -70,6 +73,17 @@ function EventResult({ eventID }: EventResultProps) {
       }
     },
     [handleTimetableChange, paintTimetable, participants, selectedParticipant]
+  );
+
+  const handleTimetablePartitionSelect = useCallback(
+    (timetablePartition: TimetablePartition) => {
+      if (selectedTimetablePartition === timetablePartition) {
+        setSelectedTimetablePartition(undefined);
+      } else {
+        setSelectedTimetablePartition(timetablePartition);
+      }
+    },
+    [selectedTimetablePartition]
   );
 
   useEffect(() => {
@@ -102,7 +116,7 @@ function EventResult({ eventID }: EventResultProps) {
                       <Badge
                         key={participant._id}
                         active={isSelected(participant._id)}
-                        onClick={() => handleSelectParticipant(participant._id)}>
+                        onClick={() => handleParticipantSelect(participant._id)}>
                         <Text
                           content={participant.name}
                           size="xs"
@@ -120,6 +134,7 @@ function EventResult({ eventID }: EventResultProps) {
                     timetable={timetable}
                     participantsNumber={participants?.length}
                     cellHeight="sm"
+                    selectedTimetablePartition={selectedTimetablePartition}
                     isSimple
                   />
                 </Flex>
@@ -142,8 +157,12 @@ function EventResult({ eventID }: EventResultProps) {
                     </UnderLineBox>
                   </Flex>
                   <Flex direction="column" isFull>
-                    {numberOfParticipantsPartition.map((partition, index) => (
-                      <ListItem key={index} gap={5}>
+                    {numberOfParticipantsPartition.map((partition) => (
+                      <ListItem
+                        key={partition.id}
+                        gap={5}
+                        selected={selectedTimetablePartition?.id === partition.id ? true : false}
+                        onClick={() => handleTimetablePartitionSelect(partition)}>
                         <Text
                           content={`${convertIndexToDate(partition.col)}`}
                           color="primary"
@@ -217,11 +236,17 @@ const ListItem = styled(Flex, {
   p: '$8',
   borderRadius: '$md',
   cursor: 'pointer',
-
   userSelect: 'none',
   '@hover': {
     '&:hover': {
       bg: '$lighten400',
+    },
+  },
+
+  variants: {
+    selected: {
+      true: { bg: '$lighten400' },
+      false: { bg: 'transparent' },
     },
   },
 });
