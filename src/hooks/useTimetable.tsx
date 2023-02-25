@@ -3,19 +3,17 @@ import { useCallback, useMemo, useState } from 'react';
 import { Event } from 'common/inerfaces/Event.interface';
 import { Participant } from 'common/inerfaces/Participant.interface';
 import dayjs from 'dayjs';
-import { rotate2DArray } from 'common/utils/array';
 
 type TimetablePartition = {
   col: number;
   startRow: number;
   endRow: number;
-  numberOfParticipants: number;
   participantIDs: string[];
 };
 
 export function useTimetable(
-  event?: Event,
-  participants?: Participant | Participant[]
+  event: Event | undefined,
+  participants: Participant | Participant[] | undefined
 ) {
   const [timetable, setTimetable] = useState<number[][]>([]);
 
@@ -61,72 +59,101 @@ export function useTimetable(
     return paintTimetable(participants);
   }, [participants, paintTimetable]);
 
-  const timetablePartitions = useMemo<TimetablePartition[]>(() => {
-    if (!Array.isArray(completeTimetable)) return [];
+  const participantsByCell = useMemo(() => {
+    if (!participants) return {};
+    if (!Array.isArray(participants)) return {};
 
-    const rotatedTimeTable = rotate2DArray(completeTimetable);
-    const newTimeTablePartitions: TimetablePartition[] = [];
-
-    rotatedTimeTable.forEach((col, colIndex) => {
-      let startRow = 0;
-      let endRow = 0;
-      let isStart = false;
-      let startingNumber = 0;
-
-      col.forEach((row, rowIndex) => {
-        if (row !== 0 && !isStart) {
-          startRow = rowIndex;
-          startingNumber = row;
-          isStart = true;
-          return;
-        }
-        if (row === 0 && isStart) {
-          endRow = rowIndex - 1;
-          newTimeTablePartitions.push({
-            col: colIndex,
-            startRow,
-            endRow,
-            numberOfParticipants: startingNumber,
-            participantIDs: [],
-          });
-          isStart = false;
-          return;
-        }
-        if (row !== startingNumber && isStart) {
-          endRow = rowIndex - 1;
-          newTimeTablePartitions.push({
-            col: colIndex,
-            startRow,
-            endRow,
-            numberOfParticipants: startingNumber,
-            participantIDs: [],
-          });
-          startRow = rowIndex;
-          startingNumber = row;
-          return;
-        }
-        if (rowIndex === col.length - 1 && isStart) {
-          endRow = rowIndex;
-          newTimeTablePartitions.push({
-            col: colIndex,
-            startRow,
-            endRow,
-            numberOfParticipants: startingNumber,
-            participantIDs: [],
-          });
-          return;
+    const map: { [key: string]: string[] } = {};
+    participants.forEach((participant) => {
+      participant.availableIndexes.forEach((index) => {
+        if (map[index]) {
+          map[index].push(participant._id);
+        } else {
+          map[index] = [participant._id];
         }
       });
     });
+    return map;
+  }, [participants]);
 
-    return newTimeTablePartitions;
-  }, [completeTimetable]);
+  const partitionsInfo = useMemo(() => {
+    if (!participants) return null;
+    if (!Array.isArray(participants)) return null;
+
+    const participantsByCellArr = Object.entries(participantsByCell).sort((a, b) => {
+      const [aRow, aCol] = a[0].split('-').map((v) => Number(v));
+      const [bRow, bCol] = b[0].split('-').map((v) => Number(v));
+      return aCol === bCol ? aRow - bRow : aCol - bCol;
+    });
+
+    const partitions: TimetablePartition[] = [];
+
+    let startRow = 0;
+    let endRow = 0;
+    let col = 0;
+    let tempParticipants: string[] = [];
+
+    participantsByCellArr.forEach(([index, participantIDs]) => {
+      const [currentRow, currentCol] = index.split('-').map((v) => Number(v));
+
+      if (
+        currentCol === col &&
+        currentRow === endRow + 1 &&
+        tempParticipants.length === participantIDs.length &&
+        tempParticipants.every((v, i) => v === participantIDs[i])
+      ) {
+        endRow = currentRow;
+        return;
+      }
+
+      if (tempParticipants.length > 0) {
+        partitions.push({
+          col,
+          startRow,
+          endRow,
+          participantIDs: tempParticipants,
+        });
+        tempParticipants = [];
+      }
+
+      startRow = currentRow;
+      endRow = currentRow;
+      col = currentCol;
+      tempParticipants.push(...participantIDs);
+    });
+
+    return partitions;
+  }, [participantsByCell, participants]);
+
+  const partitionByRank = useMemo(() => {
+    partitionsInfo?.sort((a, b) => {
+      if (a.endRow - a.startRow > b.endRow - b.startRow) return -1;
+      if (a.endRow - a.startRow < b.endRow - b.startRow) return 1;
+      return 0;
+    });
+
+    const splittedByParticipantsLength = partitionsInfo?.reduce<TimetablePartition[][]>(
+      (acc, partition) => {
+        const index = partition.participantIDs.length - 1;
+        if (acc[index]) {
+          acc[index].push(partition);
+        } else {
+          acc[index] = [partition];
+        }
+        return acc;
+      },
+      []
+    );
+
+    return splittedByParticipantsLength?.reverse();
+  }, [partitionsInfo]);
 
   return {
     timetable,
     getPlainTimetable,
+    partitionsInfo,
     completeTimetable,
-    timetablePartitions,
+    partitionByRank,
     handleTimetableChange,
     paintTimetable,
   };

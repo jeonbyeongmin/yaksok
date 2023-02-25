@@ -43,7 +43,7 @@ export const {
       black: '#000000',
 
       // brand
-      primary: '58B8EE',
+      primary: '#58B8EE',
 
       lighten100: '#86CCF3',
       lighten200: '#B5DFF7',

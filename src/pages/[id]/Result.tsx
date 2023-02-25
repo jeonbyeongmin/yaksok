@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { Box } from '@/components/primitive/Box';
 import { CalendarIcon } from '@/components/assets/CalendarIcon';
 import { Flex } from '@/components/primitive/Flex';
 import { GetServerSideProps } from 'next';
@@ -22,13 +23,9 @@ function EventResult({ eventID }: EventResultProps) {
   const { event } = useEventSWR({ eventID });
   const { participants } = useParticipantsSWR({ eventID });
 
-  const {
-    timetable,
-    completeTimetable,
-    timetablePartitions,
-    handleTimetableChange,
-    paintTimetable,
-  } = useTimetable(event, participants);
+  const { timetable, completeTimetable, partitionByRank, handleTimetableChange, paintTimetable } =
+    useTimetable(event, participants);
+
   const [selectedParticipant, setSelectedParticipant] = useState<string[]>([]);
 
   const isSelected = useCallback(
@@ -43,9 +40,7 @@ function EventResult({ eventID }: EventResultProps) {
       if (!participants) return;
       if (selectedParticipant.includes(participantID)) {
         setSelectedParticipant((selectedParticipant) => {
-          const newSelectedParticipant = selectedParticipant.filter(
-            (id) => id !== participantID
-          );
+          const newSelectedParticipant = selectedParticipant.filter((id) => id !== participantID);
           const newSelectedParticipants = participants.filter((participant) =>
             newSelectedParticipant.includes(participant._id)
           );
@@ -56,10 +51,7 @@ function EventResult({ eventID }: EventResultProps) {
         });
       } else {
         setSelectedParticipant((selectedParticipant) => {
-          const newSelectedParticipant = [
-            ...selectedParticipant,
-            participantID,
-          ];
+          const newSelectedParticipant = [...selectedParticipant, participantID];
           const newSelectedParticipants = participants.filter((participant) =>
             newSelectedParticipant.includes(participant._id)
           );
@@ -74,9 +66,7 @@ function EventResult({ eventID }: EventResultProps) {
   );
 
   useEffect(() => {
-    setSelectedParticipant(
-      participants?.map((participant) => participant._id) ?? []
-    );
+    setSelectedParticipant(participants?.map((participant) => participant._id) ?? []);
   }, [participants]);
 
   useEffect(() => {
@@ -88,7 +78,7 @@ function EventResult({ eventID }: EventResultProps) {
       <Page>
         <Paper transparent>
           <Grid columns={2} gap={20}>
-            <Card gap={10}>
+            <Card gap={10} direction="column" align="center">
               <Flex align="center" gap={2}>
                 <CalendarIcon size={28} />
                 <Text content={event?.title ?? ''} size="lg" weight="bold" />
@@ -105,14 +95,12 @@ function EventResult({ eventID }: EventResultProps) {
                       <Badge
                         key={participant._id}
                         active={isSelected(participant._id)}
-                        onClick={() => handleSelectParticipant(participant._id)}
-                      >
+                        onClick={() => handleSelectParticipant(participant._id)}>
                         <Text
                           content={participant.name}
                           size="xs"
-                          color={
-                            isSelected(participant._id) ? 'white' : 'darken200'
-                          }
+                          color={isSelected(participant._id) ? 'white' : 'darken200'}
+                          weight="bold"
                         />
                       </Badge>
                     ))}
@@ -130,7 +118,41 @@ function EventResult({ eventID }: EventResultProps) {
                 </Flex>
               </Flex>
             </Card>
-            <Card></Card>
+            <Flex direction="column" gap={10}>
+              {partitionByRank.map((numberOfParticipantsPartition, rank) => (
+                <Card key={rank} align="start" direction="column" gap={10}>
+                  <Flex gap={4} align="center" isFull>
+                    <RankWrapper>
+                      <Text content={`${rank + 1}`} color="white" size="lg" weight="bold" />
+                    </RankWrapper>
+                    <UnderLineBox>
+                      <Text
+                        content={`${numberOfParticipantsPartition[0].participantIDs.length}명의 참여자가 약속했어요`}
+                        size="sm"
+                        color="darken200"
+                        weight="bold"
+                      />
+                    </UnderLineBox>
+                  </Flex>
+                  <Flex direction="column">
+                    {numberOfParticipantsPartition.map((partition, index) => (
+                      <Flex key={index} gap={5}>
+                        <Text
+                          content={`col ${partition.col} - row ${partition.startRow} ~ ${partition.endRow}`}
+                          size="xs"
+                          color="darken200"
+                        />
+                        <Text
+                          content={`${partition.participantIDs.length}명`}
+                          size="xs"
+                          color="darken200"
+                        />
+                      </Flex>
+                    ))}
+                  </Flex>
+                </Card>
+              ))}
+            </Flex>
           </Grid>
         </Paper>
       </Page>
@@ -140,12 +162,27 @@ function EventResult({ eventID }: EventResultProps) {
 
 const Card = styled(Flex, {
   w: '$full',
-  flexDirection: 'column',
-  alignItems: 'center',
   boxShadow: '$1',
   bg: 'rgba(255, 255, 255, 0.6)',
   p: '$15',
   borderRadius: '$lg',
+});
+
+const RankWrapper = styled(Flex, {
+  justifyContent: 'center',
+  alignItems: 'center',
+  w: '$15',
+  h: '$15',
+  bgColor: '$primary',
+  borderRadius: '$round',
+  flexShrink: 0,
+});
+
+const UnderLineBox = styled(Box, {
+  w: '$full',
+  borderBottom: '1px solid $primary',
+  py: '$3',
+  px: '$4',
 });
 
 const Badge = styled(Flex, {
@@ -168,7 +205,6 @@ const Badge = styled(Flex, {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.params as { id: string };
-
   return {
     props: {
       eventID: id,
