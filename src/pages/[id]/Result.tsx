@@ -23,8 +23,15 @@ function EventResult({ eventID }: EventResultProps) {
   const { event } = useEventSWR({ eventID });
   const { participants } = useParticipantsSWR({ eventID });
 
-  const { timetable, completeTimetable, partitionByRank, handleTimetableChange, paintTimetable } =
-    useTimetable(event, participants);
+  const {
+    timetable,
+    completeTimetable,
+    partitionByRank,
+    handleTimetableChange,
+    paintTimetable,
+    convertIndexToDate,
+    convertIndexToTime,
+  } = useTimetable(event, participants);
 
   const [selectedParticipant, setSelectedParticipant] = useState<string[]>([]);
 
@@ -77,7 +84,7 @@ function EventResult({ eventID }: EventResultProps) {
     <Layout>
       <Page>
         <Paper transparent>
-          <Grid columns={2} gap={20}>
+          <Grid columns={2} gap={20} align="start">
             <Card gap={10} direction="column" align="center">
               <Flex align="center" gap={2}>
                 <CalendarIcon size={28} />
@@ -120,7 +127,7 @@ function EventResult({ eventID }: EventResultProps) {
             </Card>
             <Flex direction="column" gap={10}>
               {partitionByRank.map((numberOfParticipantsPartition, rank) => (
-                <Card key={rank} align="start" direction="column" gap={10}>
+                <Card key={rank} align="start" direction="column" gap={5}>
                   <Flex gap={4} align="center" isFull>
                     <RankWrapper>
                       <Text content={`${rank + 1}`} color="white" size="lg" weight="bold" />
@@ -134,20 +141,21 @@ function EventResult({ eventID }: EventResultProps) {
                       />
                     </UnderLineBox>
                   </Flex>
-                  <Flex direction="column">
+                  <Flex direction="column" isFull>
                     {numberOfParticipantsPartition.map((partition, index) => (
-                      <Flex key={index} gap={5}>
+                      <ListItem key={index} gap={5}>
                         <Text
-                          content={`col ${partition.col} - row ${partition.startRow} ~ ${partition.endRow}`}
-                          size="xs"
-                          color="darken200"
+                          content={`${convertIndexToDate(partition.col)}`}
+                          color="primary"
+                          weight="bold"
                         />
                         <Text
-                          content={`${partition.participantIDs.length}명`}
-                          size="xs"
+                          content={`${convertIndexToTime(
+                            partition.startRow
+                          )} 부터 ${convertIndexToTime(partition.endRow + 1)} 까지`}
                           color="darken200"
                         />
-                      </Flex>
+                      </ListItem>
                     ))}
                   </Flex>
                 </Card>
@@ -199,6 +207,21 @@ const Badge = styled(Flex, {
     active: {
       true: { bg: '$darken200' },
       false: { bg: '$lighten300' },
+    },
+  },
+});
+
+const ListItem = styled(Flex, {
+  alignItems: 'center',
+  ml: '$18',
+  p: '$8',
+  borderRadius: '$md',
+  cursor: 'pointer',
+
+  userSelect: 'none',
+  '@hover': {
+    '&:hover': {
+      bg: '$lighten400',
     },
   },
 });

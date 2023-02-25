@@ -77,8 +77,8 @@ export function useTimetable(
   }, [participants]);
 
   const partitionsInfo = useMemo(() => {
-    if (!participants) return null;
-    if (!Array.isArray(participants)) return null;
+    if (!participants) return [];
+    if (!Array.isArray(participants)) return [];
 
     const participantsByCellArr = Object.entries(participantsByCell).sort((a, b) => {
       const [aRow, aCol] = a[0].split('-').map((v) => Number(v));
@@ -148,6 +148,27 @@ export function useTimetable(
     return splittedByParticipantsLength?.reverse();
   }, [partitionsInfo]);
 
+  const convertIndexToTime = useCallback(
+    (index: number) => {
+      if (!event) return '';
+      const { startTime } = event;
+      const hour = Math.floor((startTime + index / 2) % 24);
+      const minute = index % 2 === 0 ? '00' : '30';
+      return `${hour}:${minute}`;
+    },
+    [event]
+  );
+
+  const convertIndexToDate = useCallback(
+    (index: number) => {
+      if (!event) return '';
+      const { startDate } = event;
+      const date = dayjs(startDate).add(index, 'day');
+      return `${date.format('MM/DD')} (${'일월화수목금토'.charAt(date.get('day'))})`;
+    },
+    [event]
+  );
+
   return {
     timetable,
     getPlainTimetable,
@@ -156,5 +177,7 @@ export function useTimetable(
     partitionByRank,
     handleTimetableChange,
     paintTimetable,
+    convertIndexToTime,
+    convertIndexToDate,
   };
 }
