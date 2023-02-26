@@ -1,19 +1,19 @@
 import { ChangeEvent, useState } from 'react';
 import { Select, SelectItem } from '@/components/primitive/Select';
 
-import AnimateContainer from '@/components/AnimateContainer';
+import AnimateContainer from '@/components/page/home/AnimateContainer';
 import { Box } from '@/components/primitive/Box';
 import { Button } from '@/components/primitive/Button';
-import Calendar from '@/components/Calendar';
+import Calendar from '@/components/page/home/Calendar';
 import { CalendarIcon } from '@/components/assets/CalendarIcon';
 import { CreateEventAPI } from '@/api/events/create-event';
 import { CreateParticipantAPI } from '@/api/participants/create-participant';
 import { Flex } from '@/components/primitive/Flex';
 import { Grid } from '@/components/primitive/Grid';
 import { Input } from '@/components/primitive/Input';
-import Layout from '@/components/Layout';
+import Layout from '@/components/layout/Layout';
 import { Text } from '@/components/primitive/Text';
-import TimeSelector from '@/components/TimeSelector';
+import TimeSelector from '@/components/page/home/TimeSelector';
 import { styled } from '@/styles/stitches.config';
 import { useRouter } from 'next/router';
 
@@ -23,9 +23,7 @@ export default function Home() {
   const [title, setTitle] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [participantsNumber, setParticipantsNumber] = useState<string>();
-  const [date, setDate] = useState<
-    Date | [Date | null, Date | null] | null | undefined
-  >();
+  const [date, setDate] = useState<Date | [Date | null, Date | null] | null | undefined>();
   const [startTime, setStartTime] = useState<string>('0');
   const [endTime, setEndTime] = useState<string>('1');
 
@@ -115,8 +113,7 @@ export default function Home() {
                 placeholder="인원수를 선택해주세요"
                 onValueChange={handleParticipantsNumber}
                 value={participantsNumber}
-                variant="blurred"
-              >
+                variant="blurred">
                 <SelectItem value="2">2명</SelectItem>
                 <SelectItem value="3">3명</SelectItem>
                 <SelectItem value="4">4명</SelectItem>
@@ -134,27 +131,13 @@ export default function Home() {
           <Grid columns={2} align="start" justify="center">
             <CalendarWrapper direction="column" gap={2}>
               <Divider />
-              <Text
-                content="날짜를 입력해주세요"
-                size="lg"
-                color="gray700"
-                weight="bold"
-              />
-              <Text
-                content="최대 7일까지 선택 가능합니다"
-                size="xs"
-                color="gray400"
-              />
+              <Text content="날짜를 입력해주세요" size="lg" color="gray700" weight="bold" />
+              <Text content="최대 7일까지 선택 가능합니다" size="xs" color="gray400" />
               <Calendar date={date} setDate={setDate} />
             </CalendarWrapper>
             <TimeSelectorContainer direction="column" gap={2}>
               <Divider />
-              <Text
-                content="시간을 선택해주세요"
-                size="lg"
-                color="gray700"
-                weight="bold"
-              />
+              <Text content="시간을 선택해주세요" size="lg" color="gray700" weight="bold" />
               <TimeSelectorWrapper align="center">
                 <TimeSelector
                   handleValue={handleStartTime}
@@ -176,12 +159,7 @@ export default function Home() {
         </BottomsideInnerWrapper>
       </BottomsideWrapper>
       <ButtonWrapper justify="center">
-        <Button
-          size="2xl"
-          onClick={handleCreateEvent}
-          radius="pill"
-          color="primary"
-        >
+        <Button size="2xl" onClick={handleCreateEvent} radius="pill" color="primary">
           <Text content="약속 만들기" color="white" size="2xl" weight="bold" />
         </Button>
       </ButtonWrapper>

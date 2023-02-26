@@ -193,9 +193,15 @@ function Timetable({
                   onMouseDown={!readOnly ? handleMouseDown : undefined}
                   onMouseOver={!readOnly ? handleMouseOver : undefined}
                   css={{
-                    bgColor: col
-                      ? `rgba(88, 184, 238, ${(0.5 * col) / participantsNumber})`
-                      : 'transparent',
+                    bgColor:
+                      selectedTimetablePartition &&
+                      selectedTimetablePartition.startRow <= rowIndex &&
+                      selectedTimetablePartition.endRow >= rowIndex &&
+                      selectedTimetablePartition.col === colIndex
+                        ? '$darken200'
+                        : col
+                        ? `rgba(88, 184, 238, ${(0.5 * col) / participantsNumber})`
+                        : 'transparent',
                   }}
                 />
               </Flex>
@@ -244,7 +250,7 @@ const Cell = styled('div', {
   variants: {
     cellHeight: {
       sm: { minH: '$10' },
-      md: { minH: '$14' },
+      md: { minH: '$18' },
       lg: { minH: '$16' },
     },
 

@@ -1,7 +1,7 @@
 import { Box } from '@/components/primitive/Box';
-import Footer from '@/components/Footer';
+import Footer from '@/components/layout/Footer';
 import Head from 'next/head';
-import Header from 'src/components/Header';
+import Header from '@/components/layout/Header';
 import { ReactNode } from 'react';
 import { styled } from '@/styles/stitches.config';
 

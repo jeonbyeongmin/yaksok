@@ -117,17 +117,29 @@ export function useTimetable(
       tempParticipants.push(...participantIDs);
     });
 
+    if (tempParticipants.length > 0) {
+      partitions.push({
+        id: `${startRow}-${endRow}-${col}`,
+        col,
+        startRow,
+        endRow,
+        participantIDs: tempParticipants,
+      });
+    }
+
     return partitions;
   }, [participantsByCell, participants]);
 
-  const partitionByRank = useMemo(() => {
-    partitionsInfo?.sort((a, b) => {
+  const partitionGroups = useMemo(() => {
+    if (!partitionsInfo) return [];
+
+    partitionsInfo.sort((a, b) => {
       if (a.endRow - a.startRow > b.endRow - b.startRow) return -1;
       if (a.endRow - a.startRow < b.endRow - b.startRow) return 1;
       return 0;
     });
 
-    const splittedByParticipantsLength = partitionsInfo?.reduce<TimetablePartition[][]>(
+    const splittedByParticipantsLength = partitionsInfo.reduce<TimetablePartition[][]>(
       (acc, partition) => {
         const index = partition.participantIDs.length - 1;
         if (acc[index]) {
@@ -140,7 +152,7 @@ export function useTimetable(
       []
     );
 
-    return splittedByParticipantsLength?.reverse();
+    return splittedByParticipantsLength.reverse();
   }, [partitionsInfo]);
 
   const convertIndexToTime = useCallback(
@@ -169,7 +181,7 @@ export function useTimetable(
     getPlainTimetable,
     partitionsInfo,
     completeTimetable,
-    partitionByRank,
+    partitionGroups,
     handleTimetableChange,
     paintTimetable,
     convertIndexToTime,

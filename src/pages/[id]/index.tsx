@@ -4,10 +4,10 @@ import { Button } from '@/components/primitive/Button';
 import { CalendarIcon } from '@/components/assets/CalendarIcon';
 import { Flex } from '@/components/primitive/Flex';
 import { GetServerSideProps } from 'next';
-import Layout from '@/components/Layout';
+import Layout from '@/components/layout/Layout';
 import { Page } from '@/components/primitive/Page';
 import { Paper } from '@/components/primitive/Paper';
-import ParticipationModal from '@/components/ParticipationModal';
+import ParticipationModal from '@/components/page/event/ParticipationModal';
 import { Text } from '@/components/primitive/Text';
 import Timetable from '@/components/Timetable';
 import { logOnBrowser } from 'common/utils/log';
@@ -31,10 +31,7 @@ function Event({ eventID, participantCID }: EventProps) {
   const { participant } = useParticipantSWR({
     participantID: participantID ?? '',
   });
-  const { timetable, completeTimetable, handleTimetableChange } = useTimetable(
-    event,
-    participant
-  );
+  const { timetable, completeTimetable, handleTimetableChange } = useTimetable(event, participant);
 
   const handleParticipantIDChange = (participantID: string) => {
     setParticipantID(participantID);
@@ -84,11 +81,7 @@ function Event({ eventID, participantCID }: EventProps) {
                 <Flex gap={3} direction="column">
                   <Flex align="center" gap={2}>
                     <CalendarIcon size={36} />
-                    <Text
-                      content={event?.title ?? ''}
-                      size="2xl"
-                      weight="bold"
-                    />
+                    <Text content={event?.title ?? ''} size="2xl" weight="bold" />
                   </Flex>
                   <Flex gap={2}>
                     <Text content={participant?.name ?? ''} weight="bold" />
@@ -97,18 +90,8 @@ function Event({ eventID, participantCID }: EventProps) {
                 </Flex>
               )}
 
-              <Button
-                radius="pill"
-                size="xl"
-                color="primary"
-                onClick={handleSubmitButtonClick}
-              >
-                <Text
-                  content="제출하기"
-                  color="white"
-                  size="xl"
-                  weight="bold"
-                />
+              <Button radius="pill" size="xl" color="primary" onClick={handleSubmitButtonClick}>
+                <Text content="제출하기" color="white" size="xl" weight="bold" />
               </Button>
             </Flex>
             <Timetable

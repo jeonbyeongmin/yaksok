@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { Box } from '@/components/primitive/Box';
+import { Button } from '@/components/primitive/Button';
 import { CalendarIcon } from '@/components/assets/CalendarIcon';
 import { Flex } from '@/components/primitive/Flex';
 import { GetServerSideProps } from 'next';
 import { Grid } from '@/components/primitive/Grid';
-import Layout from '@/components/Layout';
+import Layout from '@/components/layout/Layout';
 import { Page } from '@/components/primitive/Page';
 import { Paper } from '@/components/primitive/Paper';
 import { Text } from '@/components/primitive/Text';
@@ -27,7 +28,7 @@ function EventResult({ eventID }: EventResultProps) {
   const {
     timetable,
     completeTimetable,
-    partitionByRank,
+    partitionGroups,
     handleTimetableChange,
     paintTimetable,
     convertIndexToDate,
@@ -98,6 +99,11 @@ function EventResult({ eventID }: EventResultProps) {
     <Layout>
       <Page>
         <Paper transparent>
+          <ButtonWrapper align="center" justify="end" isFull>
+            <Button size="xl" onClick={() => {}} radius="pill" color="primary">
+              <Text content="결과 공유하기" color="white" size="lg" weight="bold" />
+            </Button>
+          </ButtonWrapper>
           <Grid columns={2} gap={20} align="start">
             <Card gap={10} direction="column" align="center">
               <Flex align="center" gap={2}>
@@ -141,7 +147,7 @@ function EventResult({ eventID }: EventResultProps) {
               </Flex>
             </Card>
             <Flex direction="column" gap={10}>
-              {partitionByRank.map((numberOfParticipantsPartition, rank) => (
+              {partitionGroups.map((partitionGroup, rank) => (
                 <Card key={rank} align="start" direction="column" gap={5}>
                   <Flex gap={4} align="center" isFull>
                     <RankWrapper>
@@ -149,7 +155,11 @@ function EventResult({ eventID }: EventResultProps) {
                     </RankWrapper>
                     <UnderLineBox>
                       <Text
-                        content={`${numberOfParticipantsPartition[0].participantIDs.length}명의 참여자가 약속했어요`}
+                        content={
+                          partitionGroup[0].participantIDs.length === event?.participantsNumber
+                            ? '모든 참여자가 약속했어요'
+                            : `${partitionGroup[0].participantIDs.length}명의 참여자가 약속했어요`
+                        }
                         size="sm"
                         color="darken200"
                         weight="bold"
@@ -157,7 +167,7 @@ function EventResult({ eventID }: EventResultProps) {
                     </UnderLineBox>
                   </Flex>
                   <Flex direction="column" isFull>
-                    {numberOfParticipantsPartition.map((partition) => (
+                    {partitionGroup.map((partition) => (
                       <ListItem
                         key={partition.id}
                         gap={5}
@@ -228,6 +238,10 @@ const Badge = styled(Flex, {
       false: { bg: '$lighten300' },
     },
   },
+});
+
+const ButtonWrapper = styled(Flex, {
+  mb: '$10',
 });
 
 const ListItem = styled(Flex, {
