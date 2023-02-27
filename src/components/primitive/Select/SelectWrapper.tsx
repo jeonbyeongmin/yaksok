@@ -30,7 +30,7 @@ interface ISelect extends RootProps {
 
 const CustomContent = styled(Content, {
   overflow: 'hidden',
-  bgColor: '$white',
+  bgColor: '$panel',
   color: '$gray800',
   borderRadius: '$md',
   boxShadow: '$2',
@@ -38,7 +38,6 @@ const CustomContent = styled(Content, {
   p: '$3',
 
   [`.${darkTheme} &`]: {
-    bgColor: 'rgb(45, 52, 66)',
     color: '$white',
   },
 });
@@ -48,27 +47,16 @@ const CustomTrigger = styled(Trigger, {
   alignItems: 'center',
   justifyContent: 'space-between',
   p: '$4',
-  bgColor: '$white',
-  border: '1px solid $gray200',
+  bgColor: 'transparent',
+  border: '1px solid $line',
   outline: 'none',
   w: '$full',
-
-  [`.${darkTheme} &`]: {
-    bgColor: 'rgba(45, 52, 66, 0.5)',
-    border: '1px solid rgba(143, 143, 143, 0.5)',
-  },
 
   variants: {
     variant: {
       blurred: {
-        bgColor: 'rgba(255, 255, 255, 0.5)',
-        border: '1px solid $white',
+        bgColor: '$glass',
         boxShadow: '$1',
-
-        [`.${darkTheme} &`]: {
-          bgColor: 'rgba(27, 32, 43, 0.5)',
-          border: '1px solid rgba(143, 143, 143, 0.5)',
-        },
       },
     },
     radius: {

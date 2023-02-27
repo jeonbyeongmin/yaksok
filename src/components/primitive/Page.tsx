@@ -4,6 +4,6 @@ import { styled } from '@/styles/stitches.config';
 export const Page = styled(Flex, {
   w: '$full',
   h: '$full',
-  bg: '$linearLightBg200',
+  bg: '$linearBg200',
   justifyContent: 'center',
 });

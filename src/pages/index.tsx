@@ -1,6 +1,5 @@
-import { ChangeEvent, useState } from 'react';
-import { Select, SelectItem } from '@/components/primitive/Select';
 import { darkTheme, styled } from '@/styles/stitches.config';
+import { useMemo, useState } from 'react';
 
 import AnimateContainer from '@/components/page/home/AnimateContainer';
 import { Box } from '@/components/primitive/Box';
@@ -13,67 +12,51 @@ import { Flex } from '@/components/primitive/Flex';
 import { Grid } from '@/components/primitive/Grid';
 import { Input } from '@/components/primitive/Input';
 import Layout from '@/components/layout/Layout';
+import ParticipantNumberSelector from '@/components/page/home/ParticipantNumberSelector';
 import { Text } from '@/components/primitive/Text';
 import TimeSelector from '@/components/page/home/TimeSelector';
+import { useInputText } from '@/hooks/useInputText';
 import { useRouter } from 'next/router';
 
 export default function Home() {
   const router = useRouter();
 
-  const [title, setTitle] = useState<string>('');
-  const [name, setName] = useState<string>('');
+  const [title, handleTitleChange] = useInputText();
+  const [name, handleNameChange] = useInputText();
   const [participantsNumber, setParticipantsNumber] = useState<string>();
   const [date, setDate] = useState<Date | [Date | null, Date | null] | null | undefined>();
   const [startTime, setStartTime] = useState<string>('0');
   const [endTime, setEndTime] = useState<string>('1');
 
-  const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
-  };
-
-  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
-  };
+  const isAvailable = useMemo(() => {
+    if (title && name && participantsNumber && date && startTime && endTime) {
+      return true;
+    }
+    return false;
+  }, [date, endTime, name, participantsNumber, startTime, title]);
 
   const handleStartTime = (value: string) => {
     setStartTime(value);
-
     if (Number(value) >= Number(endTime)) {
       setEndTime(value);
     }
   };
 
-  const isAvailable = () => {
-    if (
-      title &&
-      name &&
-      participantsNumber &&
-      date &&
-      startTime &&
-      endTime &&
-      Number(startTime) <= Number(endTime)
-    ) {
-      return true;
-    }
-    return false;
-  };
-
   const handleCreateEvent = async () => {
-    if (!isAvailable()) return;
     const [startDate, endDate] = date as [Date, Date];
-
     const event = await CreateEventAPI({
       title,
       startDate,
       endDate,
-      participantsNumber: Number(participantsNumber) ?? 2,
+      participantsNumber: Number(participantsNumber),
       startTime: Number(startTime),
       endTime: Number(endTime),
     });
 
     const { _id } = event.data;
+    const { success } = await CreateParticipantAPI({ name, eventID: _id, availableIndexes: [] });
 
-    await CreateParticipantAPI({ name, eventID: _id, availableIndexes: [] });
+    if (!success) return;
 
     router.push(`/${_id}`);
   };
@@ -101,19 +84,10 @@ export default function Home() {
                 width="24rem"
                 variant="blurred"
               />
-              <Select
-                placeholder="인원수를 선택해주세요"
-                onValueChange={setParticipantsNumber}
+              <ParticipantNumberSelector
+                handleValue={setParticipantsNumber}
                 value={participantsNumber}
-                variant="blurred">
-                <SelectItem value="2">2명</SelectItem>
-                <SelectItem value="3">3명</SelectItem>
-                <SelectItem value="4">4명</SelectItem>
-                <SelectItem value="5">5명</SelectItem>
-                <SelectItem value="6">6명</SelectItem>
-                <SelectItem value="7">7명</SelectItem>
-                <SelectItem value="8">8명</SelectItem>
-              </Select>
+              />
             </Flex>
           </Flex>
         </AnimateContainer>
@@ -151,7 +125,12 @@ export default function Home() {
         </BottomsideInnerWrapper>
       </BottomsideWrapper>
       <ButtonWrapper justify="center">
-        <Button size="2xl" onClick={handleCreateEvent} radius="pill" color="primary">
+        <Button
+          size="2xl"
+          onClick={handleCreateEvent}
+          radius="pill"
+          color="primary"
+          disabled={!isAvailable}>
           <Text content="약속 만들기" color="white" size="lg" weight="bold" />
         </Button>
       </ButtonWrapper>
@@ -162,7 +141,7 @@ export default function Home() {
 const TopsideWrapper = styled(Flex, {
   pt: '$30',
   h: '$200',
-  bg: '$linearLightBg100',
+  bg: '$linearBg100',
 });
 
 const BottomsideWrapper = styled(Box, {
@@ -181,10 +160,12 @@ const SelectorWrapper = styled(Flex, {
   p: '$10',
   borderRadius: '$md',
   w: '34rem',
+  color: '$gray700',
+  bgColor: '$box',
+  border: '1px solid $line',
 
   [`.${darkTheme} &`]: {
-    bgColor: 'rgba(45, 52, 66, 0.5)',
-    border: '1px solid rgba(143, 143, 143, 0.5)',
+    color: '$gray200',
   },
 });
 

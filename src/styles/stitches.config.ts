@@ -46,12 +46,15 @@ export const { css, config, createTheme, getCssText, globalCss, reset, styled, t
         darken300: '#072C40',
         darken400: '#020C12',
 
+        // light
         panel: '#FFFFFF',
+        glass: 'rgba(255, 255, 255, 0.5)',
+        box: 'rgba(255, 255, 255, 0.5)',
+        line: '#DBDBDB',
 
-        // gradients
-        linearLightBg100:
+        linearBg100:
           'linear-gradient(93.62deg, rgba(88, 184, 238, 0.48) 4.12%, rgba(236, 211, 255, 0.8) 58.48%, rgba(227, 243, 252, 0.8) 100.53%)',
-        linearLightBg200:
+        linearBg200:
           'linear-gradient(316.01deg, rgba(88, 184, 238, 0.5) -16.21%, rgba(236, 227, 255, 0.5) 56.62%, rgba(227, 243, 252, 0) 117.77%, rgba(227, 243, 252, 0.5) 117.77%)',
         linearOvall100:
           'linear-gradient(129.33deg, rgba(84, 183, 238, 0.6) 14.58%, rgba(211, 118, 255, 0.2) 59.4%, rgba(255, 255, 255, 0.65) 103.67%)',
@@ -450,11 +453,14 @@ export type CSS = Stitches.CSS<typeof config>;
 export const darkTheme = createTheme('dark-theme', {
   colors: {
     panel: '#1B202B',
+    glass: 'rgba(27, 32, 43, 0.5)',
+    box: 'rgba(45, 52, 66, 0.5)',
+    line: 'rgba(143, 143, 143, 0.5)',
 
     // gradients
-    linearLightBg100: 'linear-gradient(94.15deg, #10415C 24.92%, #592B7D 75.72%, #1E6D9A 115.61%)',
-    linearLightBg200:
-      'linear-gradient(316.01deg, rgba(88, 184, 238, 0.5) -16.21%, rgba(236, 227, 255, 0.5) 56.62%, rgba(227, 243, 252, 0) 117.77%, rgba(227, 243, 252, 0.5) 117.77%)',
+    linearBg100: 'linear-gradient(94.15deg, #10415C 24.92%, #592B7D 75.72%, #1E6D9A 115.61%)',
+    linearBg200:
+      'linear-gradient(318.31deg, rgba(16, 65, 92, 0.8) -15.86%, rgba(89, 43, 125, 0.72) 50.25%, rgba(30, 109, 154, 0.8) 105.76%)',
     linearOvall100:
       'linear-gradient(129.33deg, rgba(134, 204, 243, 0.6) 8.64%, rgba(208, 134, 243, 0.2) 57.38%, rgba(255, 255, 255, 0.3) 103.67%)',
     linearOvall200: 'linear-gradient(124.76deg, #34639A -4.74%, rgba(159, 110, 198, 0) 100.02%)',

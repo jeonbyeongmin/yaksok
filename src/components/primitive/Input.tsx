@@ -33,14 +33,9 @@ const InputWrapper = styled(Flex, {
       },
 
       blurred: {
-        bgColor: 'rgba(255, 255, 255, 0.5)',
-        border: '1px solid $white',
+        bgColor: '$glass',
+        border: '1px solid $line',
         boxShadow: '$1',
-
-        [`.${darkTheme} &`]: {
-          bgColor: 'rgba(27, 32, 43, 0.5)',
-          border: '1px solid rgba(143, 143, 143, 0.5)',
-        },
       },
     },
     radius: {

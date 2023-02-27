@@ -65,20 +65,25 @@ const CopyRight = styled(Flex, {
 const Divider = styled(Flex, {
   w: '1px',
   h: '1rem',
-  bgColor: '$gray200',
+  bgColor: '$darken100',
   mx: '$10',
 
   [`.${darkTheme} &`]: {
-    bgColor: '1px solid $gray600',
+    bgColor: '$primary',
   },
 });
 
 const MadeBy = styled(Flex, {
   fontSize: '$xs',
   a: {
+    color: '$darken100',
     textDecoration: 'none',
     '&:hover': {
       textDecoration: 'underline',
+    },
+
+    [`.${darkTheme} &`]: {
+      color: '$primary',
     },
   },
 });

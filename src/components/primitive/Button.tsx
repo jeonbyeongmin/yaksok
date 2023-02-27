@@ -31,10 +31,7 @@ const CustomButton = styled('button', {
   cursor: 'pointer',
 
   '&:disabled': {
-    backgroundColor: '$gray300',
-    boxShadow: 'inset 0 0 0 1px $colors $slate7',
-    color: '$slate8',
-    pointerEvents: 'none',
+    cursor: 'not-allowed',
   },
 
   '@hover': {
@@ -109,9 +106,11 @@ const CustomButton = styled('button', {
       // brand
       primary: {
         bgColor: '$primary',
+        '&:disabled': { backgroundColor: '$gray200' },
 
         [`.${darkTheme} &`]: {
-          bgColor: '$darken200',
+          bgColor: '$darken100',
+          '&:disabled': { backgroundColor: '$gray700' },
         },
       },
       lighten100: { bgColor: '#86CCF3' },

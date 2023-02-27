@@ -3,7 +3,7 @@ import { styled } from '@/styles/stitches.config';
 
 export const Paper = styled(Flex, {
   w: '100%',
-  bg: 'rgba(255, 255, 255, 0.6)',
+  bg: '$glass',
   py: '$50',
 
   flexDirection: 'column',

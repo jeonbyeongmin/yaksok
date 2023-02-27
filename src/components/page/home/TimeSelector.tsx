@@ -16,20 +16,7 @@ interface TimeSelectorProps {
 }
 
 const am = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];
-const pm = [
-  '12',
-  '13',
-  '14',
-  '15',
-  '16',
-  '17',
-  '18',
-  '19',
-  '20',
-  '21',
-  '22',
-  '23',
-];
+const pm = ['12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
 
 function TimeSelector({ handleValue, value, enableTime }: TimeSelectorProps) {
   return (
@@ -43,12 +30,9 @@ function TimeSelector({ handleValue, value, enableTime }: TimeSelectorProps) {
           <SelectItem
             value={time}
             disabled={
-              enableTime
-                ? Number(time) < enableTime[0] || Number(time) > enableTime[1]
-                : false
+              enableTime ? Number(time) < enableTime[0] || Number(time) > enableTime[1] : false
             }
-            key={time}
-          >
+            key={time}>
             {time}시
           </SelectItem>
         ))}
@@ -63,12 +47,9 @@ function TimeSelector({ handleValue, value, enableTime }: TimeSelectorProps) {
           <SelectItem
             value={time}
             disabled={
-              enableTime
-                ? Number(time) < enableTime[0] || Number(time) > enableTime[1]
-                : false
+              enableTime ? Number(time) < enableTime[0] || Number(time) > enableTime[1] : false
             }
-            key={time}
-          >
+            key={time}>
             {time}시
           </SelectItem>
         ))}

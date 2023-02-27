@@ -24,7 +24,7 @@ const CustomItem = styled(Item, {
       bgColor: '$lighten400',
 
       [`.${darkTheme} &`]: {
-        bgColor: '$darken200',
+        bgColor: '#6f48eb33',
       },
     },
   },
