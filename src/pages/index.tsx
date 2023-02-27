@@ -1,5 +1,6 @@
 import { ChangeEvent, useState } from 'react';
 import { Select, SelectItem } from '@/components/primitive/Select';
+import { darkTheme, styled } from '@/styles/stitches.config';
 
 import AnimateContainer from '@/components/page/home/AnimateContainer';
 import { Box } from '@/components/primitive/Box';
@@ -14,7 +15,6 @@ import { Input } from '@/components/primitive/Input';
 import Layout from '@/components/layout/Layout';
 import { Text } from '@/components/primitive/Text';
 import TimeSelector from '@/components/page/home/TimeSelector';
-import { styled } from '@/styles/stitches.config';
 import { useRouter } from 'next/router';
 
 export default function Home() {
@@ -35,20 +35,12 @@ export default function Home() {
     setName(e.target.value);
   };
 
-  const handleParticipantsNumber = (value: string) => {
-    setParticipantsNumber(value);
-  };
-
   const handleStartTime = (value: string) => {
     setStartTime(value);
 
     if (Number(value) >= Number(endTime)) {
       setEndTime(value);
     }
-  };
-
-  const handleEndTime = (value: string) => {
-    setEndTime(value);
   };
 
   const isAvailable = () => {
@@ -111,7 +103,7 @@ export default function Home() {
               />
               <Select
                 placeholder="인원수를 선택해주세요"
-                onValueChange={handleParticipantsNumber}
+                onValueChange={setParticipantsNumber}
                 value={participantsNumber}
                 variant="blurred">
                 <SelectItem value="2">2명</SelectItem>
@@ -129,15 +121,15 @@ export default function Home() {
       <BottomsideWrapper>
         <BottomsideInnerWrapper>
           <Grid columns={2} align="start" justify="center">
-            <CalendarWrapper direction="column" gap={2}>
+            <SelectorWrapper direction="column" gap={2}>
               <Divider />
-              <Text content="날짜를 입력해주세요" size="lg" color="gray700" weight="bold" />
+              <Text content="날짜를 입력해주세요" size="lg" weight="bold" />
               <Text content="최대 7일까지 선택 가능합니다" size="xs" color="gray400" />
               <Calendar date={date} setDate={setDate} />
-            </CalendarWrapper>
-            <TimeSelectorContainer direction="column" gap={2}>
+            </SelectorWrapper>
+            <SelectorWrapper direction="column" gap={2}>
               <Divider />
-              <Text content="시간을 선택해주세요" size="lg" color="gray700" weight="bold" />
+              <Text content="시간을 선택해주세요" size="lg" weight="bold" />
               <TimeSelectorWrapper align="center">
                 <TimeSelector
                   handleValue={handleStartTime}
@@ -148,19 +140,19 @@ export default function Home() {
               </TimeSelectorWrapper>
               <TimeSelectorWrapper align="center">
                 <TimeSelector
-                  handleValue={handleEndTime}
+                  handleValue={setEndTime}
                   value={endTime}
                   enableTime={[Number(startTime), 23]}
                 />
                 <Text content="까지" weight="bold" color="gray500" />
               </TimeSelectorWrapper>
-            </TimeSelectorContainer>
+            </SelectorWrapper>
           </Grid>
         </BottomsideInnerWrapper>
       </BottomsideWrapper>
       <ButtonWrapper justify="center">
         <Button size="2xl" onClick={handleCreateEvent} radius="pill" color="primary">
-          <Text content="약속 만들기" color="white" size="2xl" weight="bold" />
+          <Text content="약속 만들기" color="white" size="lg" weight="bold" />
         </Button>
       </ButtonWrapper>
     </Layout>
@@ -176,7 +168,7 @@ const TopsideWrapper = styled(Flex, {
 const BottomsideWrapper = styled(Box, {
   w: '100%',
   py: '$20',
-  bgColor: '$white',
+  bg: '$panel',
 });
 
 const BottomsideInnerWrapper = styled(Box, {
@@ -184,17 +176,16 @@ const BottomsideInnerWrapper = styled(Box, {
   m: '0 auto',
 });
 
-const CalendarWrapper = styled(Flex, {
-  boxShadow: '$1',
-  p: '$10',
-  borderRadius: '$md',
-});
-
-const TimeSelectorContainer = styled(Flex, {
+const SelectorWrapper = styled(Flex, {
   boxShadow: '$1',
   p: '$10',
   borderRadius: '$md',
   w: '34rem',
+
+  [`.${darkTheme} &`]: {
+    bgColor: 'rgba(45, 52, 66, 0.5)',
+    border: '1px solid rgba(143, 143, 143, 0.5)',
+  },
 });
 
 const TimeSelectorWrapper = styled(Flex, {
@@ -213,4 +204,8 @@ const Divider = styled(Box, {
   h: '1px',
   bg: '$gray200',
   my: '$4',
+
+  [`.${darkTheme} &`]: {
+    bgColor: '$gray600',
+  },
 });

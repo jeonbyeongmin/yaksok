@@ -34,11 +34,13 @@ const Container = styled(Box, {
   w: '$full',
   h: '$full',
   position: 'relative',
+  overflowX: 'hidden',
 });
 
 const Content = styled('main', {
   w: '$full',
   flexGrow: 1,
+  background: '$panel',
 });
 
 export default Layout;

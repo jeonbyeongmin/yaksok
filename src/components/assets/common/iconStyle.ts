@@ -1,24 +1,30 @@
-import { styled } from '@/styles/stitches.config';
+import { darkTheme, styled } from '@/styles/stitches.config';
 
 export const Path = styled('path', {
+  fill: '$darken200',
+
+  [`.${darkTheme} &`]: {
+    fill: '$white',
+  },
+
   variants: {
     color: {
       transparent: { fill: 'transparent' },
 
-      white: { fill: '#FFFFFF' },
-      gray100: { fill: '#F5F5F5' },
-      gray200: { fill: '#DBDBDB' },
-      gray300: { fill: '#A8A8A8' },
-      gray400: { fill: '#8F8F8F' },
-      gray500: { fill: '#757575' },
-      gray600: { fill: '#5C5C5C' },
-      gray700: { fill: '#424242' },
-      gray800: { fill: '#292929' },
-      black: { fill: '#000000' },
+      white: { fill: '$white' },
+      gray100: { fill: '$gray100' },
+      gray200: { fill: '$gray200' },
+      gray300: { fill: '$gray300' },
+      gray400: { fill: '$gray400' },
+      gray500: { fill: '$gray500' },
+      gray600: { fill: '$gray600' },
+      gray700: { fill: '$gray700' },
+      gray800: { fill: '$gray800' },
+      black: { fill: '$black' },
 
-      primary: { fill: '58B8EE' },
+      primary: { fill: '$primary' },
 
-      lighten100: { fill: '#86CCF3' },
+      lighten100: { fill: '#D9F0FF' },
       lighten200: { fill: '#B5DFF7' },
       lighten300: { fill: '#E3F3FC' },
 

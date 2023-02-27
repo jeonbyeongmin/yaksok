@@ -11,7 +11,7 @@ import {
   Value,
   Viewport,
 } from '@radix-ui/react-select';
-import { VariantProps, styled } from '@/styles/stitches.config';
+import { VariantProps, darkTheme, styled } from '@/styles/stitches.config';
 
 type RootProps = ComponentProps<typeof Root>;
 
@@ -31,10 +31,16 @@ interface ISelect extends RootProps {
 const CustomContent = styled(Content, {
   overflow: 'hidden',
   bgColor: '$white',
+  color: '$gray800',
   borderRadius: '$md',
   boxShadow: '$2',
   fs: '$md',
   p: '$3',
+
+  [`.${darkTheme} &`]: {
+    bgColor: 'rgb(45, 52, 66)',
+    color: '$white',
+  },
 });
 
 const CustomTrigger = styled(Trigger, {
@@ -47,12 +53,22 @@ const CustomTrigger = styled(Trigger, {
   outline: 'none',
   w: '$full',
 
+  [`.${darkTheme} &`]: {
+    bgColor: 'rgba(45, 52, 66, 0.5)',
+    border: '1px solid rgba(143, 143, 143, 0.5)',
+  },
+
   variants: {
     variant: {
       blurred: {
         bgColor: 'rgba(255, 255, 255, 0.5)',
         border: '1px solid $white',
         boxShadow: '$1',
+
+        [`.${darkTheme} &`]: {
+          bgColor: 'rgba(27, 32, 43, 0.5)',
+          border: '1px solid rgba(143, 143, 143, 0.5)',
+        },
       },
     },
     radius: {
@@ -109,22 +125,11 @@ const CustomScrollUpButton = styled(ScrollUpButton, {
   outline: 'none',
 });
 
-export const SelectWrapper = forwardRef<
-  ElementRef<typeof CustomTrigger>,
-  ISelect
->(
-  (
-    { children, variant, radius, scale, placeholder, ...props },
-    forwardedRef
-  ) => {
+export const SelectWrapper = forwardRef<ElementRef<typeof CustomTrigger>, ISelect>(
+  ({ children, variant, radius, scale, placeholder, ...props }, forwardedRef) => {
     return (
       <Root {...props}>
-        <CustomTrigger
-          variant={variant}
-          radius={radius}
-          scale={scale}
-          ref={forwardedRef}
-        >
+        <CustomTrigger variant={variant} radius={radius} scale={scale} ref={forwardedRef}>
           <Value placeholder={placeholder} />
           <Icon>
             <ChevronDownIcon />

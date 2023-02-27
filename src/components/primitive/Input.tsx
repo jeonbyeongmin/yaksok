@@ -1,5 +1,5 @@
 import { ComponentProps, ElementRef, ReactNode, forwardRef } from 'react';
-import { VariantProps, styled } from '@/styles/stitches.config';
+import { VariantProps, darkTheme, styled } from '@/styles/stitches.config';
 
 import { Flex } from '@/components/primitive/Flex';
 
@@ -36,6 +36,11 @@ const InputWrapper = styled(Flex, {
         bgColor: 'rgba(255, 255, 255, 0.5)',
         border: '1px solid $white',
         boxShadow: '$1',
+
+        [`.${darkTheme} &`]: {
+          bgColor: 'rgba(27, 32, 43, 0.5)',
+          border: '1px solid rgba(143, 143, 143, 0.5)',
+        },
       },
     },
     radius: {
@@ -80,6 +85,10 @@ const CustomInput = styled('input', {
   color: '$black',
   border: 0,
 
+  [`.${darkTheme} &`]: {
+    color: '$white',
+  },
+
   variants: {
     scale: {
       sm: {
@@ -101,10 +110,7 @@ const CustomInput = styled('input', {
 
 // component
 const Input = forwardRef<ElementRef<typeof CustomInput>, IInput>(
-  (
-    { variant, width, radius, scale, leftElement, rightElement, ...props },
-    forwardedRef
-  ) => {
+  ({ variant, width, radius, scale, leftElement, rightElement, ...props }, forwardedRef) => {
     return (
       <InputWrapper
         variant={variant}
@@ -112,8 +118,7 @@ const Input = forwardRef<ElementRef<typeof CustomInput>, IInput>(
         radius={radius}
         css={{
           width,
-        }}
-      >
+        }}>
         {leftElement}
         <CustomInput ref={forwardedRef} scale={scale} {...props} />
         {rightElement}

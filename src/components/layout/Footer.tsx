@@ -1,7 +1,8 @@
+import { darkTheme, styled } from '@/styles/stitches.config';
+
 import { Flex } from '@/components/primitive/Flex';
 import { Logo } from '@/components/assets/Logo';
 import { Text } from '@/components/primitive/Text';
-import { styled } from '@/styles/stitches.config';
 
 function Footer() {
   return (
@@ -11,10 +12,7 @@ function Footer() {
         <Divider />
         <CopyRight>
           <Text content="&copy;" size="xs" />
-          <Text
-            content={`${new Date().getFullYear()} YAKSOK Inc. All right reserved.`}
-            size="xs"
-          />
+          <Text content={`${new Date().getFullYear()} YAKSOK Inc. All right reserved.`} size="xs" />
         </CopyRight>
         <Divider />
         <MadeBy direction="column" gap={2}>
@@ -44,17 +42,24 @@ const FooterWrapper = styled('footer', {
   px: '$10',
   py: '$3',
   userSelect: 'none',
-  bgColor: '$white',
+  background: '$panel',
   borderTop: '1px solid $gray200',
+
+  [`.${darkTheme} &`]: {
+    borderTop: '1px solid $gray600',
+  },
 });
 
 const FooterInner = styled(Flex, {
-  // minW: '$500',
+  color: '$darken100',
+
+  [`.${darkTheme} &`]: {
+    color: '$primary',
+  },
 });
 
 const CopyRight = styled(Flex, {
   fontSize: '$xs',
-  color: '$darken100',
 });
 
 const Divider = styled(Flex, {
@@ -62,13 +67,15 @@ const Divider = styled(Flex, {
   h: '1rem',
   bgColor: '$gray200',
   mx: '$10',
+
+  [`.${darkTheme} &`]: {
+    bgColor: '1px solid $gray600',
+  },
 });
 
 const MadeBy = styled(Flex, {
   fontSize: '$xs',
-  color: '$darken100',
   a: {
-    color: '$darken200',
     textDecoration: 'none',
     '&:hover': {
       textDecoration: 'underline',

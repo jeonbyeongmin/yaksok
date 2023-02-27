@@ -1,4 +1,4 @@
-import { CSS, styled } from '@/styles/stitches.config';
+import { CSS, darkTheme, styled } from '@/styles/stitches.config';
 import { ComponentProps, ElementRef, ReactNode, forwardRef } from 'react';
 
 type ButtonVariants = ComponentProps<typeof CustomButton>;
@@ -107,7 +107,13 @@ const CustomButton = styled('button', {
       black: { bgColor: '#000000' },
 
       // brand
-      primary: { bgColor: '#58B8EE' },
+      primary: {
+        bgColor: '$primary',
+
+        [`.${darkTheme} &`]: {
+          bgColor: '$darken200',
+        },
+      },
       lighten100: { bgColor: '#86CCF3' },
       lighten200: { bgColor: '#B5DFF7' },
       lighten300: { bgColor: '#E3F3FC' },

@@ -35,6 +35,7 @@ function EventResult({ eventID }: EventResultProps) {
     convertIndexToTime,
   } = useTimetable(event, participants);
 
+  const [isToastOpen, setIsToastOpen] = useState<boolean>(false);
   const [selectedParticipant, setSelectedParticipant] = useState<string[]>([]);
   const [selectedTimetablePartition, setSelectedTimetablePartition] =
     useState<TimetablePartition>();
@@ -87,6 +88,15 @@ function EventResult({ eventID }: EventResultProps) {
     [selectedTimetablePartition]
   );
 
+  const handleCopyClipBoard = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setIsToastOpen(true);
+    } catch (error) {
+      alert('클립보드 복사에 실패하였습니다.');
+    }
+  };
+
   useEffect(() => {
     setSelectedParticipant(participants?.map((participant) => participant._id) ?? []);
   }, [participants]);
@@ -100,7 +110,7 @@ function EventResult({ eventID }: EventResultProps) {
       <Page>
         <Paper transparent>
           <ButtonWrapper align="center" justify="end" isFull>
-            <Button size="xl" onClick={() => {}} radius="pill" color="primary">
+            <Button size="xl" onClick={handleCopyClipBoard} radius="pill" color="primary">
               <Text content="결과 공유하기" color="white" size="lg" weight="bold" />
             </Button>
           </ButtonWrapper>

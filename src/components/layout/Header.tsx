@@ -1,7 +1,8 @@
+import { darkTheme, styled } from '@/styles/stitches.config';
+
 import { Flex } from '@/components/primitive/Flex';
 import Link from 'next/link';
 import { Logo } from '@/components/assets/Logo';
-import { styled } from '@/styles/stitches.config';
 
 function Header() {
   return (
@@ -26,6 +27,10 @@ const HeaderWrapper = styled('header', {
   bgColor: 'rgba(255, 255, 255, 0.4)',
   backdropFilter: 'blur(5px)',
   position: 'fixed',
+
+  [`.${darkTheme} &`]: {
+    backgroundColor: 'rgba(27, 32, 43, 0.5);',
+  },
 });
 
 const HeaderInner = styled(Flex, {

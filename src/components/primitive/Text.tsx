@@ -99,7 +99,6 @@ const CustomText = styled('span', {
   defaultVariants: {
     size: 'md',
     weight: 'regular',
-    color: 'black',
   },
 });
 
