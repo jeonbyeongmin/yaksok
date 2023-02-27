@@ -1,3 +1,4 @@
+import { darkTheme, styled } from '@/styles/stitches.config';
 import { useCallback, useEffect, useState } from 'react';
 
 import { Box } from '@/components/primitive/Box';
@@ -12,9 +13,9 @@ import { Paper } from '@/components/primitive/Paper';
 import { Text } from '@/components/primitive/Text';
 import Timetable from '@/components/Timetable';
 import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
-import { styled } from '@/styles/stitches.config';
 import { useEventSWR } from '@/hooks/useEventSWR';
 import { useParticipantsSWR } from '@/hooks/useParticipantsSWR';
+import { useTheme } from 'next-themes';
 import { useTimetable } from '@/hooks/useTimetable';
 
 interface EventResultProps {
@@ -22,6 +23,7 @@ interface EventResultProps {
 }
 
 function EventResult({ eventID }: EventResultProps) {
+  const { resolvedTheme } = useTheme();
   const { event } = useEventSWR({ eventID });
   const { participants } = useParticipantsSWR({ eventID });
 
@@ -116,9 +118,14 @@ function EventResult({ eventID }: EventResultProps) {
           </ButtonWrapper>
           <Grid columns={2} gap={20} align="start">
             <Card gap={10} direction="column" align="center">
-              <Flex align="center" gap={2}>
+              <Flex align="center" gap={3}>
                 <CalendarIcon size={28} />
-                <Text content={event?.title ?? ''} size="lg" weight="bold" />
+                <Text
+                  content={event?.title ?? ''}
+                  size="lg"
+                  weight="bold"
+                  color={resolvedTheme === 'dark' ? 'white' : 'black'}
+                />
               </Flex>
               <Flex isFull direction="column" align="end" gap={5}>
                 <Text
@@ -171,7 +178,7 @@ function EventResult({ eventID }: EventResultProps) {
                             : `${partitionGroup[0].participantIDs.length}명의 참여자가 약속했어요`
                         }
                         size="sm"
-                        color="darken200"
+                        color={resolvedTheme === 'dark' ? 'white' : 'darken200'}
                         weight="bold"
                       />
                     </UnderLineBox>
@@ -192,7 +199,7 @@ function EventResult({ eventID }: EventResultProps) {
                           content={`${convertIndexToTime(
                             partition.startRow
                           )} 부터 ${convertIndexToTime(partition.endRow + 1)} 까지`}
-                          color="darken200"
+                          color={resolvedTheme === 'dark' ? 'white' : 'black'}
                         />
                       </ListItem>
                     ))}
@@ -210,7 +217,7 @@ function EventResult({ eventID }: EventResultProps) {
 const Card = styled(Flex, {
   w: '$full',
   boxShadow: '$1',
-  bg: 'rgba(255, 255, 255, 0.6)',
+  bg: '$glass',
   p: '$15',
   borderRadius: '$lg',
 });
@@ -223,6 +230,8 @@ const RankWrapper = styled(Flex, {
   bgColor: '$primary',
   borderRadius: '$round',
   flexShrink: 0,
+
+  [`.${darkTheme} &`]: { bg: '$darken100' },
 });
 
 const UnderLineBox = styled(Box, {
@@ -230,6 +239,8 @@ const UnderLineBox = styled(Box, {
   borderBottom: '1px solid $primary',
   py: '$3',
   px: '$4',
+
+  [`.${darkTheme} &`]: { borderColor: '$white' },
 });
 
 const Badge = styled(Flex, {
@@ -263,13 +274,14 @@ const ListItem = styled(Flex, {
   userSelect: 'none',
   '@hover': {
     '&:hover': {
-      bg: '$lighten400',
+      bg: '$lighten300',
+      [`.${darkTheme} &`]: { bg: '$darken200' },
     },
   },
 
   variants: {
     selected: {
-      true: { bg: '$lighten400' },
+      true: { bg: '$lighten300', [`.${darkTheme} &`]: { bg: '$darken200' } },
       false: { bg: 'transparent' },
     },
   },

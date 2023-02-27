@@ -1,4 +1,4 @@
-import { VariantProps, styled } from '@/styles/stitches.config';
+import { VariantProps, darkTheme, styled } from '@/styles/stitches.config';
 import { useCallback, useMemo, useRef } from 'react';
 
 import { Flex } from '@/components/primitive/Flex';
@@ -6,6 +6,7 @@ import { Text } from '@/components/primitive/Text';
 import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
 import dayjs from 'dayjs';
 import { deepCopy2DArray } from 'common/utils/copy';
+import { useTheme } from 'next-themes';
 
 type CellType = VariantProps<typeof Cell>;
 
@@ -34,6 +35,8 @@ function Timetable({
   selectedTimetablePartition,
   handleTimetableChange,
 }: TimetableProps) {
+  const { resolvedTheme } = useTheme();
+
   const startRow = useRef<number>(0);
   const startCol = useRef<number>(0);
   const selectMode = useRef<number>(0);
@@ -58,38 +61,6 @@ function Timetable({
     }
     return times;
   }, [endTime, startTime]);
-
-  const timetablePallet = useCallback(
-    (row: number, column: number) => {
-      let borderTop: CellType['borderTop'] = row === 0 ? 'solidGray' : 'none';
-      let borderLeft: CellType['borderLeft'] = column === 0 ? 'solidGray' : 'none';
-      let borderRight: CellType['borderRight'] = 'solidGray';
-      let borderBottom: CellType['borderBottom'] = row % 2 !== 0 ? 'solidGray' : 'dashedGray';
-
-      if (!selectedTimetablePartition) return { borderTop, borderLeft, borderRight, borderBottom };
-
-      if (
-        selectedTimetablePartition.startRow === row &&
-        selectedTimetablePartition.col === column
-      ) {
-        borderTop = 'solidDarken';
-      }
-      if (selectedTimetablePartition.endRow === row && selectedTimetablePartition.col === column) {
-        borderBottom = 'solidDarken';
-      }
-      if (
-        selectedTimetablePartition.startRow <= row &&
-        selectedTimetablePartition.endRow >= row &&
-        selectedTimetablePartition.col === column
-      ) {
-        borderLeft = 'solidDarken';
-        borderRight = 'solidDarken';
-      }
-
-      return { borderTop, borderLeft, borderRight, borderBottom };
-    },
-    [selectedTimetablePartition]
-  );
 
   const handleMouseDown = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -149,6 +120,30 @@ function Timetable({
     [handleTimetableChange, timetable]
   );
 
+  const getTimetableBorders = useCallback((row: number, column: number) => {
+    const borderTop: CellType['borderTop'] = row === 0 ? 'solidGray' : 'none';
+    const borderLeft: CellType['borderLeft'] = column === 0 ? 'solidGray' : 'none';
+    const borderRight: CellType['borderRight'] = 'solidGray';
+    const borderBottom: CellType['borderBottom'] = row % 2 !== 0 ? 'solidGray' : 'dashedGray';
+    return { borderTop, borderLeft, borderRight, borderBottom };
+  }, []);
+
+  const getTimetableBackground = useCallback(
+    (row: number, column: number, value: number) => {
+      if (
+        selectedTimetablePartition &&
+        selectedTimetablePartition.startRow <= row &&
+        selectedTimetablePartition.endRow >= row &&
+        selectedTimetablePartition.col === column
+      ) {
+        return resolvedTheme === 'dark' ? '$lighten200' : '$darken200';
+      }
+
+      return value ? `rgba(88, 184, 238, ${(0.8 * value) / participantsNumber})` : '$panel';
+    },
+    [participantsNumber, resolvedTheme, selectedTimetablePartition]
+  );
+
   return (
     <TimetableWrapper direction="column" isFull>
       {!isSimple ? (
@@ -186,22 +181,14 @@ function Timetable({
                   cellHeight={cellHeight}
                   data-row={rowIndex}
                   data-col={colIndex}
-                  borderTop={timetablePallet(rowIndex, colIndex).borderTop}
-                  borderLeft={timetablePallet(rowIndex, colIndex).borderLeft}
-                  borderRight={timetablePallet(rowIndex, colIndex).borderRight}
-                  borderBottom={timetablePallet(rowIndex, colIndex).borderBottom}
+                  borderTop={getTimetableBorders(rowIndex, colIndex).borderTop}
+                  borderLeft={getTimetableBorders(rowIndex, colIndex).borderLeft}
+                  borderRight={getTimetableBorders(rowIndex, colIndex).borderRight}
+                  borderBottom={getTimetableBorders(rowIndex, colIndex).borderBottom}
                   onMouseDown={!readOnly ? handleMouseDown : undefined}
                   onMouseOver={!readOnly ? handleMouseOver : undefined}
                   css={{
-                    bgColor:
-                      selectedTimetablePartition &&
-                      selectedTimetablePartition.startRow <= rowIndex &&
-                      selectedTimetablePartition.endRow >= rowIndex &&
-                      selectedTimetablePartition.col === colIndex
-                        ? '$darken200'
-                        : col
-                        ? `rgba(88, 184, 238, ${(0.5 * col) / participantsNumber})`
-                        : 'transparent',
+                    bgColor: getTimetableBackground(rowIndex, colIndex, col),
                   }}
                 />
               </Flex>
@@ -255,24 +242,35 @@ const Cell = styled('div', {
     },
 
     borderTop: {
-      solidGray: { borderTop: '1px solid $gray200' },
-      solidDarken: { borderTop: '2px solid $darken200' },
+      solidGray: {
+        borderTop: '1px solid $gray200',
+        [`.${darkTheme} &`]: { borderTop: '1px solid $gray400' },
+      },
       none: { borderTop: '0px' },
     },
     borderLeft: {
-      solidGray: { borderLeft: '1px solid $gray200' },
-      solidDarken: { borderLeft: '2px solid $darken200' },
+      solidGray: {
+        borderLeft: '1px solid $gray200',
+        [`.${darkTheme} &`]: { borderLeft: '1px solid $gray400' },
+      },
       none: { borderLeft: '0px' },
     },
     borderRight: {
-      solidGray: { borderRight: '1px solid $gray200' },
-      solidDarken: { borderRight: '2px solid $darken200' },
+      solidGray: {
+        borderRight: '1px solid $gray200',
+        [`.${darkTheme} &`]: { borderRight: '1px solid $gray400' },
+      },
       none: { borderRight: '0px' },
     },
     borderBottom: {
-      solidGray: { borderBottom: '1px solid $gray200' },
-      solidDarken: { borderBottom: '2px solid $darken200' },
-      dashedGray: { borderBottom: '1px dashed $gray200' },
+      solidGray: {
+        borderBottom: '1px solid $gray200',
+        [`.${darkTheme} &`]: { borderBottom: '1px solid $gray400' },
+      },
+      dashedGray: {
+        borderBottom: '1px dashed $gray200',
+        [`.${darkTheme} &`]: { borderBottom: '1px dashed $gray400' },
+      },
     },
   },
   defaultVariants: {

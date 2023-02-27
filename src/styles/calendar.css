@@ -38,6 +38,21 @@
 
 /*****/
 
+.react-calendar__tile {
+  color: #000;
+}
+.dark-theme .react-calendar__tile {
+  color: #fff;
+}
+
+.react-calendar__month-view__days__day--weekend {
+  color: #eb4d3d;
+}
+
+.dark-theme .react-calendar__month-view__days__day--weekend {
+  color: #eb4d3d;
+}
+
 .react-calendar__tile:enabled:hover,
 .react-calendar__tile:enabled:focus {
   background: #f2f9fe;

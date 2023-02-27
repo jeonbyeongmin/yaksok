@@ -7,7 +7,7 @@ export const Paper = styled(Flex, {
   py: '$50',
 
   flexDirection: 'column',
-  maxW: '$container',
+  maxW: '$inner',
   alignItems: 'center',
 
   variants: {

@@ -228,7 +228,9 @@ export const { css, config, createTheme, getCssText, globalCss, reset, styled, t
         500: '100rem',
 
         // Semantic sizes
-        container: '100rem',
+        inner: '100rem',
+        container: '192rem',
+
         full: '100%',
         max: 'max-content',
         min: 'min-content',
@@ -452,9 +454,9 @@ export type CSS = Stitches.CSS<typeof config>;
 
 export const darkTheme = createTheme('dark-theme', {
   colors: {
-    panel: '#1B202B',
-    glass: 'rgba(27, 32, 43, 0.5)',
-    box: 'rgba(45, 52, 66, 0.5)',
+    panel: '#1E1F21',
+    glass: 'rgba(30, 31, 33, 0.5)',
+    box: 'rgba(41, 42, 45, 0.5)',
     line: 'rgba(143, 143, 143, 0.5)',
 
     // gradients

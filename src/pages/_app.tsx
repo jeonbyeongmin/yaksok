@@ -8,7 +8,6 @@ import { Noto_Sans } from '@next/font/google';
 import { SWRConfig } from 'swr';
 import { ThemeProvider } from 'next-themes';
 import { darkTheme } from '@/styles/stitches.config';
-import { useMemo } from 'react';
 
 const notoSans = Noto_Sans({
   weight: ['300', '400', '700'],
@@ -27,10 +26,10 @@ export default function App({ Component, pageProps }: AppProps) {
             return fetch(resource, init).then((res) => res.json());
           },
         }}>
-        {' '}
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
+          enableColorScheme={false}
           value={{
             light: 'light',
             dark: darkTheme.className,

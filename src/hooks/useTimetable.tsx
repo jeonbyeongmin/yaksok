@@ -26,23 +26,23 @@ export function useTimetable(
 
   const paintTimetable = useCallback(
     (participants: Participant | Participant[]) => {
-      const timeTable = getPlainTimetable();
+      const newTimeTable = getPlainTimetable();
 
       if (!Array.isArray(participants)) {
         participants.availableIndexes.forEach((index) => {
           const [rowIndex, colIndex] = index.split('-').map((v) => Number(v));
-          timeTable[rowIndex][colIndex] += 1;
+          newTimeTable[rowIndex][colIndex] += 1;
         });
-        return timeTable;
+        return newTimeTable;
       }
 
       participants.forEach((participant) => {
         participant.availableIndexes.forEach((index) => {
           const [rowIndex, colIndex] = index.split('-').map((v) => Number(v));
-          timeTable[rowIndex][colIndex] += 1;
+          newTimeTable[rowIndex][colIndex] += 1;
         });
       });
-      return timeTable;
+      return newTimeTable;
     },
     [getPlainTimetable]
   );

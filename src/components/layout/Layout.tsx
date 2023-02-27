@@ -40,7 +40,6 @@ const Container = styled(Box, {
 const Content = styled('main', {
   w: '$full',
   flexGrow: 1,
-  background: '$panel',
 });
 
 export default Layout;

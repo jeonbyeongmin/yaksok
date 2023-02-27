@@ -1,3 +1,4 @@
+import { darkTheme, styled } from '@/styles/stitches.config';
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/primitive/Button';
@@ -12,7 +13,6 @@ import { Text } from '@/components/primitive/Text';
 import Timetable from '@/components/Timetable';
 import { logOnBrowser } from 'common/utils/log';
 import nookies from 'nookies';
-import { styled } from '@/styles/stitches.config';
 import { updateParticipant } from '@/api/participants/update-participant';
 import { useEventSWR } from '@/hooks/useEventSWR';
 import { useParticipantSWR } from '@/hooks/useParticipantSWR';
@@ -89,10 +89,6 @@ function Event({ eventID, participantCID }: EventProps) {
                   </Flex>
                 </Flex>
               )}
-
-              <Button radius="pill" size="xl" color="primary" onClick={handleSubmitButtonClick}>
-                <Text content="제출하기" color="white" size="xl" weight="bold" />
-              </Button>
             </Flex>
             <Timetable
               startDate={event?.startDate ?? new Date()}
@@ -102,6 +98,12 @@ function Event({ eventID, participantCID }: EventProps) {
               timetable={timetable}
               handleTimetableChange={handleTimetableChange}
             />
+
+            <ButtonWrapper justify="center" isFull>
+              <Button radius="pill" size="2xl" color="primary" onClick={handleSubmitButtonClick}>
+                <Text content="제출하기" color="white" size="2xl" weight="bold" />
+              </Button>
+            </ButtonWrapper>
           </Inner>
         </Paper>
       </Page>
@@ -135,6 +137,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 const Inner = styled(Flex, {
   minW: '$400',
+
+  [`.${darkTheme} &`]: {
+    color: '$white',
+  },
+});
+
+const ButtonWrapper = styled(Flex, {
+  py: '$20',
 });
 
 export default Event;

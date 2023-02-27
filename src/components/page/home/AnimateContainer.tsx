@@ -1,5 +1,5 @@
+import { Box } from '@/components/primitive/Box';
 import { Flex } from '@/components/primitive/Flex';
-import { motion } from 'framer-motion';
 import { styled } from '@/styles/stitches.config';
 
 interface AnimateContainerProps {
@@ -8,95 +8,89 @@ interface AnimateContainerProps {
 
 function AnimateContainer({ children }: AnimateContainerProps) {
   return (
-    <Container align="center" justify="center">
-      {children}
-      <Ball3
-        animate={{ x: [-700, -600, -700], y: [-150, 0, -150] }}
-        transition={{ ease: 'linear', duration: 500, repeat: Infinity }}
-      />
-      <Ball2
-        animate={{ x: [-500, -200, -500], y: [-100, 400, -100] }}
-        transition={{ ease: 'linear', duration: 500, repeat: Infinity }}
-      />
-      <Ball
-        animate={{ x: [-50, 100, -50], y: [-400, 100, -400] }}
-        transition={{ ease: 'linear', duration: 600, repeat: Infinity }}
-      />
-      <Ball4
-        animate={{ x: [-700, 100, -700], y: [150, -300, 150] }}
-        transition={{ ease: 'linear', duration: 300, repeat: Infinity }}
-      />
-      <Ball5
-        animate={{ x: [0, -800, 0], y: [0, 100, 0] }}
-        transition={{ ease: 'linear', duration: 300, repeat: Infinity }}
-      />
-      <Ball6
-        animate={{ x: [400, 800, 400], y: [-100, 200, -100] }}
-        transition={{ ease: 'linear', duration: 300, repeat: Infinity }}
-      />
+    <Container justify="center">
+      <UnderLayer />
+      <Wrapper>
+        <Ball variant={3} />
+        <Ball variant={2} />
+        <Ball variant={1} />
+        <Ball variant={4} />
+        <Ball variant={5} />
+        <Ball variant={6} />
+        {children}
+      </Wrapper>
     </Container>
   );
 }
 
 const Container = styled(Flex, {
   w: '$full',
+  h: '$200',
+});
+
+const Wrapper = styled(Flex, {
+  w: '$container',
   h: '$full',
-  overflow: 'hidden',
 });
 
-const Ball = styled(motion.div, {
-  width: '80rem',
-  height: '80rem',
-  borderRadius: '$round',
-  bg: '$linearOvall300',
-  position: 'absolute',
-  zIndex: -1,
-  filter: 'blur(25px)',
-  transform: 'rotate(-4.19deg)',
-});
-
-const Ball2 = styled(motion.div, {
-  width: '40rem',
-  height: '40rem',
-  borderRadius: '$round',
-  bg: '$linearOvall200',
-  position: 'absolute',
-  zIndex: -1,
-  filter: 'blur(25px)',
-});
-const Ball3 = styled(motion.div, {
-  width: '40rem',
-  height: '40rem',
-  borderRadius: '$round',
-  bg: '$linearOvall100',
-  position: 'absolute',
-  zIndex: -1,
-  filter: 'blur(25px)',
-});
-const Ball4 = styled(motion.div, {
-  width: '7rem',
-  height: '7rem',
-  borderRadius: '$round',
-  bg: '$linearOvall400',
+const UnderLayer = styled(Box, {
+  w: '$full',
+  h: '$200',
+  bg: '$linearBg100',
   position: 'absolute',
   zIndex: -1,
 });
 
-const Ball5 = styled(motion.div, {
-  width: '4rem',
-  height: '4rem',
+const Ball = styled(Box, {
   borderRadius: '$round',
-  bg: '$linearOvall500',
   position: 'absolute',
   zIndex: -1,
-});
-const Ball6 = styled(motion.div, {
-  width: '10rem',
-  height: '10rem',
-  borderRadius: '$round',
-  bg: '$linearOvall600',
-  position: 'absolute',
-  zIndex: -1,
+
+  variants: {
+    variant: {
+      1: {
+        width: '80rem',
+        height: '80rem',
+        bg: '$linearOvall300',
+        transform: 'rotate(-4.19deg)',
+        filter: 'blur(25px)',
+        position: 'absolute',
+        top: '-50rem',
+        // left: '50rem',
+      },
+      2: {
+        width: '40rem',
+        height: '40rem',
+        bg: '$linearOvall200',
+        position: 'absolute',
+        filter: 'blur(25px)',
+      },
+      3: {
+        width: '40rem',
+        height: '40rem',
+        bg: '$linearOvall100',
+        position: 'absolute',
+        filter: 'blur(25px)',
+      },
+      4: {
+        width: '7rem',
+        height: '7rem',
+        bg: '$linearOvall400',
+        position: 'absolute',
+      },
+      5: {
+        width: '4rem',
+        height: '4rem',
+        bg: '$linearOvall500',
+        position: 'absolute',
+      },
+      6: {
+        width: '10rem',
+        bg: '$linearOvall600',
+        position: 'absolute',
+      },
+    },
+  },
 });
 
 export default AnimateContainer;

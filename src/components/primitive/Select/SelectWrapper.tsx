@@ -52,6 +52,10 @@ const CustomTrigger = styled(Trigger, {
   outline: 'none',
   w: '$full',
 
+  [`.${darkTheme} &`]: {
+    color: '$white',
+  },
+
   variants: {
     variant: {
       blurred: {

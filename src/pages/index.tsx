@@ -65,7 +65,7 @@ export default function Home() {
     <Layout>
       <TopsideWrapper justify="center" align="center">
         <AnimateContainer>
-          <Flex justify="center" align="center" direction="column" gap={30}>
+          <TopsideInner justify="center" align="center" direction="column" gap={30}>
             <Input
               leftElement={<CalendarIcon size={30} />}
               placeholder="약속 제목을 입력해주세요"
@@ -89,7 +89,7 @@ export default function Home() {
                 value={participantsNumber}
               />
             </Flex>
-          </Flex>
+          </TopsideInner>
         </AnimateContainer>
       </TopsideWrapper>
       <BottomsideWrapper>
@@ -139,9 +139,13 @@ export default function Home() {
 }
 
 const TopsideWrapper = styled(Flex, {
-  pt: '$30',
   h: '$200',
-  bg: '$linearBg100',
+});
+
+const TopsideInner = styled(Flex, {
+  w: '$full',
+  h: '$full',
+  pt: '$30',
 });
 
 const BottomsideWrapper = styled(Box, {
@@ -177,7 +181,9 @@ const TimeSelectorWrapper = styled(Flex, {
 });
 
 const ButtonWrapper = styled(Flex, {
-  my: '$20',
+  py: '$20',
+  background: '$panel',
+  flex: 1,
 });
 
 const Divider = styled(Box, {
