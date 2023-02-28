@@ -3,10 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import Participant from 'server/models/Participant.model';
 import dbConnect from 'server/lib/mongoose/dbConnect';
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
     query: { eventID },
     method,
@@ -30,7 +27,7 @@ export default async function handler(
 
         res.setHeader(
           'set-cookie',
-          `${participant.eventID}-participantID=${participant._id}; path=/; httponly; sameSite=lax; max-age=86400`
+          `${participant.eventID}-participantID=${participant._id}; path=/; httponly; sameSite=lax; max-age=604800`
         );
 
         res.status(201).json({ success: true, participant });
