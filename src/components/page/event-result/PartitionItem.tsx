@@ -47,7 +47,7 @@ const ListItem = styled(Flex, {
   alignItems: 'center',
   ml: '$18',
   p: '$8',
-  borderRadius: '$md',
+  borderRadius: '$lg',
   cursor: 'pointer',
   userSelect: 'none',
   '@hover': {

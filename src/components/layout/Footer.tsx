@@ -12,7 +12,7 @@ function Footer() {
         <Divider />
         <CopyRight>
           <Text content="&copy;" size="xs" />
-          <Text content={`${new Date().getFullYear()} YAKSOK Inc. All right reserved.`} size="xs" />
+          <Text content={`${new Date().getFullYear()} YAKSOK. All right reserved.`} size="xs" />
         </CopyRight>
         <Divider />
         <MadeBy direction="column" gap={2}>

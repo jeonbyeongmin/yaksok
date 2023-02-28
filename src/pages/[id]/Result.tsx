@@ -93,7 +93,8 @@ function EventResult({ eventID }: EventResultProps) {
   const handleCopyClipBoard = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
-      setIsToastOpen(true);
+      // setIsToastOpen(true);
+      alert('클립보드에 링크를 복사했어요');
     } catch (error) {
       alert('클립보드 복사에 실패하였습니다.');
     }
