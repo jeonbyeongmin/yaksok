@@ -1,8 +1,5 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-} from '@/components/primitive/Dialog';
+import { Dialog, DialogContent, DialogTitle } from '@/components/primitive/Dialog';
+import { darkTheme, styled } from '@/styles/stitches.config';
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/primitive/Button';
@@ -10,13 +7,14 @@ import { CreateParticipantAPI } from '@/api/participants/create-participant';
 import { Flex } from '@/components/primitive/Flex';
 import { Input } from '@/components/primitive/Input';
 import { Text } from '@/components/primitive/Text';
-import { styled } from '@/styles/stitches.config';
+import { useRouter } from 'next/router';
 
 interface ParticipationModalProps {
   eventID: string;
   eventTitle: string;
   participantID: string;
   handleParticipantIDChange: (participantID: string) => void;
+  isPossibleCreateParticipant: boolean;
 }
 
 function ParticipationModal({
@@ -24,7 +22,10 @@ function ParticipationModal({
   eventTitle,
   participantID,
   handleParticipantIDChange,
+  isPossibleCreateParticipant,
 }: ParticipationModalProps) {
+  const router = useRouter();
+
   const [open, setOpen] = useState<boolean>(false);
   const [name, setName] = useState<string>('');
 
@@ -33,6 +34,12 @@ function ParticipationModal({
   };
 
   const handleButtonClick = async () => {
+    if (!isPossibleCreateParticipant) {
+      alert('이미 모든 참가자가 참여했어요.');
+      router.push('/');
+      return;
+    }
+
     try {
       const { participant } = await CreateParticipantAPI({
         name,
@@ -47,10 +54,6 @@ function ParticipationModal({
     } catch (error) {}
   };
 
-  const handleModalClose = () => {
-    setOpen(false);
-  };
-
   useEffect(() => {
     if (!participantID) {
       setOpen(true);
@@ -60,26 +63,22 @@ function ParticipationModal({
   return (
     <Dialog open={open}>
       <DialogContent>
-        <ModalContentWrapper direction="column">
+        <ModalContentWrapper direction="column" gap={8}>
           <DialogTitle>
-            <Text
-              content={`${eventTitle}에 참여하기`}
-              weight="bold"
-              color="gray800"
-              size="lg"
-            />
+            <Text content={`${eventTitle}에 참여하기`} weight="bold" size="lg" />
           </DialogTitle>
-          <Flex direction="column" gap={3} isFull>
-            <Text content="이름" weight="bold" color="gray600" />
+          <InputWrapper direction="column" gap={3} isFull>
             <Input
               value={name}
               onChange={handleNameChange}
               placeholder="이름을 입력해주세요"
               radius="md"
+              scale="md"
+              variant="outline"
             />
-          </Flex>
+          </InputWrapper>
           <ButtonWrapper>
-            <Button color="gray100" onClick={handleButtonClick} radius="lg">
+            <Button color="gray" onClick={handleButtonClick} radius="lg">
               <Text content="확인" />
             </Button>
           </ButtonWrapper>
@@ -89,6 +88,14 @@ function ParticipationModal({
   );
 }
 
+const InputWrapper = styled(Flex, {
+  color: '$gray800',
+
+  [`.${darkTheme} &`]: {
+    color: '$gray400',
+  },
+});
+
 const ModalContentWrapper = styled(Flex, {
   width: '$200',
   px: '$10',
@@ -97,7 +104,7 @@ const ModalContentWrapper = styled(Flex, {
 const ButtonWrapper = styled(Flex, {
   w: '$full',
   justifyContent: 'end',
-  mt: '$10',
+
   mb: '$5',
 });
 

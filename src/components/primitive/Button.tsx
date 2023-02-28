@@ -21,6 +21,7 @@ const CustomButton = styled('button', {
   justifyContent: 'center',
   lineHeight: '1',
   WebkitTapHighlightColor: 'rgba(0,0,0,0)',
+  gap: '$2',
 
   height: '$5',
   px: '$2',
@@ -93,14 +94,19 @@ const CustomButton = styled('button', {
 
     color: {
       // grayscale
-      gray100: { bgColor: '#F5F5F5' },
-      gray200: { bgColor: '#DBDBDB' },
-      gray300: { bgColor: '#A8A8A8' },
-      gray400: { bgColor: '#8F8F8F' },
-      gray500: { bgColor: '#757575' },
-      gray600: { bgColor: '#5C5C5C' },
-      gray700: { bgColor: '#424242' },
-      gray800: { bgColor: '#292929' },
+      gray: {
+        bgColor: '$gray100',
+        [`.${darkTheme} &`]: {
+          backgroundColor: '$gray700',
+        },
+      },
+      light: {
+        bgColor: '$panel',
+        border: '1px solid $gray200',
+        [`.${darkTheme} &`]: {
+          border: '1px solid $gray700',
+        },
+      },
       black: { bgColor: '#000000' },
 
       // brand
@@ -173,7 +179,6 @@ const CustomButton = styled('button', {
     size: 'md',
     fontSize: 'md',
     radius: 'md',
-    color: 'gray',
   },
 });
 

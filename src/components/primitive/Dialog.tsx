@@ -1,4 +1,4 @@
-import { CSS, styled } from '@/styles/stitches.config';
+import { CSS, darkTheme, styled } from '@/styles/stitches.config';
 import {
   Close,
   Content,
@@ -60,6 +60,14 @@ const CustomContent = styled(Content, panelStyles, {
   '&:focus': {
     outline: 'none',
   },
+
+  bgColor: '$white',
+  color: '$gray800',
+
+  [`.${darkTheme} &`]: {
+    bgColor: '$gray800',
+    color: '$white',
+  },
 });
 
 const CustomCloseButton = styled(Close, {
@@ -74,22 +82,21 @@ type DialogContentProps = DialogContentPrimitiveProps & {
   closeButton?: boolean;
 };
 
-const DialogContent = forwardRef<
-  ElementRef<typeof CustomContent>,
-  DialogContentProps
->(({ children, closeButton, ...props }, forwardedRef) => (
-  <Portal>
-    <CustomOverlay />
-    <CustomContent {...props} ref={forwardedRef}>
-      {children}
-      {closeButton && (
-        <CustomCloseButton aria-label="Close">
-          <Cross1Icon />
-        </CustomCloseButton>
-      )}
-    </CustomContent>
-  </Portal>
-));
+const DialogContent = forwardRef<ElementRef<typeof CustomContent>, DialogContentProps>(
+  ({ children, closeButton, ...props }, forwardedRef) => (
+    <Portal>
+      <CustomOverlay />
+      <CustomContent {...props} ref={forwardedRef}>
+        {children}
+        {closeButton && (
+          <CustomCloseButton aria-label="Close">
+            <Cross1Icon />
+          </CustomCloseButton>
+        )}
+      </CustomContent>
+    </Portal>
+  )
+);
 
 DialogContent.displayName = 'DialogContent';
 
@@ -99,11 +106,4 @@ const DialogClose = Close;
 const DialogTitle = Title;
 const DialogDescription = Description;
 
-export {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogClose,
-  DialogTitle,
-  DialogDescription,
-};
+export { Dialog, DialogTrigger, DialogContent, DialogClose, DialogTitle, DialogDescription };

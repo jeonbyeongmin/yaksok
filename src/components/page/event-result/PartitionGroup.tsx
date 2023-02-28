@@ -5,7 +5,6 @@ import { useMemo, useState } from 'react';
 import { Box } from '@/components/primitive/Box';
 import { Card } from '@/components/primitive/Card';
 import { CaretDownIcon } from '@/components/assets/CaretDownIcon';
-import { CaretUpIcon } from '@/components/assets/CaretUpIcon';
 import { CollapsibleContent } from '@radix-ui/react-collapsible';
 import { Event } from 'common/inerfaces/Event.interface';
 import { Flex } from '@/components/primitive/Flex';
@@ -67,7 +66,7 @@ function PartitionGroup({
           </UnderLineBox>
         </Flex>
         <CollapsibleRoot open={open} onOpenChange={setOpen}>
-          <Flex direction="column" isFull>
+          <Items direction="column" isFull>
             {partitionGroupCollapseItems.topThreeitems.map((partition) => (
               <PartitionItem
                 key={partition.id}
@@ -88,17 +87,24 @@ function PartitionGroup({
                 />
               ))}
             </CollapsibleContent>
-          </Flex>
-          <CollapsibleTrigger>
-            <CollapsibleTriggerWrapper>
-              {open ? <CaretUpIcon size={25} /> : <CaretDownIcon size={25} />}
-            </CollapsibleTriggerWrapper>
-          </CollapsibleTrigger>
+          </Items>
+
+          {partitionGroupCollapseItems.remainItems.length > 0 && (
+            <CollapsibleTrigger>
+              <CollapsibleTriggerWrapper>
+                <CaretDownIcon size={25} />
+              </CollapsibleTriggerWrapper>
+            </CollapsibleTrigger>
+          )}
         </CollapsibleRoot>
       </CardInner>
     </Card>
   );
 }
+
+const Items = styled(Flex, {
+  '&:last-child': { mb: '$10' },
+});
 
 const CardInner = styled(Flex, {
   flexDirection: 'column',

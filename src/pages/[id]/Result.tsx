@@ -1,3 +1,4 @@
+import { darkTheme, styled } from '@/styles/stitches.config';
 import { useCallback, useEffect, useState } from 'react';
 
 import { Badge } from '@/components/primitive/Badge';
@@ -11,13 +12,13 @@ import Layout from '@/components/layout/Layout';
 import { Page } from '@/components/primitive/Page';
 import { Paper } from '@/components/primitive/Paper';
 import PartitionGroup from '@/components/page/event-result/PartitionGroup';
+import { RefreshIcon } from '@/components/assets/RefreshIcon';
 import { Text } from '@/components/primitive/Text';
 import Timetable from '@/components/Timetable';
 import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
-import { styled } from '@/styles/stitches.config';
 import { useEventSWR } from '@/hooks/useEventSWR';
 import { useParticipantsSWR } from '@/hooks/useParticipantsSWR';
-import { useTheme } from 'next-themes';
+import { useRouter } from 'next/router';
 import { useTimetable } from '@/hooks/useTimetable';
 
 interface EventResultProps {
@@ -25,9 +26,10 @@ interface EventResultProps {
 }
 
 function EventResult({ eventID }: EventResultProps) {
-  const { resolvedTheme } = useTheme();
+  const router = useRouter();
+
   const { event } = useEventSWR({ eventID });
-  const { participants } = useParticipantsSWR({ eventID });
+  const { participants, reload, isLoading } = useParticipantsSWR({ eventID });
 
   const { timetable, completeTimetable, partitionGroups, handleTimetableChange, paintTimetable } =
     useTimetable(event, participants);
@@ -97,6 +99,10 @@ function EventResult({ eventID }: EventResultProps) {
     }
   };
 
+  const handleEditButtonClick = () => {
+    router.push(`/${eventID}`);
+  };
+
   useEffect(() => {
     setSelectedParticipant(participants?.map((participant) => participant._id) ?? []);
   }, [participants]);
@@ -109,28 +115,35 @@ function EventResult({ eventID }: EventResultProps) {
     <Layout>
       <Page>
         <Paper transparent>
-          <ButtonWrapper align="center" justify="end" isFull>
+          <ButtonWrapper align="center" justify="end" isFull gap={5}>
+            <Button size="xl" onClick={handleEditButtonClick} radius="pill" color="primary">
+              <Text content="수정하기" color="white" size="lg" weight="bold" />
+            </Button>
             <Button size="xl" onClick={handleCopyClipBoard} radius="pill" color="primary">
               <Text content="결과 공유하기" color="white" size="lg" weight="bold" />
             </Button>
           </ButtonWrapper>
-          <Grid columns={2} gap={20} align="start">
-            <Card gap={10} direction="column">
-              <CardInner align="center">
+          <Grid columns={2} gap={10} align="start">
+            <Card direction="column">
+              <CardInner align="center" gap={5}>
+                <Flex isFull justify="end">
+                  <Button
+                    onClick={reload}
+                    leftElement={<RefreshIcon size={12} />}
+                    size="xs"
+                    color="light"
+                    radius="pill">
+                    <Text content="다시불러오기" size="xs" />
+                  </Button>
+                </Flex>
                 <Flex align="center" gap={3}>
                   <CalendarIcon size={28} />
-                  <Text
-                    content={event?.title ?? ''}
-                    size="lg"
-                    weight="bold"
-                    color={resolvedTheme === 'dark' ? 'white' : 'black'}
-                  />
+                  <Text content={event?.title ?? ''} size="lg" weight="bold" />
                 </Flex>
                 <Flex isFull direction="column" align="end" gap={5}>
                   <Text
                     content={`${participants?.length}/${event?.participantsNumber} 참여`}
                     size="xs"
-                    color={resolvedTheme === 'dark' ? 'white' : 'black'}
                   />
                   <Flex isFull gap={10}>
                     <Flex direction="column" gap={4}>
@@ -182,6 +195,12 @@ const CardInner = styled(Flex, {
   flexDirection: 'column',
   w: '$full',
   p: '$15',
+  pt: '$10',
+  color: '$black',
+
+  [`.${darkTheme} &`]: {
+    color: '$white',
+  },
 });
 
 const ButtonWrapper = styled(Flex, {

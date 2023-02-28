@@ -1,5 +1,5 @@
 import { darkTheme, styled } from '@/styles/stitches.config';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { Button } from '@/components/primitive/Button';
 import { CalendarIcon } from '@/components/assets/CalendarIcon';
@@ -16,6 +16,7 @@ import nookies from 'nookies';
 import { updateParticipant } from '@/api/participants/update-participant';
 import { useEventSWR } from '@/hooks/useEventSWR';
 import { useParticipantSWR } from '@/hooks/useParticipantSWR';
+import { useParticipantsSWR } from '@/hooks/useParticipantsSWR';
 import { useRouter } from 'next/router';
 import { useTimetable } from '@/hooks/useTimetable';
 
@@ -27,15 +28,23 @@ interface EventProps {
 function Event({ eventID, participantCID }: EventProps) {
   const router = useRouter();
   const [participantID, setParticipantID] = useState(participantCID ?? '');
+
   const { event } = useEventSWR({ eventID });
   const { participant } = useParticipantSWR({
     participantID: participantID ?? '',
   });
+  const { participants } = useParticipantsSWR({ eventID });
+
   const { timetable, completeTimetable, handleTimetableChange } = useTimetable(event, participant);
 
-  const handleParticipantIDChange = (participantID: string) => {
+  const isPossibleCreateParticipant = useMemo(() => {
+    if (!participants || !event) return false;
+    return participants.length < event.participantsNumber;
+  }, [event, participants]);
+
+  function handleParticipantIDChange(participantID: string) {
     setParticipantID(participantID);
-  };
+  }
 
   const handleSubmitButtonClick = async () => {
     const availableIndexes: string[] = [];
@@ -108,12 +117,15 @@ function Event({ eventID, participantCID }: EventProps) {
         </Paper>
       </Page>
 
-      <ParticipationModal
-        eventID={eventID}
-        eventTitle={event?.title ?? ''}
-        participantID={participantID}
-        handleParticipantIDChange={handleParticipantIDChange}
-      />
+      {event && (
+        <ParticipationModal
+          eventID={eventID}
+          eventTitle={event.title}
+          participantID={participantID}
+          handleParticipantIDChange={handleParticipantIDChange}
+          isPossibleCreateParticipant={isPossibleCreateParticipant}
+        />
+      )}
     </Layout>
   );
 }

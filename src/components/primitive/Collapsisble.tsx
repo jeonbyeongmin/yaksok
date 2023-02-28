@@ -3,13 +3,21 @@ import * as CollapsiblePrimitive from '@radix-ui/react-collapsible';
 import { keyframes, styled } from '@/styles/stitches.config';
 
 const slideDown = keyframes({
-  '0%': { height: 0 },
-  '100%': { height: 'var(--radix-collapsible-content-height)' },
+  from: {
+    height: 0,
+  },
+  to: {
+    height: 'var(--radix-collapsible-content-height)',
+  },
 });
 
 const slideUp = keyframes({
-  '0%': { height: 'var(--radix-collapsible-content-height)' },
-  '100%': { height: 0 },
+  from: {
+    height: 'var(--radix-collapsible-content-height)',
+  },
+  to: {
+    height: 0,
+  },
 });
 
 const CollapsibleRoot = styled(CollapsiblePrimitive.Root, {
@@ -20,15 +28,29 @@ const CollapsibleTrigger = styled(CollapsiblePrimitive.Trigger, {
   w: '$full',
   bgColor: 'transparent',
   border: 'none',
+
+  svg: {
+    transition: 'transform 300ms cubic-bezier(0.65, 0, 0.35, 1)',
+  },
+
+  '&[data-state="open"]': {
+    svg: {
+      transform: 'rotate(180deg)',
+    },
+  },
 });
 
 const CollapsibleContent = styled(CollapsiblePrimitive.Content, {
   w: '$full',
+  overflow: 'hidden',
+  animationTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+  animationDuration: '300ms',
+
   '&[data-state="open"]': {
-    animation: `${slideDown} 300ms cubic-bezier(0.16, 1, 0.3, 1)`,
+    animationName: slideDown,
   },
   '&[data-state="closed"]': {
-    animation: `${slideUp} 300ms cubic-bezier(0.16, 1, 0.3, 1)`,
+    animationName: slideUp,
   },
 });
 
