@@ -1,4 +1,4 @@
-import { CSS, darkTheme, styled } from '@/styles/stitches.config';
+import { CSS, styled } from '@/styles/stitches.config';
 import { ComponentProps, ElementRef, forwardRef } from 'react';
 
 type TextVariants = ComponentProps<typeof CustomText>;

@@ -74,8 +74,11 @@ function EventResult({ eventID }: EventResultProps) {
     [handleTimetableChange, paintTimetable, participants, selectedParticipant]
   );
 
+  function scrollToTop() {}
+
   const handleTimetablePartitionSelect = useCallback(
     (partition: TimetablePartition) => {
+      scrollToTop();
       if (selectedTimetablePartition === partition) {
         setSelectedTimetablePartition(undefined);
       } else {
@@ -135,14 +138,8 @@ function EventResult({ eventID }: EventResultProps) {
                         <Badge
                           key={participant._id}
                           active={isSelected(participant._id)}
-                          onClick={() => handleParticipantSelect(participant._id)}>
-                          <Text
-                            content={participant.name}
-                            size="xs"
-                            color={isSelected(participant._id) ? 'white' : 'darken200'}
-                            weight="bold"
-                          />
-                        </Badge>
+                          onClick={() => handleParticipantSelect(participant._id)}
+                          content={participant.name}></Badge>
                       ))}
                     </Flex>
                     <Timetable

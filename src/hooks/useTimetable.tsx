@@ -154,7 +154,7 @@ export function useTimetable(
       []
     );
 
-    return splittedByParticipantsLength.reverse();
+    return splittedByParticipantsLength.reverse().slice(0, splittedByParticipantsLength.length - 1);
   }, [partitionsInfo]);
 
   return {

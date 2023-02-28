@@ -1,16 +1,37 @@
+import { MoonIcon, SunIcon } from '@/components/assets';
 import { darkTheme, styled } from '@/styles/stitches.config';
+import { useEffect, useState } from 'react';
 
 import { Flex } from '@/components/primitive/Flex';
 import Link from 'next/link';
 import { Logo } from '@/components/assets/Logo';
+import Switch from '@/components/primitive/Switch';
+import { useTheme } from 'next-themes';
 
 function Header() {
+  const { resolvedTheme, setTheme } = useTheme();
+  const [isOn, setIsOn] = useState<boolean>(false);
+
+  const onSwitch = () => {
+    setIsOn((prev) => !prev);
+    setTheme(resolvedTheme === 'light' ? 'dark' : 'light');
+  };
+
+  useEffect(() => {
+    setIsOn(resolvedTheme !== 'light');
+  }, [resolvedTheme]);
+
   return (
     <HeaderWrapper>
-      <HeaderInner justify="between">
+      <HeaderInner justify="between" align="center">
         <Link href="/">
           <Logo />
         </Link>
+        <Switch
+          onSwitch={onSwitch}
+          checked={isOn}
+          icon={isOn ? <MoonIcon size={16} /> : <SunIcon size={16} />}
+        />
       </HeaderInner>
     </HeaderWrapper>
   );
