@@ -3,6 +3,7 @@ import Footer from '@/components/layout/Footer';
 import Head from 'next/head';
 import Header from '@/components/layout/Header';
 import { ReactNode } from 'react';
+import { ToastContainer } from 'react-toastify';
 import { styled } from '@/styles/stitches.config';
 
 interface LayoutProps {
@@ -21,6 +22,7 @@ function Layout({ children, title = 'YAKSOK' }: LayoutProps) {
       </Head>
       <Container>
         <Header />
+
         <Content>{children}</Content>
         <Footer />
       </Container>

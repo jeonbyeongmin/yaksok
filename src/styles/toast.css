@@ -1,0 +1,13 @@
+.Toastify__toast-container {
+  font-size: 16px;
+}
+.Toastify__toast {
+  user-select: none;
+  border-radius: 10px;
+}
+
+.dark-theme .Toastify__toast {
+  padding: 10px;
+  background: #292929;
+  color: #fff;
+}

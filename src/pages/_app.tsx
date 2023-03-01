@@ -1,12 +1,15 @@
 import 'react-calendar/dist/Calendar.css'; // css import
 import '@/styles/globals.css';
 import '@/styles/calendar.css';
+import 'react-toastify/dist/ReactToastify.css';
+import '@/styles/toast.css';
 
 import type { AppProps } from 'next/app';
 import NextNProgress from 'nextjs-progressbar';
 import { Noto_Sans_KR } from '@next/font/google';
 import { SWRConfig } from 'swr';
 import { ThemeProvider } from 'next-themes';
+import { ToastContainer } from 'react-toastify';
 import { darkTheme } from '@/styles/stitches.config';
 
 const notoSans = Noto_Sans_KR({
@@ -34,6 +37,16 @@ export default function App({ Component, pageProps }: AppProps) {
             light: 'light',
             dark: darkTheme.className,
           }}>
+          <ToastContainer
+            position="top-right"
+            newestOnTop
+            closeOnClick
+            rtl={false}
+            closeButton={false}
+            pauseOnFocusLoss
+            draggable
+            theme="light"
+          />
           <Component {...pageProps} />
         </ThemeProvider>
       </SWRConfig>

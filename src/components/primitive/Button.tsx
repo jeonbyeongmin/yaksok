@@ -9,6 +9,7 @@ interface IButton extends ButtonVariants {
   leftElement?: ReactNode;
   rightElement?: ReactNode;
   isLoading?: boolean;
+  noBlank?: boolean;
 }
 
 const CustomButton = styled('button', {
@@ -133,6 +134,12 @@ const CustomButton = styled('button', {
       darken400: { bgColor: '#020C12' },
     },
 
+    shadow: {
+      true: {
+        boxShadow: '$1',
+      },
+    },
+
     ghost: {
       true: {
         backgroundColor: 'transparent',
@@ -149,13 +156,19 @@ const CustomButton = styled('button', {
 });
 
 export const Button = forwardRef<ElementRef<typeof CustomButton>, IButton>(
-  ({ children, leftElement, isLoading, size, rightElement, ...props }, forwaredRef) => {
+  ({ children, leftElement, isLoading, noBlank, size, rightElement, ...props }, forwaredRef) => {
     return (
       <CustomButton ref={forwaredRef} size={size} {...props}>
-        {isLoading ? <Loader /> : !!leftElement ? leftElement : <Blank size={size} />}
+        {isLoading ? (
+          <Loader color="white" />
+        ) : !!leftElement ? (
+          leftElement
+        ) : (
+          <Blank size={size} visible={!noBlank} />
+        )}
 
         {children}
-        {!!rightElement ? rightElement : <Blank size={size} />}
+        {!!rightElement ? rightElement : <Blank size={size} visible={!noBlank} />}
       </CustomButton>
     );
   }
@@ -163,6 +176,12 @@ export const Button = forwardRef<ElementRef<typeof CustomButton>, IButton>(
 
 const Blank = styled('div', {
   variants: {
+    visible: {
+      true: {},
+      false: {
+        display: 'none',
+      },
+    },
     size: {
       xs: {
         width: '$4',

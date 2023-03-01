@@ -15,7 +15,6 @@ export const BadgeWrapper = styled(Box, {
   cursor: 'pointer',
   userSelect: 'none',
   fs: '$sm',
-  fontWeight: '$bold',
 
   variants: {
     active: {

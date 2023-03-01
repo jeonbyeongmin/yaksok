@@ -16,6 +16,7 @@ import ParticipantNumberSelector from '@/components/page/home/ParticipantNumberS
 import { Text } from '@/components/primitive/Text';
 import TimeSelector from '@/components/page/home/TimeSelector';
 import { logOnBrowser } from 'common/utils/log';
+import { makeToast } from '@/components/primitive/Toast';
 import { useInputText } from '@/hooks/useInputText';
 import { useRouter } from 'next/router';
 
@@ -67,6 +68,14 @@ export default function Home() {
       if (!success) return;
 
       router.push(`/${_id}`);
+
+      await navigator.clipboard.writeText(window.location.href);
+
+      makeToast({
+        type: 'success',
+        title: '초대 링크를 클립보드에 복사했어요',
+        message: '친구들에게 공유해보세요!',
+      });
     } catch (error) {
       logOnBrowser(error);
     }

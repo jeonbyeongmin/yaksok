@@ -60,6 +60,15 @@ const LdsEllipsisChild = styled('div', {
   },
 
   variants: {
+    color: {
+      primary: {
+        background: '$primary',
+      },
+      white: {
+        background: '$white',
+      },
+    },
+
     size: {
       md: {
         top: '$6',
@@ -94,16 +103,17 @@ const LdsEllipsisChild = styled('div', {
 });
 
 interface LoaderProps {
+  color?: 'primary' | 'white';
   size?: 'md' | 'lg';
 }
 
-export const Loader = ({ size }: LoaderProps) => {
+export const Loader = ({ color, size }: LoaderProps) => {
   return (
     <LdsEllipsis size={size}>
-      <LdsEllipsisChild size={size} />
-      <LdsEllipsisChild size={size} />
-      <LdsEllipsisChild size={size} />
-      <LdsEllipsisChild size={size} />
+      <LdsEllipsisChild color={color} size={size} />
+      <LdsEllipsisChild color={color} size={size} />
+      <LdsEllipsisChild color={color} size={size} />
+      <LdsEllipsisChild color={color} size={size} />
     </LdsEllipsis>
   );
 };

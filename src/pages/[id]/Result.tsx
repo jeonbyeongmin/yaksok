@@ -17,6 +17,7 @@ import { RefreshIcon } from '@/components/assets/RefreshIcon';
 import { Text } from '@/components/primitive/Text';
 import Timetable from '@/components/page/Timetable';
 import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
+import { makeToast } from '@/components/primitive/Toast';
 import { useEventSWR } from '@/hooks/useEventSWR';
 import { useParticipantsSWR } from '@/hooks/useParticipantsSWR';
 import { useRouter } from 'next/router';
@@ -30,12 +31,11 @@ function EventResult({ eventID }: EventResultProps) {
   const router = useRouter();
 
   const { event } = useEventSWR({ eventID });
-  const { participants, reload, isLoading } = useParticipantsSWR({ eventID });
+  const { participants, reload } = useParticipantsSWR({ eventID });
 
   const { timetable, completeTimetable, partitionGroups, handleTimetableChange, paintTimetable } =
     useTimetable(event, participants);
 
-  const [isToastOpen, setIsToastOpen] = useState<boolean>(false);
   const [selectedParticipant, setSelectedParticipant] = useState<string[]>([]);
   const [selectedTimetablePartition, setSelectedTimetablePartition] =
     useState<TimetablePartition>();
@@ -94,11 +94,28 @@ function EventResult({ eventID }: EventResultProps) {
   const handleCopyClipBoard = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
-      // setIsToastOpen(true);
-      alert('클립보드에 링크를 복사했어요');
+
+      makeToast({
+        type: 'success',
+        message: '약속 결과 링크를 클립보드에 복사했어요!',
+      });
     } catch (error) {
-      alert('클립보드 복사에 실패하였습니다.');
+      makeToast({
+        type: 'error',
+        message: '약속 결과 링크를 복사를 실패했어요',
+      });
     }
+  };
+
+  const handleReloadButtonClick = async () => {
+    try {
+      await reload();
+
+      makeToast({
+        type: 'success',
+        message: '참여자가 저장한 데이터를 다시 불러왔어요!',
+      });
+    } catch (error) {}
   };
 
   const handleEditButtonClick = () => {
@@ -140,12 +157,13 @@ function EventResult({ eventID }: EventResultProps) {
               <CardInner align="center" gap={5}>
                 <Flex isFull justify="end">
                   <Button
-                    onClick={reload}
+                    onClick={handleReloadButtonClick}
                     leftElement={<RefreshIcon size={12} />}
                     size="xs"
                     color="light"
-                    radius="pill">
-                    <Text content="다시불러오기" size="xs" />
+                    radius="pill"
+                    noBlank>
+                    <Text content="다시 불러오기" size="xs" />
                   </Button>
                 </Flex>
                 <Flex align="center" gap={3}>
@@ -164,7 +182,8 @@ function EventResult({ eventID }: EventResultProps) {
                           key={participant._id}
                           active={isSelected(participant._id)}
                           onClick={() => handleParticipantSelect(participant._id)}
-                          content={participant.name}></Badge>
+                          content={participant.name}
+                        />
                       ))}
                     </Flex>
                     <Timetable

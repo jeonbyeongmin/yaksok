@@ -11,9 +11,11 @@ import { Overlay } from '@/components/primitive/Overlay';
 import { Page } from '@/components/primitive/Page';
 import { Paper } from '@/components/primitive/Paper';
 import ParticipationModal from '@/components/page/event/ParticipationModal';
+import { ShareIcon } from '@/components/assets';
 import { Text } from '@/components/primitive/Text';
 import Timetable from '@/components/page/Timetable';
 import { logOnBrowser } from 'common/utils/log';
+import { makeToast } from '@/components/primitive/Toast';
 import nookies from 'nookies';
 import { updateParticipant } from '@/api/participants/update-participant';
 import { useEventSWR } from '@/hooks/useEventSWR';
@@ -61,6 +63,17 @@ function Event({ eventID, participantCID }: EventProps) {
     });
     return availableIndexes;
   }, [timetable]);
+
+  const handleShareButtonClick = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      makeToast({
+        type: 'success',
+        title: '초대 링크를 클립보드에 복사했어요',
+        message: '친구들에게 공유해보세요!',
+      });
+    } catch (error) {}
+  }, []);
 
   const handleSubmitButtonClick = useCallback(async () => {
     const availableIndexes = getAvailableIndexes();
@@ -119,18 +132,26 @@ function Event({ eventID, participantCID }: EventProps) {
         <Paper>
           <Inner direction="column" gap={20}>
             <Flex align="center" justify="between" isFull>
-              {participant && (
-                <Flex gap={3} direction="column">
-                  <Flex align="center" gap={2}>
-                    <CalendarIcon size={36} />
-                    <Text content={event?.title ?? ''} size="2xl" weight="bold" />
-                  </Flex>
+              <Flex gap={3} direction="column">
+                <Flex align="center" gap={2}>
+                  <CalendarIcon size={36} />
+                  <Text content={event?.title ?? ''} size="2xl" weight="bold" />
+                </Flex>
+                {participant && (
                   <Flex gap={2}>
                     <Text content={participant?.name ?? ''} weight="bold" />
                     <Text content="님의 시간표" />
                   </Flex>
-                </Flex>
-              )}
+                )}
+              </Flex>
+              <ShareButton
+                onClick={handleShareButtonClick}
+                color="light"
+                leftElement={<ShareIcon />}
+                radius="pill"
+                shadow>
+                <Text content="공유하기" />
+              </ShareButton>
             </Flex>
             <Timetable
               startDate={event.startDate}
@@ -180,6 +201,14 @@ const Inner = styled(Flex, {
 
   [`.${darkTheme} &`]: {
     color: '$white',
+  },
+});
+
+const ShareButton = styled(Button, {
+  color: '$gray300',
+
+  [`.${darkTheme} &`]: {
+    color: '$gray400',
   },
 });
 
