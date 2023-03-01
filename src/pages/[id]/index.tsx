@@ -152,7 +152,7 @@ function Event({ eventID, participantCID }: EventProps) {
                 size="sm"
                 shadow
                 noBlank>
-                <Text content="공유하기" size="sm" />
+                <Text content="초대 링크 공유" size="sm" />
               </ShareButton>
             </Flex>
             <Timetable
@@ -171,7 +171,7 @@ function Event({ eventID, participantCID }: EventProps) {
                 color="primary"
                 onClick={handleSubmitButtonClick}
                 isLoading={isLoading}>
-                <Text content="제출하기" color="white" size="2xl" weight="bold" />
+                <Text content="제출하기" color="white" size="xl" weight="bold" />
               </Button>
             </ButtonWrapper>
           </Inner>

@@ -155,7 +155,7 @@ export default function Home() {
           color="primary"
           disabled={!isAvailable}
           isLoading={isLoading}>
-          <Text content="약속 만들기" color="white" size="lg" weight="bold" />
+          <Text content="약속 만들기" color="white" size="xl" weight="bold" />
         </Button>
       </ButtonWrapper>
     </Layout>

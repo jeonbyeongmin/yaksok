@@ -146,10 +146,10 @@ function EventResult({ eventID }: EventResultProps) {
         <Paper transparent>
           <ButtonWrapper align="center" justify="end" isFull gap={5}>
             <Button size="xl" onClick={handleEditButtonClick} radius="pill" color="primary">
-              <Text content="내 시간표 수정하기" color="white" size="lg" weight="bold" />
+              <Text content="내 시간표 수정하기" color="white" size="md" weight="bold" />
             </Button>
             <Button size="xl" onClick={handleCopyClipBoard} radius="pill" color="primary">
-              <Text content="결과 공유하기" color="white" size="lg" weight="bold" />
+              <Text content="결과 공유하기" color="white" size="md" weight="bold" />
             </Button>
           </ButtonWrapper>
           <Grid columns={2} gap={10} align="start">
