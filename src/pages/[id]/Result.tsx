@@ -14,7 +14,7 @@ import { Paper } from '@/components/primitive/Paper';
 import PartitionGroup from '@/components/page/event-result/PartitionGroup';
 import { RefreshIcon } from '@/components/assets/RefreshIcon';
 import { Text } from '@/components/primitive/Text';
-import Timetable from '@/components/Timetable';
+import Timetable from '@/components/page/Timetable';
 import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
 import { useEventSWR } from '@/hooks/useEventSWR';
 import { useParticipantsSWR } from '@/hooks/useParticipantsSWR';

@@ -10,7 +10,7 @@ import { Page } from '@/components/primitive/Page';
 import { Paper } from '@/components/primitive/Paper';
 import ParticipationModal from '@/components/page/event/ParticipationModal';
 import { Text } from '@/components/primitive/Text';
-import Timetable from '@/components/Timetable';
+import Timetable from '@/components/page/Timetable';
 import { logOnBrowser } from 'common/utils/log';
 import nookies from 'nookies';
 import { updateParticipant } from '@/api/participants/update-participant';
