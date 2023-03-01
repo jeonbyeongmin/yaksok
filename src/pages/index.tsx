@@ -38,8 +38,12 @@ export default function Home() {
   const handleStartTime = (value: string) => {
     setStartTime(value);
     if (Number(value) >= Number(endTime)) {
-      setEndTime(value);
+      setEndTime(String(Number(value) + 1));
     }
+  };
+
+  const handleEndTime = (value: string) => {
+    setEndTime(value);
   };
 
   const handleCreateEvent = async () => {
@@ -50,7 +54,7 @@ export default function Home() {
       endDate,
       participantsNumber: Number(participantsNumber),
       startTime: Number(startTime),
-      endTime: Number(endTime),
+      endTime: Number(endTime) - 1,
     });
 
     const { _id } = event.data;
@@ -114,9 +118,9 @@ export default function Home() {
               </TimeSelectorWrapper>
               <TimeSelectorWrapper align="center">
                 <TimeSelector
-                  handleValue={setEndTime}
+                  handleValue={handleEndTime}
                   value={endTime}
-                  enableTime={[Number(startTime), 23]}
+                  enableTime={[Number(startTime) + 1, 24]}
                 />
                 <Text content="까지" weight="bold" color="gray500" />
               </TimeSelectorWrapper>

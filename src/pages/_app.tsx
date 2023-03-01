@@ -4,12 +4,12 @@ import '@/styles/calendar.css';
 
 import type { AppProps } from 'next/app';
 import NextNProgress from 'nextjs-progressbar';
-import { Noto_Sans } from '@next/font/google';
+import { Noto_Sans_KR } from '@next/font/google';
 import { SWRConfig } from 'swr';
 import { ThemeProvider } from 'next-themes';
 import { darkTheme } from '@/styles/stitches.config';
 
-const notoSans = Noto_Sans({
+const notoSans = Noto_Sans_KR({
   weight: ['300', '400', '700'],
   subsets: ['latin'],
 });
