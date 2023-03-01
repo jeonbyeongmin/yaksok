@@ -1,11 +1,13 @@
 import { darkTheme, styled } from '@/styles/stitches.config';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Button } from '@/components/primitive/Button';
 import { CalendarIcon } from '@/components/assets/CalendarIcon';
 import { Flex } from '@/components/primitive/Flex';
 import { GetServerSideProps } from 'next';
 import Layout from '@/components/layout/Layout';
+import LoadingMessage from '@/components/page/LoadingMessage';
+import { Overlay } from '@/components/primitive/Overlay';
 import { Page } from '@/components/primitive/Page';
 import { Paper } from '@/components/primitive/Paper';
 import ParticipationModal from '@/components/page/event/ParticipationModal';
@@ -28,6 +30,7 @@ interface EventProps {
 function Event({ eventID, participantCID }: EventProps) {
   const router = useRouter();
   const [participantID, setParticipantID] = useState(participantCID ?? '');
+  const [isLoading, setIsLoading] = useState(false);
 
   const { event } = useEventSWR({ eventID });
   const { participant } = useParticipantSWR({
@@ -42,13 +45,12 @@ function Event({ eventID, participantCID }: EventProps) {
     return participants.length < event.participantsNumber;
   }, [event, participants]);
 
-  function handleParticipantIDChange(participantID: string) {
+  const handleParticipantIDChange = (participantID: string) => {
     setParticipantID(participantID);
-  }
+  };
 
-  const handleSubmitButtonClick = async () => {
+  const getAvailableIndexes = useCallback(() => {
     const availableIndexes: string[] = [];
-
     timetable.forEach((row, rowIndex) => {
       row.forEach((col, colIndex) => {
         if (col) {
@@ -57,8 +59,15 @@ function Event({ eventID, participantCID }: EventProps) {
         }
       });
     });
+    return availableIndexes;
+  }, [timetable]);
+
+  const handleSubmitButtonClick = useCallback(async () => {
+    const availableIndexes = getAvailableIndexes();
 
     try {
+      setIsLoading(true);
+
       const { success } = await updateParticipant({
         participantID,
         availableIndexes,
@@ -70,7 +79,9 @@ function Event({ eventID, participantCID }: EventProps) {
     } catch (error) {
       logOnBrowser(error);
     }
-  };
+
+    setIsLoading(false);
+  }, [eventID, getAvailableIndexes, participantID, router]);
 
   useEffect(() => {
     if (participantCID) setParticipantID(participantCID);
@@ -79,6 +90,28 @@ function Event({ eventID, participantCID }: EventProps) {
   useEffect(() => {
     handleTimetableChange(completeTimetable);
   }, [completeTimetable, handleTimetableChange, participant]);
+
+  if (!event || !participant) {
+    return (
+      <Layout>
+        <Page>
+          <Paper>
+            <LoadingMessage />
+          </Paper>
+        </Page>
+
+        {event && (
+          <ParticipationModal
+            eventID={eventID}
+            eventTitle={event.title}
+            participantID={participantID}
+            handleParticipantIDChange={handleParticipantIDChange}
+            isPossibleCreateParticipant={isPossibleCreateParticipant}
+          />
+        )}
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -100,32 +133,27 @@ function Event({ eventID, participantCID }: EventProps) {
               )}
             </Flex>
             <Timetable
-              startDate={event?.startDate ?? new Date()}
-              endDate={event?.endDate ?? new Date()}
-              startTime={event?.startTime ?? 0}
-              endTime={event?.endTime ?? 0}
+              startDate={event.startDate}
+              endDate={event.endDate}
+              startTime={event.startTime}
+              endTime={event.endTime}
               timetable={timetable}
               handleTimetableChange={handleTimetableChange}
             />
 
             <ButtonWrapper justify="center" isFull>
-              <Button radius="pill" size="2xl" color="primary" onClick={handleSubmitButtonClick}>
+              <Button
+                radius="pill"
+                size="2xl"
+                color="primary"
+                onClick={handleSubmitButtonClick}
+                isLoading={isLoading}>
                 <Text content="제출하기" color="white" size="2xl" weight="bold" />
               </Button>
             </ButtonWrapper>
           </Inner>
         </Paper>
       </Page>
-
-      {event && (
-        <ParticipationModal
-          eventID={eventID}
-          eventTitle={event.title}
-          participantID={participantID}
-          handleParticipantIDChange={handleParticipantIDChange}
-          isPossibleCreateParticipant={isPossibleCreateParticipant}
-        />
-      )}
     </Layout>
   );
 }

@@ -1,5 +1,5 @@
 import { darkTheme, styled } from '@/styles/stitches.config';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import AnimateContainer from '@/components/page/home/AnimateContainer';
 import { Box } from '@/components/primitive/Box';
@@ -15,6 +15,7 @@ import Layout from '@/components/layout/Layout';
 import ParticipantNumberSelector from '@/components/page/home/ParticipantNumberSelector';
 import { Text } from '@/components/primitive/Text';
 import TimeSelector from '@/components/page/home/TimeSelector';
+import { logOnBrowser } from 'common/utils/log';
 import { useInputText } from '@/hooks/useInputText';
 import { useRouter } from 'next/router';
 
@@ -27,6 +28,7 @@ export default function Home() {
   const [date, setDate] = useState<Date | [Date | null, Date | null] | null | undefined>();
   const [startTime, setStartTime] = useState<string>('0');
   const [endTime, setEndTime] = useState<string>('1');
+  const [isLoading, setIsLoading] = useState(false);
 
   const isAvailable = useMemo(() => {
     if (title && name && participantsNumber && date && startTime && endTime) {
@@ -46,24 +48,31 @@ export default function Home() {
     setEndTime(value);
   };
 
-  const handleCreateEvent = async () => {
-    const [startDate, endDate] = date as [Date, Date];
-    const event = await CreateEventAPI({
-      title,
-      startDate,
-      endDate,
-      participantsNumber: Number(participantsNumber),
-      startTime: Number(startTime),
-      endTime: Number(endTime) - 1,
-    });
+  const handleCreateEvent = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const [startDate, endDate] = date as [Date, Date];
+      const event = await CreateEventAPI({
+        title,
+        startDate,
+        endDate,
+        participantsNumber: Number(participantsNumber),
+        startTime: Number(startTime),
+        endTime: Number(endTime) - 1,
+      });
 
-    const { _id } = event.data;
-    const { success } = await CreateParticipantAPI({ name, eventID: _id, availableIndexes: [] });
+      const { _id } = event.data;
+      const { success } = await CreateParticipantAPI({ name, eventID: _id, availableIndexes: [] });
 
-    if (!success) return;
+      if (!success) return;
 
-    router.push(`/${_id}`);
-  };
+      router.push(`/${_id}`);
+    } catch (error) {
+      logOnBrowser(error);
+    }
+
+    setIsLoading(false);
+  }, [date, endTime, name, participantsNumber, router, startTime, title]);
 
   return (
     <Layout>
@@ -101,7 +110,7 @@ export default function Home() {
           <Grid columns={2} align="start" justify="center">
             <SelectorWrapper direction="column" gap={2}>
               <Divider />
-              <Text content="날짜를 입력해주세요" size="lg" weight="bold" />
+              <Text content="시작 날짜 / 종료 날짜를 선택해주세요" size="lg" weight="bold" />
               <Text content="최대 7일까지 선택 가능합니다" size="xs" color="gray400" />
               <Calendar date={date} setDate={setDate} />
             </SelectorWrapper>
@@ -128,13 +137,15 @@ export default function Home() {
           </Grid>
         </BottomsideInnerWrapper>
       </BottomsideWrapper>
+
       <ButtonWrapper justify="center">
         <Button
           size="2xl"
-          onClick={handleCreateEvent}
+          onClick={!isLoading ? handleCreateEvent : undefined}
           radius="pill"
           color="primary"
-          disabled={!isAvailable}>
+          disabled={!isAvailable}
+          isLoading={isLoading}>
           <Text content="약속 만들기" color="white" size="lg" weight="bold" />
         </Button>
       </ButtonWrapper>

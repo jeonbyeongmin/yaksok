@@ -9,6 +9,7 @@ import { Flex } from '@/components/primitive/Flex';
 import { GetServerSideProps } from 'next';
 import { Grid } from '@/components/primitive/Grid';
 import Layout from '@/components/layout/Layout';
+import LoadingMessage from '@/components/page/LoadingMessage';
 import { Page } from '@/components/primitive/Page';
 import { Paper } from '@/components/primitive/Paper';
 import PartitionGroup from '@/components/page/event-result/PartitionGroup';
@@ -112,13 +113,23 @@ function EventResult({ eventID }: EventResultProps) {
     handleTimetableChange(completeTimetable);
   }, [completeTimetable, handleTimetableChange, participants]);
 
+  if (!event || !participants) {
+    return (
+      <Layout>
+        <Page>
+          <LoadingMessage />
+        </Page>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
       <Page>
         <Paper transparent>
           <ButtonWrapper align="center" justify="end" isFull gap={5}>
             <Button size="xl" onClick={handleEditButtonClick} radius="pill" color="primary">
-              <Text content="수정하기" color="white" size="lg" weight="bold" />
+              <Text content="내 시간표 수정하기" color="white" size="lg" weight="bold" />
             </Button>
             <Button size="xl" onClick={handleCopyClipBoard} radius="pill" color="primary">
               <Text content="결과 공유하기" color="white" size="lg" weight="bold" />

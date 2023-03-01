@@ -9,6 +9,7 @@ export const Paper = styled(Flex, {
   flexDirection: 'column',
   maxW: '$inner',
   alignItems: 'center',
+  position: 'relative',
 
   variants: {
     transparent: {

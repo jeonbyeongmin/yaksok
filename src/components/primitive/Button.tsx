@@ -1,11 +1,14 @@
 import { CSS, darkTheme, styled } from '@/styles/stitches.config';
 import { ComponentProps, ElementRef, ReactNode, forwardRef } from 'react';
 
+import { Loader } from '@/components/primitive/Loader';
+
 type ButtonVariants = ComponentProps<typeof CustomButton>;
 interface IButton extends ButtonVariants {
   css?: CSS;
   leftElement?: ReactNode;
   rightElement?: ReactNode;
+  isLoading?: boolean;
 }
 
 const CustomButton = styled('button', {
@@ -21,7 +24,7 @@ const CustomButton = styled('button', {
   justifyContent: 'center',
   lineHeight: '1',
   WebkitTapHighlightColor: 'rgba(0,0,0,0)',
-  gap: '$2',
+  gap: '$4',
 
   height: '$5',
   px: '$2',
@@ -47,26 +50,26 @@ const CustomButton = styled('button', {
     size: {
       xs: {
         height: '$16',
-        px: '$6',
+        px: '$8',
       },
       sm: {
         height: '$20',
-        px: '$8',
+        px: '$10',
       },
       md: {
         height: '$22',
-        px: '$10',
-      },
-      lg: {
-        height: '$23',
         px: '$12',
       },
-      xl: {
+      lg: {
         height: '$24',
-        px: '$13',
+        px: '$14',
+      },
+      xl: {
+        height: '$26',
+        px: '$14',
       },
       '2xl': {
-        height: '$25',
+        height: '$32',
         px: '$14',
       },
     },
@@ -130,43 +133,6 @@ const CustomButton = styled('button', {
       darken400: { bgColor: '#020C12' },
     },
 
-    state: {
-      active: {
-        backgroundColor: '$slate4',
-        boxShadow: 'inset 0 0 0 1px $colors$slate8',
-        color: '$slate11',
-        '@hover': {
-          '&:hover': {
-            backgroundColor: '$slate5',
-            boxShadow: 'inset 0 0 0 1px $colors$slate8',
-          },
-        },
-        '&:active': {
-          backgroundColor: '$slate5',
-        },
-        '&:focus': {
-          boxShadow: 'inset 0 0 0 1px $colors$slate8, 0 0 0 1px $colors$slate8',
-        },
-      },
-      waiting: {
-        backgroundColor: '$slate4',
-        boxShadow: 'inset 0 0 0 1px $colors$slate8',
-        color: 'transparent',
-        pointerEvents: 'none',
-        '@hover': {
-          '&:hover': {
-            backgroundColor: '$slate5',
-            boxShadow: 'inset 0 0 0 1px $colors$slate8',
-          },
-        },
-        '&:active': {
-          backgroundColor: '$slate5',
-        },
-        '&:focus': {
-          boxShadow: 'inset 0 0 0 1px $colors$slate8',
-        },
-      },
-    },
     ghost: {
       true: {
         backgroundColor: 'transparent',
@@ -183,15 +149,33 @@ const CustomButton = styled('button', {
 });
 
 export const Button = forwardRef<ElementRef<typeof CustomButton>, IButton>(
-  ({ children, leftElement, rightElement, ...props }, forwaredRef) => {
+  ({ children, leftElement, isLoading, size, rightElement, ...props }, forwaredRef) => {
     return (
-      <CustomButton ref={forwaredRef} {...props}>
-        {!!leftElement ? leftElement : null}
+      <CustomButton ref={forwaredRef} size={size} {...props}>
+        {isLoading ? <Loader /> : !!leftElement ? leftElement : <Blank size={size} />}
+
         {children}
-        {!!rightElement ? rightElement : null}
+        {!!rightElement ? rightElement : <Blank size={size} />}
       </CustomButton>
     );
   }
 );
+
+const Blank = styled('div', {
+  variants: {
+    size: {
+      xs: {
+        width: '$4',
+      },
+      sm: {},
+      md: {},
+      lg: {},
+      xl: {},
+      '2xl': {
+        width: '$15',
+      },
+    },
+  },
+});
 
 Button.displayName = 'Button';

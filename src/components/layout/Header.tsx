@@ -48,6 +48,7 @@ const HeaderWrapper = styled('header', {
   bgColor: 'rgba(255, 255, 255, 0.4)',
   backdropFilter: 'blur(5px)',
   position: 'fixed',
+  zIndex: 1,
 
   [`.${darkTheme} &`]: {
     backgroundColor: 'rgba(27, 32, 43, 0.5);',

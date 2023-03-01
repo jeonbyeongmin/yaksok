@@ -11,12 +11,12 @@ function AnimateContainer({ children }: AnimateContainerProps) {
     <Container justify="center">
       <UnderLayer />
       <Wrapper>
-        <Ball variant={3} />
+        {/* <Ball variant={3} />
         <Ball variant={2} />
         <Ball variant={1} />
         <Ball variant={4} />
         <Ball variant={5} />
-        <Ball variant={6} />
+        <Ball variant={6} /> */}
         {children}
       </Wrapper>
     </Container>
