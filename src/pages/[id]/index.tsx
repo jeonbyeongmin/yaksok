@@ -147,10 +147,12 @@ function Event({ eventID, participantCID }: EventProps) {
               <ShareButton
                 onClick={handleShareButtonClick}
                 color="light"
-                leftElement={<ShareIcon />}
+                leftElement={<ShareIcon size={18} />}
                 radius="pill"
-                shadow>
-                <Text content="공유하기" />
+                size="sm"
+                shadow
+                noBlank>
+                <Text content="공유하기" size="sm" />
               </ShareButton>
             </Flex>
             <Timetable

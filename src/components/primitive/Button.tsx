@@ -56,6 +56,7 @@ const CustomButton = styled('button', {
       sm: {
         height: '$20',
         px: '$10',
+        gap: '$2',
       },
       md: {
         height: '$22',
