@@ -210,6 +210,7 @@ function EventResult({ eventID }: EventResultProps) {
                     rank={rank}
                     event={event}
                     partitionGroup={partitionGroup}
+                    participants={participants}
                     selectedTimetablePartition={selectedTimetablePartition}
                     handleTimetablePartitionSelect={handleTimetablePartitionSelect}
                   />

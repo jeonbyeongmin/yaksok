@@ -69,7 +69,7 @@ export default function Home() {
 
       router.push(`/${_id}`);
 
-      await navigator.clipboard.writeText(window.location.href);
+      await navigator.clipboard.writeText(`${window.location.href}/${_id}`);
 
       makeToast({
         type: 'success',

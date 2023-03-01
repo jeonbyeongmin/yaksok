@@ -8,6 +8,7 @@ import { CaretDownIcon } from '@/components/assets/CaretDownIcon';
 import { CollapsibleContent } from '@radix-ui/react-collapsible';
 import { Event } from 'common/inerfaces/Event.interface';
 import { Flex } from '@/components/primitive/Flex';
+import { Participant } from 'common/inerfaces/Participant.interface';
 import PartitionItem from '@/components/page/event-result/PartitionItem';
 import { Text } from '@/components/primitive/Text';
 import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
@@ -19,6 +20,7 @@ interface PartitionGroupProps {
   event: Event;
   selectedTimetablePartition: TimetablePartition | undefined;
   handleTimetablePartitionSelect: (partition: TimetablePartition) => void;
+  participants: Participant[];
 }
 
 function PartitionGroup({
@@ -27,6 +29,7 @@ function PartitionGroup({
   event,
   selectedTimetablePartition,
   handleTimetablePartitionSelect,
+  participants,
 }: PartitionGroupProps) {
   const { resolvedTheme } = useTheme();
   const [open, setOpen] = useState<boolean>(false);
@@ -72,6 +75,7 @@ function PartitionGroup({
                 key={partition.id}
                 partition={partition}
                 event={event}
+                participants={participants}
                 selectedTimetablePartition={selectedTimetablePartition}
                 handleTimetablePartitionSelect={handleTimetablePartitionSelect}
               />
@@ -82,6 +86,7 @@ function PartitionGroup({
                   key={partition.id}
                   partition={partition}
                   event={event}
+                  participants={participants}
                   selectedTimetablePartition={selectedTimetablePartition}
                   handleTimetablePartitionSelect={handleTimetablePartitionSelect}
                 />

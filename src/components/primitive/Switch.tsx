@@ -37,9 +37,20 @@ const SwitchThumb = styled(motion.div, {
   width: '$12',
   height: '$12',
   borderRadius: '50%',
-  background: 'white',
+
   boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.25)',
   color: '$gray500',
+
+  variants: {
+    checked: {
+      true: {
+        background: '$gray200',
+      },
+      false: {
+        background: '$white',
+      },
+    },
+  },
 });
 
 interface SwitchProps {
@@ -51,7 +62,10 @@ interface SwitchProps {
 function Switch({ icon, checked, onSwitch }: SwitchProps) {
   return (
     <SwitchRoot onClick={onSwitch} checked={checked}>
-      <SwitchThumb layout transition={{ type: 'spring', stiffness: 700, damping: 30 }}>
+      <SwitchThumb
+        checked={checked}
+        transition={{ type: 'spring', stiffness: 700, damping: 30 }}
+        layout>
         {icon}
       </SwitchThumb>
     </SwitchRoot>
