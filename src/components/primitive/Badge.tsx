@@ -10,11 +10,11 @@ export const BadgeWrapper = styled(Box, {
   textAlign: 'center',
 
   px: '$6',
-  py: '$4',
+  py: '$3',
   borderRadius: '$md',
   cursor: 'pointer',
   userSelect: 'none',
-  fs: '$sm',
+  fs: '$xs',
 
   variants: {
     active: {

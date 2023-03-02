@@ -17,13 +17,15 @@ function Footer() {
         <Divider />
         <MadeBy direction="column" gap={2}>
           <Person gap={5}>
-            <Text content="Developer 전병민" size="xs" />
+            <Text content="Developer" size="xs" css={{ w: '$28' }} />
+            <Text content="전병민" size="xs" css={{ w: '$17' }} />
             <a href="mailto:qudals7613@gmail.com">
               <Text content="qudals7613@gmail.com" size="xs" />
             </a>
           </Person>
           <Person gap={5}>
-            <Text content="Designer 안혜진" size="xs" />
+            <Text content="Designer" size="xs" css={{ w: '$28' }} />
+            <Text content="안혜진" size="xs" css={{ w: '$17' }} />
             <a href="mailto:kowahj@naver.com">
               <Text content="kowahj@naver.com" size="xs" />
             </a>

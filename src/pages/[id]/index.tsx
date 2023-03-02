@@ -131,7 +131,7 @@ function Event({ eventID, participantCID }: EventProps) {
         <Paper>
           <Inner direction="column" gap={20}>
             <Flex align="center" justify="between" isFull>
-              <Flex gap={3} direction="column">
+              <Title gap={3} direction="column">
                 <Flex align="center" gap={2}>
                   <CalendarIcon size={36} />
                   <Text content={event?.title ?? ''} size="2xl" weight="bold" />
@@ -142,7 +142,7 @@ function Event({ eventID, participantCID }: EventProps) {
                     <Text content="님의 시간표" />
                   </Flex>
                 )}
-              </Flex>
+              </Title>
               <ShareButton
                 onClick={handleShareButtonClick}
                 color="light"
@@ -196,6 +196,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     },
   };
 };
+
+const Title = styled(Flex, {
+  pl: '$30',
+});
 
 const Inner = styled(Flex, {
   minW: '$400',

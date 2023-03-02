@@ -144,59 +144,65 @@ function EventResult({ eventID }: EventResultProps) {
     <Layout>
       <Page>
         <Paper transparent>
-          <ButtonWrapper align="center" justify="end" isFull gap={5}>
-            <Button size="xl" onClick={handleEditButtonClick} radius="pill" color="primary">
-              <Text content="내 시간표 수정하기" color="white" size="md" weight="bold" />
-            </Button>
+          <ButtonWrapper align="center" justify="end" isFull>
             <Button size="xl" onClick={handleCopyClipBoard} radius="pill" color="primary">
               <Text content="결과 공유하기" color="white" size="md" weight="bold" />
             </Button>
           </ButtonWrapper>
+
           <CustomGrid gap={10} align="start">
             <Card direction="column">
-              <CardInner align="center" gap={5}>
-                <Flex isFull justify="end">
-                  <Button
-                    onClick={handleReloadButtonClick}
-                    leftElement={<RefreshIcon size={12} />}
-                    size="xs"
-                    color="light"
-                    radius="pill"
-                    noBlank>
-                    <Text content="다시 불러오기" size="xs" />
-                  </Button>
+              <CardInner align="start" gap={5}>
+                <Flex isFull justify="start" gap={3}>
+                  <ButtonWrapper align="center" justify="start" isFull gap={3}>
+                    <Button
+                      onClick={handleReloadButtonClick}
+                      leftElement={<RefreshIcon size={12} />}
+                      size="xs"
+                      color="light"
+                      radius="pill"
+                      noBlank>
+                      <Text content="다시 불러오기" size="xs" />
+                    </Button>
+                    <Button
+                      onClick={handleEditButtonClick}
+                      size="xs"
+                      color="light"
+                      radius="pill"
+                      noBlank>
+                      <Text content="내 시간표 수정하기" size="xs" />
+                    </Button>
+                  </ButtonWrapper>
                 </Flex>
                 <Flex align="center" gap={3}>
                   <CalendarIcon size={28} />
                   <Text content={event?.title ?? ''} size="lg" weight="bold" />
                 </Flex>
-                <Flex isFull direction="column" align="end" gap={5}>
-                  <Text
-                    content={`${participants?.length}/${event?.participantsNumber} 참여`}
-                    size="xs"
+                <Text
+                  content={`${participants?.length}/${event?.participantsNumber} 참여`}
+                  size="xs"
+                />
+                <Flex isFull gap={10}>
+                  <Timetable
+                    startDate={event.startDate}
+                    endDate={event.endDate}
+                    startTime={event.startTime}
+                    endTime={event.endTime}
+                    timetable={timetable}
+                    participantsNumber={participants.length}
+                    cellHeight="sm"
+                    selectedTimetablePartition={selectedTimetablePartition}
+                    isSimple
                   />
-                  <Flex isFull gap={10}>
-                    <Flex direction="column" gap={4}>
-                      {participants?.map((participant) => (
-                        <Badge
-                          key={participant._id}
-                          active={isSelected(participant._id)}
-                          onClick={() => handleParticipantSelect(participant._id)}
-                          content={participant.name}
-                        />
-                      ))}
-                    </Flex>
-                    <Timetable
-                      startDate={event?.startDate ?? new Date()}
-                      endDate={event?.endDate ?? new Date()}
-                      startTime={event?.startTime ?? 0}
-                      endTime={event?.endTime ?? 0}
-                      timetable={timetable}
-                      participantsNumber={participants?.length}
-                      cellHeight="sm"
-                      selectedTimetablePartition={selectedTimetablePartition}
-                      isSimple
-                    />
+                  <Flex direction="column" gap={4}>
+                    {participants?.map((participant) => (
+                      <Badge
+                        key={participant._id}
+                        active={isSelected(participant._id)}
+                        onClick={() => handleParticipantSelect(participant._id)}
+                        content={participant.name}
+                      />
+                    ))}
                   </Flex>
                 </Flex>
               </CardInner>
