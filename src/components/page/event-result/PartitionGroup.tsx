@@ -1,11 +1,14 @@
-import { CollapsibleRoot, CollapsibleTrigger } from '@/components/primitive/Collapsisble';
+import { Card, CardInner } from '@/components/primitive/Card';
+import {
+  CollapsibleContent,
+  CollapsibleRoot,
+  CollapsibleTrigger,
+} from '@/components/primitive/Collapsisble';
 import { darkTheme, styled } from '@/styles/stitches.config';
 import { useMemo, useState } from 'react';
 
 import { Box } from '@/components/primitive/Box';
-import { Card } from '@/components/primitive/Card';
 import { CaretDownIcon } from '@/components/assets/CaretDownIcon';
-import { CollapsibleContent } from '@radix-ui/react-collapsible';
 import { Event } from 'common/inerfaces/Event.interface';
 import { Flex } from '@/components/primitive/Flex';
 import { Participant } from 'common/inerfaces/Participant.interface';
@@ -50,7 +53,7 @@ function PartitionGroup({
 
   return (
     <Card key={rank} align="start" direction="column" gap={5}>
-      <CardInner>
+      <CardInner css={{ pb: '$5' }}>
         <Flex gap={4} isFull>
           <RankWrapper>
             <Text content={`${rank + 1}`} color="white" size="lg" weight="bold" />
@@ -111,19 +114,12 @@ const Items = styled(Flex, {
   '&:last-child': { mb: '$10' },
 });
 
-const CardInner = styled(Flex, {
-  flexDirection: 'column',
-  w: '$full',
-  px: '$15',
-  pt: '$15',
-});
-
 const CollapsibleTriggerWrapper = styled(Flex, {
   w: '$full',
   justifyContent: 'center',
   alignItems: 'center',
-  py: '$3',
-  px: '$4',
+  pt: '$3',
+
   cursor: 'pointer',
   color: '$gray800',
 

@@ -5,7 +5,7 @@ import { Button } from '@/components/primitive/Button';
 import { CalendarIcon } from '@/components/assets/CalendarIcon';
 import { Flex } from '@/components/primitive/Flex';
 import { GetServerSideProps } from 'next';
-import Layout from '@/components/layout/Layout';
+import { Layout } from '@/components/layout/Layout';
 import LoadingMessage from '@/components/page/LoadingMessage';
 import { Page } from '@/components/primitive/Page';
 import { Paper } from '@/components/primitive/Paper';
@@ -129,30 +129,32 @@ function Event({ eventID, participantCID }: EventProps) {
     <Layout>
       <Page>
         <Paper>
-          <Inner direction="column" gap={20}>
-            <Flex align="center" justify="between" isFull>
-              <Title gap={3} direction="column">
+          <Inner direction="column">
+            <Flex direction="column" isFull>
+              <Flex align="center" justify="end" isFull>
+                <ShareButton
+                  onClick={handleShareButtonClick}
+                  color="light"
+                  leftElement={<ShareIcon size={16} />}
+                  radius="pill"
+                  size="sm"
+                  shadow
+                  noBlank>
+                  <Text content="초대 링크 공유" size="sm" />
+                </ShareButton>
+              </Flex>
+              <Title direction="column">
                 <Flex align="center" gap={2}>
                   <CalendarIcon size={36} />
                   <Text content={event?.title ?? ''} size="2xl" weight="bold" />
                 </Flex>
                 {participant && (
                   <Flex gap={2}>
-                    <Text content={participant?.name ?? ''} weight="bold" />
-                    <Text content="님의 시간표" />
+                    <Text content={participant?.name ?? ''} weight="bold" size="sm" />
+                    <Text content="님의 시간표" size="sm" />
                   </Flex>
                 )}
               </Title>
-              <ShareButton
-                onClick={handleShareButtonClick}
-                color="light"
-                leftElement={<ShareIcon size={18} />}
-                radius="pill"
-                size="sm"
-                shadow
-                noBlank>
-                <Text content="초대 링크 공유" size="sm" />
-              </ShareButton>
             </Flex>
             <Timetable
               startDate={event.startDate}
@@ -198,12 +200,28 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 const Title = styled(Flex, {
-  pl: '$30',
+  pl: '$15',
+  '@bp3': {
+    gap: '$3',
+  },
 });
 
 const Inner = styled(Flex, {
-  minW: '$400',
   color: '$gray800',
+
+  w: '$full',
+  px: '$10',
+  gap: '$12',
+
+  '@bp2': {
+    minW: '$300',
+    maxW: '$300',
+    gap: '$15',
+  },
+  '@bp3': {
+    minW: '$400',
+    maxW: '$400',
+  },
 
   [`.${darkTheme} &`]: {
     color: '$white',
@@ -219,7 +237,7 @@ const ShareButton = styled(Button, {
 });
 
 const ButtonWrapper = styled(Flex, {
-  py: '$20',
+  pt: '$20',
 });
 
 export default Event;

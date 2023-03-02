@@ -64,14 +64,14 @@ const CustomButton = styled('button', {
         px: '$14',
       },
       xl: {
-        height: '$26',
+        height: '$24',
         px: '$14',
+        '@bp1': { height: '$26' },
       },
       '2xl': {
         height: '$28',
         px: '$14',
-
-        '@bp1': { height: '$32', px: '$14' },
+        '@bp1': { height: '$32' },
       },
     },
 

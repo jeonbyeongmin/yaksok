@@ -28,6 +28,7 @@ function PartitionItem({
   participants,
 }: PartitionItemProps) {
   const [ref, value] = useHover();
+
   const [open, setOpen] = useState(false);
 
   const participantsInfo = useMemo(() => {
@@ -41,12 +42,16 @@ function PartitionItem({
     return participantsInfo;
   }, [partition.participantIDs, participants]);
 
+  const handleClick = () => {
+    handleTimetablePartitionSelect(partition);
+  };
+
   return (
     <ListItem
       ref={ref}
       justify="between"
       selected={selectedTimetablePartition?.id === partition.id ? true : false}
-      onClick={() => handleTimetablePartitionSelect(partition)}>
+      onClick={handleClick}>
       <Flex gap={5}>
         <Text
           content={`${convertIndexToDate(partition.col, event.startDate)}`}
@@ -80,7 +85,8 @@ const ListItem = styled(Flex, {
   alignItems: 'center',
   ml: '$18',
   px: '$5',
-  py: '$6',
+  py: '$3',
+  mb: '$1',
   borderRadius: '$lg',
   cursor: 'pointer',
   userSelect: 'none',
@@ -89,6 +95,10 @@ const ListItem = styled(Flex, {
 
   [`.${darkTheme} &`]: {
     color: '$white',
+  },
+
+  '@bp1': {
+    py: '$5',
   },
 
   '@hover': {

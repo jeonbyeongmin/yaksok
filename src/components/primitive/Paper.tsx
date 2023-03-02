@@ -2,9 +2,16 @@ import { Flex } from '@/components/primitive/Flex';
 import { styled } from '@/styles/stitches.config';
 
 export const Paper = styled(Flex, {
-  w: '100%',
+  w: '$full',
   bg: '$glass',
-  py: '$50',
+  pt: '$40',
+  pb: '$30',
+  px: '$5',
+
+  '@bp1': {
+    pt: '$50',
+    pb: '$40',
+  },
 
   flexDirection: 'column',
   maxW: '$inner',

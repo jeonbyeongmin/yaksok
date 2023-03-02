@@ -42,8 +42,14 @@ const ButtonWrapper = styled(Flex, {
     },
 
     visible: {
-      true: { visibility: 'visible' },
-      false: { visibility: 'hidden' },
+      true: {
+        visibility: 'visible',
+      },
+      false: {
+        '@bp1': {
+          visibility: 'hidden',
+        },
+      },
     },
   },
 });

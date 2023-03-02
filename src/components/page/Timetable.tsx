@@ -148,15 +148,16 @@ function Timetable({
     <TimetableWrapper direction="column" isFull>
       {!isSimple ? (
         <DateRow gap={4} isFull>
-          <BlankCell cellHeight={cellHeight} />
+          <BlankCell />
           <Flex isFull>
             {dates.map((date, index) => (
               <DateCell key={index} align="center" justify="center" direction="column">
                 <Text size="sm" color="gray400" content={date.format('MM/DD')} />
                 <Text
-                  size="md"
+                  size="sm"
                   color="gray400"
                   content={'일월화수목금토'.charAt(date.get('day'))}
+                  weight="bold"
                 />
               </DateCell>
             ))}
@@ -167,7 +168,7 @@ function Timetable({
       {timetable.map((row, rowIndex) => (
         <Flex key={rowIndex} gap={6} isFull>
           {!isSimple ? (
-            <BlankCell align="start" justify="end" cellHeight={cellHeight}>
+            <BlankCell align="start" justify="end">
               {rowIndex % 2 === 0 && (
                 <Text color="gray400" size="sm" content={times[rowIndex / 2] + ':00'} />
               )}
@@ -214,20 +215,8 @@ const DateCell = styled(Flex, {
 });
 
 const BlankCell = styled(Flex, {
-  w: '$25',
-  minH: '$14',
+  w: '$10',
   flexShrink: 0,
-
-  variants: {
-    cellHeight: {
-      sm: { minH: '$10' },
-      md: { minH: '$14' },
-      lg: { minH: '$16' },
-    },
-  },
-  defaultVariants: {
-    cellHeight: 'md',
-  },
 });
 
 const Cell = styled('div', {
@@ -237,7 +226,10 @@ const Cell = styled('div', {
   variants: {
     cellHeight: {
       sm: { minH: '$10' },
-      md: { minH: '$18' },
+      md: {
+        minH: '$12',
+        '@bp1': { minH: '$18' },
+      },
       lg: { minH: '$16' },
     },
 
