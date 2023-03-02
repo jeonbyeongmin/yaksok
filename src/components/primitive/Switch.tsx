@@ -11,6 +11,7 @@ const SwitchRoot = styled(Flex, {
   alignItems: 'center',
   boxShadow: 'inset 0px 4px 4px rgba(0, 0, 0, 0.1)',
   p: '0.3rem',
+  userSelect: 'none',
 
   variants: {
     checked: {

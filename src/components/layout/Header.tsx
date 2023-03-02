@@ -25,7 +25,7 @@ function Header() {
     <HeaderWrapper>
       <HeaderInner justify="between" align="center">
         <Link href="/">
-          <Logo />
+          <Logo width={100} height={32} />
         </Link>
         <Switch
           onSwitch={onSwitch}
@@ -56,7 +56,7 @@ const HeaderWrapper = styled('header', {
 });
 
 const HeaderInner = styled(Flex, {
-  minW: '$500',
+  w: '$500',
 });
 
 export default Header;

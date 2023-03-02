@@ -1,12 +1,16 @@
-export function Logo() {
+interface LogoProps {
+  width?: number;
+  height?: number;
+}
+
+export function Logo({ width = 193, height = 59 }: LogoProps) {
   return (
     <svg
-      width="100"
-      height="59"
+      width={width}
+      height={height}
       viewBox="0 0 193 59"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+      xmlns="http://www.w3.org/2000/svg">
       <path
         d="M9.5752 15.4713C9.5752 12.6858 11.8333 10.4277 14.6187 10.4277C17.4042 10.4277 19.6622 12.6858 19.6622 15.4713V43.5283C19.6622 46.3138 17.4042 48.5718 14.6187 48.5718C11.8333 48.5718 9.5752 46.3138 9.5752 43.5283V15.4713Z"
         fill="#58B8EE"
@@ -51,12 +55,7 @@ export function Logo() {
       </g>
       <defs>
         <clipPath id="clip0_491_924">
-          <rect
-            width="133.47"
-            height="24.14"
-            fill="white"
-            transform="translate(59 18)"
-          />
+          <rect width="133.47" height="24.14" fill="white" transform="translate(59 18)" />
         </clipPath>
       </defs>
     </svg>

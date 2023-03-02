@@ -125,7 +125,7 @@ const CollapsibleTriggerWrapper = styled(Flex, {
   py: '$3',
   px: '$4',
   cursor: 'pointer',
-  color: '$black',
+  color: '$gray800',
 
   [`.${darkTheme} &`]: { color: '$white' },
 });

@@ -29,6 +29,14 @@ const CustomItem = styled(Item, {
     },
   },
 
+  '&:active': {
+    bgColor: '$lighten400',
+
+    [`.${darkTheme} &`]: {
+      bgColor: '#6f48eb33',
+    },
+  },
+
   '&[data-disabled]': {
     color: '$gray200',
     pointerEvents: 'none',

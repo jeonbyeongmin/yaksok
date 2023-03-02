@@ -11,7 +11,6 @@ import { PersonIcon } from '@/components/assets';
 import { Text } from '@/components/primitive/Text';
 import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
 import { useHover } from '@/hooks/useHover';
-import { useTheme } from 'next-themes';
 
 interface PartitionItemProps {
   partition: TimetablePartition;
@@ -28,7 +27,6 @@ function PartitionItem({
   handleTimetablePartitionSelect,
   participants,
 }: PartitionItemProps) {
-  const { resolvedTheme } = useTheme();
   const [ref, value] = useHover();
   const [open, setOpen] = useState(false);
 
@@ -60,7 +58,6 @@ function PartitionItem({
             partition.startRow,
             event.startTime ?? 0
           )} 부터 ${convertIndexToTime(partition.endRow + 1, event.startTime)} 까지`}
-          color={resolvedTheme === 'dark' ? 'white' : 'black'}
         />
       </Flex>
       <Popover open={open} onOpenChange={setOpen}>
@@ -88,6 +85,11 @@ const ListItem = styled(Flex, {
   cursor: 'pointer',
   userSelect: 'none',
   transition: 'padding 0.2s ease-in-out',
+  color: '$gray800',
+
+  [`.${darkTheme} &`]: {
+    color: '$white',
+  },
 
   '@hover': {
     '&:hover': {

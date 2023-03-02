@@ -152,7 +152,7 @@ function EventResult({ eventID }: EventResultProps) {
               <Text content="결과 공유하기" color="white" size="md" weight="bold" />
             </Button>
           </ButtonWrapper>
-          <Grid columns={2} gap={10} align="start">
+          <CustomGrid gap={10} align="start">
             <Card direction="column">
               <CardInner align="center" gap={5}>
                 <Flex isFull justify="end">
@@ -216,19 +216,35 @@ function EventResult({ eventID }: EventResultProps) {
                   />
                 ))}
             </Flex>
-          </Grid>
+          </CustomGrid>
         </Paper>
       </Page>
     </Layout>
   );
 }
 
+const CustomGrid = styled(Grid, {
+  '@bp1': {
+    gridTemplateColumns: 'repeat(1, 1fr)',
+  },
+  '@bp2': {
+    gridTemplateColumns: 'repeat(2, 1fr)',
+  },
+
+  '@bp3': {
+    gridTemplateColumns: 'repeat(2, 1fr)',
+  },
+
+  gap: '$15',
+  mb: '$15',
+});
+
 const CardInner = styled(Flex, {
   flexDirection: 'column',
   w: '$full',
   p: '$15',
   pt: '$10',
-  color: '$black',
+  color: '$gray800',
 
   [`.${darkTheme} &`]: {
     color: '$white',

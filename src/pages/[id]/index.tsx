@@ -7,7 +7,6 @@ import { Flex } from '@/components/primitive/Flex';
 import { GetServerSideProps } from 'next';
 import Layout from '@/components/layout/Layout';
 import LoadingMessage from '@/components/page/LoadingMessage';
-import { Overlay } from '@/components/primitive/Overlay';
 import { Page } from '@/components/primitive/Page';
 import { Paper } from '@/components/primitive/Paper';
 import ParticipationModal from '@/components/page/event/ParticipationModal';
@@ -200,6 +199,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 const Inner = styled(Flex, {
   minW: '$400',
+  color: '$gray800',
 
   [`.${darkTheme} &`]: {
     color: '$white',

@@ -7,8 +7,8 @@ import { Text } from '@/components/primitive/Text';
 function Footer() {
   return (
     <FooterWrapper>
-      <FooterInner align="center">
-        <Logo />
+      <FooterInner align="center" gap={5}>
+        <Logo width={100} height={32} />
         <Divider />
         <CopyRight>
           <Text content="&copy;" size="xs" />
@@ -40,7 +40,7 @@ const FooterWrapper = styled('footer', {
   justifyContent: 'center',
   w: '$full',
   px: '$10',
-  py: '$3',
+  py: '$8',
   userSelect: 'none',
   background: '$panel',
   borderTop: '1px solid $gray200',
@@ -52,6 +52,11 @@ const FooterWrapper = styled('footer', {
 
 const FooterInner = styled(Flex, {
   color: '$darken100',
+  flexDirection: 'column',
+
+  '@bp1': { flexDirection: 'column' },
+  '@bp2': { flexDirection: 'column' },
+  '@bp3': { flexDirection: 'row' },
 
   [`.${darkTheme} &`]: {
     color: '$primary',
@@ -66,7 +71,11 @@ const Divider = styled(Flex, {
   w: '1px',
   h: '1rem',
   bgColor: '$darken100',
-  mx: '$10',
+  mx: '$5',
+  display: 'none',
+  '@bp1': { display: 'none' },
+  '@bp2': { display: 'none' },
+  '@bp3': { display: 'block' },
 
   [`.${darkTheme} &`]: {
     bgColor: '$primary',
@@ -86,6 +95,11 @@ const MadeBy = styled(Flex, {
       color: '$primary',
     },
   },
+
+  display: 'none',
+  '@bp1': { display: 'none' },
+  '@bp2': { display: 'none' },
+  '@bp3': { display: 'block' },
 });
 
 const Person = styled(Flex, {});
