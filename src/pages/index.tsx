@@ -87,7 +87,7 @@ export default function Home() {
     <Layout>
       <TopsideWrapper justify="center" align="center">
         <AnimateContainer>
-          <TopsideInner justify="center" align="center" direction="column" gap={30}>
+          <TopsideInner justify="center" align="center" direction="column">
             <Input
               leftElement={<CalendarIcon size={30} />}
               placeholder="약속 제목을 입력해주세요"
@@ -169,13 +169,17 @@ const CustomGrid = styled(Grid, {
 });
 
 const TopsideWrapper = styled(Flex, {
-  h: '$200',
+  h: '$160',
+  '@bp1': { h: '$180' },
+  '@bp2': { h: '$200' },
+  '@bp3': { h: '$200' },
 });
 
 const TopsideInner = styled(Flex, {
   w: '$full',
   h: '$full',
   pt: '$30',
+  gap: '$20',
 });
 
 const BottomsideWrapper = styled(Box, {

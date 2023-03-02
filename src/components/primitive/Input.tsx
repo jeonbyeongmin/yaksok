@@ -52,27 +52,24 @@ const InputWrapper = styled(Flex, {
     },
     scale: {
       sm: {
-        fs: '$sm',
         py: '$3',
         px: '$4',
         gap: '$2',
       },
       md: {
-        fs: '$md',
         py: '$4',
         px: '$6',
         gap: '$3',
       },
       lg: {
-        fs: '$lg',
-        py: '$8',
+        py: '$5',
         px: '$10',
         gap: '$4',
         maxW: '$150',
 
         '@bp1': { maxW: '$200' },
-        '@bp2': { maxW: '$200' },
-        '@bp3': { maxW: '$250' },
+        '@bp2': { maxW: '$200', py: '$8' },
+        '@bp3': { maxW: '$250', py: '$8' },
       },
     },
   },
@@ -101,10 +98,12 @@ const CustomInput = styled('input', {
         fs: '$sm',
       },
       md: {
-        fs: '$md',
+        fs: '$sm',
+        '@bp1': { fs: '$md' },
       },
       lg: {
-        fs: '$lg',
+        fs: '$md',
+        '@bp1': { fs: '$lg' },
       },
     },
   },

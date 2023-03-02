@@ -17,12 +17,30 @@ const CustomText = styled('span', {
   variants: {
     size: {
       xs: { fs: '$xs' },
-      sm: { fs: '$sm' },
-      md: { fs: '$md' },
-      lg: { fs: '$lg' },
-      xl: { fs: '$xl' },
-      '2xl': { fs: '$2xl' },
-      '3xl': { fs: '$3xl' },
+      sm: {
+        fs: '$xs',
+        '@bp1': { fs: '$sm' },
+      },
+      md: {
+        fs: '$sm',
+        '@bp1': { fs: '$md' },
+      },
+      lg: {
+        fs: '$md',
+        '@bp1': { fs: '$lg' },
+      },
+      xl: {
+        fs: '$lg',
+        '@bp1': { fs: '$xl' },
+      },
+      '2xl': {
+        fs: '$xl',
+        '@bp1': { fs: '$2xl' },
+      },
+      '3xl': {
+        fs: '$2xl',
+        '@bp1': { fs: '$3xl' },
+      },
     },
 
     weight: {

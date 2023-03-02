@@ -34,8 +34,12 @@ const CustomContent = styled(Content, {
   color: '$gray800',
   borderRadius: '$md',
   boxShadow: '$2',
-  fs: '$md',
+  fs: '$sm',
   p: '$3',
+
+  '@bp1': {
+    fs: '$md',
+  },
 
   [`.${darkTheme} &`]: {
     color: '$white',
@@ -51,6 +55,7 @@ const CustomTrigger = styled(Trigger, {
   border: '1px solid $line',
   outline: 'none',
   w: '$full',
+  color: '$gray800',
 
   [`.${darkTheme} &`]: {
     color: '$white',
@@ -77,16 +82,18 @@ const CustomTrigger = styled(Trigger, {
         gap: '$2',
       },
       md: {
-        fs: '$md',
+        fs: '$sm',
         py: '$4',
         px: '$6',
         gap: '$3',
+        '@bp1': { fs: '$md' },
       },
       lg: {
-        fs: '$lg',
+        fs: '$md',
         py: '$8',
         px: '$10',
         gap: '$4',
+        '@bp1': { fs: '$lg' },
       },
     },
   },
