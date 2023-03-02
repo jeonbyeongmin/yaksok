@@ -96,7 +96,6 @@ export default function Home() {
               variant="blurred"
               scale="lg"
               radius="pill"
-              width="50rem"
             />
             <Flex direction="column" gap={7}>
               <Input
@@ -116,7 +115,7 @@ export default function Home() {
       </TopsideWrapper>
       <BottomsideWrapper>
         <BottomsideInnerWrapper>
-          <Grid columns={2} align="start" justify="center">
+          <CustomGrid align="start" justify="center">
             <SelectorWrapper direction="column" gap={2}>
               <Divider />
               <Text content="시작 날짜 / 종료 날짜를 선택해주세요" size="lg" weight="bold" />
@@ -143,7 +142,7 @@ export default function Home() {
                 <Text content="까지" weight="bold" color="gray500" />
               </TimeSelectorWrapper>
             </SelectorWrapper>
-          </Grid>
+          </CustomGrid>
         </BottomsideInnerWrapper>
       </BottomsideWrapper>
 
@@ -161,6 +160,13 @@ export default function Home() {
     </Layout>
   );
 }
+
+const CustomGrid = styled(Grid, {
+  '@bp1': { gridTemplateColumns: 'repeat(1, 1fr)' },
+  '@bp2': { gridTemplateColumns: 'repeat(2, 1fr)' },
+  '@bp3': { gridTemplateColumns: 'repeat(2, 1fr)' },
+  rowGap: '$20',
+});
 
 const TopsideWrapper = styled(Flex, {
   h: '$200',

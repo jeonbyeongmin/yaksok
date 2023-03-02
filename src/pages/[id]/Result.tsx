@@ -224,19 +224,9 @@ function EventResult({ eventID }: EventResultProps) {
 }
 
 const CustomGrid = styled(Grid, {
-  '@bp1': {
-    gridTemplateColumns: 'repeat(1, 1fr)',
-  },
-  '@bp2': {
-    gridTemplateColumns: 'repeat(2, 1fr)',
-  },
-
-  '@bp3': {
-    gridTemplateColumns: 'repeat(2, 1fr)',
-  },
-
-  gap: '$15',
-  mb: '$15',
+  '@bp1': { gridTemplateColumns: 'repeat(1, 1fr)' },
+  '@bp2': { gridTemplateColumns: 'repeat(2, 1fr)' },
+  '@bp3': { gridTemplateColumns: 'repeat(2, 1fr)' },
 });
 
 const CardInner = styled(Flex, {

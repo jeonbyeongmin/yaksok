@@ -25,6 +25,7 @@ const InputWrapper = styled(Flex, {
   p: '$sm',
   ai: 'center',
   jc: 'space-between',
+  w: '100%',
 
   variants: {
     variant: {
@@ -67,6 +68,11 @@ const InputWrapper = styled(Flex, {
         py: '$8',
         px: '$10',
         gap: '$4',
+        maxW: '$150',
+
+        '@bp1': { maxW: '$200' },
+        '@bp2': { maxW: '$200' },
+        '@bp3': { maxW: '$250' },
       },
     },
   },

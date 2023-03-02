@@ -27,9 +27,6 @@ const CustomButton = styled('button', {
   WebkitTapHighlightColor: 'rgba(0,0,0,0)',
   gap: '$4',
 
-  height: '$5',
-  px: '$2',
-  fontSize: '$md',
   fontWeight: '$regular',
   fontVariantNumeric: 'tabular-nums',
 
@@ -71,8 +68,10 @@ const CustomButton = styled('button', {
         px: '$14',
       },
       '2xl': {
-        height: '$32',
+        height: '$28',
         px: '$14',
+
+        '@bp1': { height: '$32', px: '$14' },
       },
     },
 
