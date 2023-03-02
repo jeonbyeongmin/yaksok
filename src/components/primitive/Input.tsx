@@ -62,7 +62,7 @@ const InputWrapper = styled(Flex, {
         gap: '$3',
       },
       lg: {
-        py: '$5',
+        py: '$6',
         px: '$10',
         gap: '$4',
         maxW: '$150',
@@ -82,6 +82,7 @@ const InputWrapper = styled(Flex, {
 });
 
 const CustomInput = styled('input', {
+  all: 'unset',
   w: '$full',
   bgColor: '$transparent',
   outline: 'none',

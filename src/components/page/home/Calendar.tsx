@@ -7,9 +7,7 @@ const ReactCalendar = dynamic(() => import('react-calendar'), { ssr: false });
 
 interface CalendarProps {
   date: Date | [Date | null, Date | null] | null | undefined;
-  setDate: Dispatch<
-    SetStateAction<Date | [Date | null, Date | null] | null | undefined>
-  >;
+  setDate: Dispatch<SetStateAction<Date | [Date | null, Date | null] | null | undefined>>;
 }
 
 function Calendar({ date, setDate }: CalendarProps) {
@@ -29,6 +27,7 @@ function Calendar({ date, setDate }: CalendarProps) {
 
   return (
     <ReactCalendar
+      minDetail="month"
       onChange={setDate}
       formatDay={(_, date) => dayjs(date).format('D')}
       value={date}

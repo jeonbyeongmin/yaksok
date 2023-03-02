@@ -176,8 +176,7 @@
   visibility: hidden;
 }
 .react-calendar__navigation button[disabled] {
-  visibility: hidden;
-  cursor: default;
+  background: transparent;
 }
 abbr[title] {
   text-decoration: none;
