@@ -1,14 +1,14 @@
+import { Card, CardInner } from '@/components/primitive/Card';
 import { darkTheme, styled } from '@/styles/stitches.config';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Badge } from '@/components/primitive/Badge';
 import { Button } from '@/components/primitive/Button';
 import { CalendarIcon } from '@/components/assets/CalendarIcon';
-import { Card } from '@/components/primitive/Card';
 import { Flex } from '@/components/primitive/Flex';
 import { GetServerSideProps } from 'next';
 import { Grid } from '@/components/primitive/Grid';
-import Layout from '@/components/layout/Layout';
+import { Layout } from '@/components/layout/Layout';
 import LoadingMessage from '@/components/page/LoadingMessage';
 import { Page } from '@/components/primitive/Page';
 import { Paper } from '@/components/primitive/Paper';
@@ -30,6 +30,7 @@ interface EventResultProps {
 function EventResult({ eventID }: EventResultProps) {
   const router = useRouter();
 
+  const currentRef = useRef<HTMLDivElement>(null);
   const { event } = useEventSWR({ eventID });
   const { participants, reload } = useParticipantsSWR({ eventID });
 
@@ -77,7 +78,14 @@ function EventResult({ eventID }: EventResultProps) {
     [handleTimetableChange, paintTimetable, participants, selectedParticipant]
   );
 
-  function scrollToTop() {}
+  const scrollToTop = useCallback(() => {
+    if (currentRef.current) {
+      currentRef.current.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    }
+  }, []);
 
   const handleTimetablePartitionSelect = useCallback(
     (partition: TimetablePartition) => {
@@ -88,7 +96,7 @@ function EventResult({ eventID }: EventResultProps) {
         setSelectedTimetablePartition(partition);
       }
     },
-    [selectedTimetablePartition]
+    [scrollToTop, selectedTimetablePartition]
   );
 
   const handleCopyClipBoard = async () => {
@@ -141,7 +149,7 @@ function EventResult({ eventID }: EventResultProps) {
   }
 
   return (
-    <Layout>
+    <Layout ref={currentRef}>
       <Page>
         <Paper transparent>
           <ButtonWrapper align="center" justify="end" isFull>
@@ -150,7 +158,7 @@ function EventResult({ eventID }: EventResultProps) {
             </Button>
           </ButtonWrapper>
 
-          <CustomGrid gap={10} align="start">
+          <CustomGrid align="start">
             <Card direction="column">
               <CardInner align="start" gap={5}>
                 <Flex isFull justify="start" gap={3}>
@@ -230,25 +238,16 @@ function EventResult({ eventID }: EventResultProps) {
 }
 
 const CustomGrid = styled(Grid, {
+  gap: '$5',
   '@bp1': { gridTemplateColumns: 'repeat(1, 1fr)' },
   '@bp2': { gridTemplateColumns: 'repeat(2, 1fr)' },
   '@bp3': { gridTemplateColumns: 'repeat(2, 1fr)' },
 });
 
-const CardInner = styled(Flex, {
-  flexDirection: 'column',
-  w: '$full',
-  p: '$15',
-  pt: '$10',
-  color: '$gray800',
-
-  [`.${darkTheme} &`]: {
-    color: '$white',
-  },
-});
-
 const ButtonWrapper = styled(Flex, {
-  mb: '$10',
+  mb: '$5',
+
+  '@bp1': { mb: '$10' },
 });
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {

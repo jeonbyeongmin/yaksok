@@ -1,33 +1,14 @@
+import { ElementRef, ReactNode, forwardRef } from 'react';
+
 import { Box } from '@/components/primitive/Box';
 import Footer from '@/components/layout/Footer';
 import Head from 'next/head';
 import Header from '@/components/layout/Header';
-import { ReactNode } from 'react';
-import { ToastContainer } from 'react-toastify';
 import { styled } from '@/styles/stitches.config';
 
 interface LayoutProps {
   children: ReactNode;
   title?: string;
-}
-
-function Layout({ children, title = 'YAKSOK' }: LayoutProps) {
-  return (
-    <>
-      <Head>
-        <title>{title}</title>
-        <meta name="description" content="from" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Container>
-        <Header />
-
-        <Content>{children}</Content>
-        <Footer />
-      </Container>
-    </>
-  );
 }
 
 const Container = styled(Box, {
@@ -44,4 +25,24 @@ const Content = styled('main', {
   flexGrow: 1,
 });
 
-export default Layout;
+export const Layout = forwardRef<ElementRef<typeof Container>, LayoutProps>(
+  ({ children, title = 'YAKSOK' }, forwardedRef) => {
+    return (
+      <>
+        <Head>
+          <title>{title}</title>
+          <meta name="description" content="from" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <Container ref={forwardedRef}>
+          <Header />
+          <Content>{children}</Content>
+          <Footer />
+        </Container>
+      </>
+    );
+  }
+);
+
+Layout.displayName = 'Layout';
