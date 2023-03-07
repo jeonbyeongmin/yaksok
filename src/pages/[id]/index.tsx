@@ -170,7 +170,7 @@ function Event({ eventID, participantCID }: EventProps) {
                 radius="pill"
                 size="2xl"
                 color="primary"
-                onClick={handleSubmitButtonClick}
+                onClick={!isLoading ? handleSubmitButtonClick : undefined}
                 isLoading={isLoading}>
                 <Text content="제출하기" color="white" size="xl" weight="bold" />
               </Button>

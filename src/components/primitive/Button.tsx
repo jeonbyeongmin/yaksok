@@ -100,8 +100,16 @@ const CustomButton = styled('button', {
       // grayscale
       gray: {
         bgColor: '$gray100',
+
+        '&:active': {
+          bgColor: '$gray200',
+        },
+
         [`.${darkTheme} &`]: {
-          backgroundColor: '$gray700',
+          bgColor: '$gray700',
+          '&:active': {
+            bgColor: '$gray600',
+          },
         },
       },
       light: {
@@ -116,11 +124,11 @@ const CustomButton = styled('button', {
       // brand
       primary: {
         bgColor: '$primary',
-        '&:disabled': { backgroundColor: '$gray200' },
+        '&:disabled': { bgColor: '$gray200' },
 
         [`.${darkTheme} &`]: {
           bgColor: '$darken100',
-          '&:disabled': { backgroundColor: '$gray700' },
+          '&:disabled': { bgColor: '$gray700' },
         },
       },
       lighten100: { bgColor: '#86CCF3' },
@@ -142,7 +150,7 @@ const CustomButton = styled('button', {
 
     ghost: {
       true: {
-        backgroundColor: 'transparent',
+        bgColor: 'transparent',
         boxShadow: 'none',
       },
     },

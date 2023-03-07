@@ -46,7 +46,7 @@ const CustomContent = styled(Content, panelStyles, {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  minWidth: 200,
+
   maxHeight: '85vh',
 
   marginTop: '-5vh',

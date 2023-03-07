@@ -7,6 +7,7 @@ import { CreateParticipantAPI } from '@/api/participants/create-participant';
 import { Flex } from '@/components/primitive/Flex';
 import { Input } from '@/components/primitive/Input';
 import { Text } from '@/components/primitive/Text';
+import { logOnBrowser } from 'common/utils/log';
 import { useRouter } from 'next/router';
 
 interface ParticipationModalProps {
@@ -28,17 +29,26 @@ function ParticipationModal({
 
   const [open, setOpen] = useState<boolean>(false);
   const [name, setName] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
   };
 
   const handleButtonClick = async () => {
+    if (!name) {
+      setError('이름을 입력해주세요.');
+      return;
+    }
+
     if (!isPossibleCreateParticipant) {
       alert('이미 모든 참가자가 참여했어요.');
       router.push('/');
       return;
     }
+
+    setIsLoading(true);
 
     try {
       const { participant } = await CreateParticipantAPI({
@@ -51,7 +61,11 @@ function ParticipationModal({
         handleParticipantIDChange(participant._id);
         setOpen(false);
       }
-    } catch (error) {}
+    } catch (error) {
+      logOnBrowser(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -77,8 +91,18 @@ function ParticipationModal({
               variant="outline"
             />
           </InputWrapper>
+          <Text
+            content={error && !name ? error : ''}
+            color="red"
+            size="xs"
+            css={{ textAlign: 'end' }}
+          />
           <ButtonWrapper>
-            <Button color="gray" onClick={handleButtonClick} radius="lg">
+            <Button
+              color="gray"
+              size="sm"
+              onClick={!isLoading ? handleButtonClick : undefined}
+              radius="lg">
               <Text content="확인" />
             </Button>
           </ButtonWrapper>
@@ -97,8 +121,13 @@ const InputWrapper = styled(Flex, {
 });
 
 const ModalContentWrapper = styled(Flex, {
-  width: '$200',
-  px: '$10',
+  width: '$160',
+  px: '$5',
+
+  '@bp1': {
+    width: '$200',
+    px: '$10',
+  },
 });
 
 const ButtonWrapper = styled(Flex, {

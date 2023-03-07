@@ -73,6 +73,8 @@ const CustomText = styled('span', {
       darken200: { color: '#0B4B6F' },
       darken300: { color: '#072C40' },
       darken400: { color: '#020C12' },
+
+      red: { color: '$red' },
     },
 
     gradient: {

@@ -46,6 +46,8 @@ export const { css, config, createTheme, getCssText, globalCss, reset, styled, t
         darken300: '#072C40',
         darken400: '#020C12',
 
+        red: '#EB4D3D',
+
         // light
         panel: '#FFFFFF',
         glass: 'rgba(255, 255, 255, 0.5)',
