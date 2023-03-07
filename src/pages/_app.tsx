@@ -11,6 +11,7 @@ import { SWRConfig } from 'swr';
 import { ThemeProvider } from 'next-themes';
 import { ToastContainer } from 'react-toastify';
 import { darkTheme } from '@/styles/stitches.config';
+import { logOnBrowser } from 'common/utils/log';
 
 const notoSans = Noto_Sans_KR({
   weight: ['300', '400', '700'],
@@ -25,7 +26,7 @@ export default function App({ Component, pageProps }: AppProps) {
         value={{
           revalidateOnFocus: false,
           fetcher: (resource, init) => {
-            console.log(`fetching ${resource}`);
+            logOnBrowser(`fetching ${resource}`);
             return fetch(resource, init).then((res) => res.json());
           },
         }}>

@@ -1,5 +1,4 @@
 import { Card, CardInner } from '@/components/primitive/Card';
-import { darkTheme, styled } from '@/styles/stitches.config';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Badge } from '@/components/primitive/Badge';
@@ -18,6 +17,7 @@ import { Text } from '@/components/primitive/Text';
 import Timetable from '@/components/page/Timetable';
 import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
 import { makeToast } from '@/components/primitive/Toast';
+import { styled } from '@/styles/stitches.config';
 import { useEventSWR } from '@/hooks/useEventSWR';
 import { useParticipantsSWR } from '@/hooks/useParticipantsSWR';
 import { useRouter } from 'next/router';
