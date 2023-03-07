@@ -166,7 +166,7 @@ function Timetable({
       ) : null}
 
       {timetable.map((row, rowIndex) => (
-        <Flex key={rowIndex} gap={6} isFull>
+        <Flex key={rowIndex} gap={3} isFull>
           {!isSimple ? (
             <BlankCell align="start" justify="end">
               {rowIndex % 2 === 0 && (

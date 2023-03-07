@@ -150,6 +150,7 @@ const CustomButton = styled('button', {
 
     ghost: {
       true: {
+        p: 0,
         bgColor: 'transparent',
         boxShadow: 'none',
       },
@@ -164,9 +165,9 @@ const CustomButton = styled('button', {
 });
 
 export const Button = forwardRef<ElementRef<typeof CustomButton>, IButton>(
-  ({ children, leftElement, isLoading, noBlank, size, rightElement, ...props }, forwaredRef) => {
+  ({ children, leftElement, isLoading, noBlank, size, rightElement, ...props }, forwardedRef) => {
     return (
-      <CustomButton ref={forwaredRef} size={size} {...props}>
+      <CustomButton ref={forwardedRef} size={size} {...props}>
         {isLoading ? (
           <Loader color="white" />
         ) : !!leftElement ? (

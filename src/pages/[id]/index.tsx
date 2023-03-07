@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Button } from '@/components/primitive/Button';
 import { CalendarIcon } from '@/components/assets/CalendarIcon';
+import { CaretRightIcon } from '@/components/assets/CaretRightIcon';
 import { Flex } from '@/components/primitive/Flex';
 import { GetServerSideProps } from 'next';
 import { Layout } from '@/components/layout/Layout';
@@ -30,6 +31,7 @@ interface EventProps {
 
 function Event({ eventID, participantCID }: EventProps) {
   const router = useRouter();
+
   const [participantID, setParticipantID] = useState(participantCID ?? '');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -74,6 +76,10 @@ function Event({ eventID, participantCID }: EventProps) {
     } catch (error) {}
   }, []);
 
+  const handleMoveToResultButtonClick = useCallback(() => {
+    router.push(`/${eventID}/result`);
+  }, [eventID, router]);
+
   const handleSubmitButtonClick = useCallback(async () => {
     const availableIndexes = getAvailableIndexes();
 
@@ -86,14 +92,14 @@ function Event({ eventID, participantCID }: EventProps) {
       });
 
       if (success) {
-        router.push(`/${eventID}/result`);
+        handleMoveToResultButtonClick();
       }
     } catch (error) {
       logOnBrowser(error);
     }
 
     setIsLoading(false);
-  }, [eventID, getAvailableIndexes, participantID, router]);
+  }, [getAvailableIndexes, handleMoveToResultButtonClick, participantID]);
 
   useEffect(() => {
     if (participantCID) setParticipantID(participantCID);
@@ -165,16 +171,26 @@ function Event({ eventID, participantCID }: EventProps) {
               handleTimetableChange={handleTimetableChange}
             />
 
-            <ButtonWrapper justify="center" isFull>
-              <Button
-                radius="pill"
-                size="2xl"
-                color="primary"
-                onClick={!isLoading ? handleSubmitButtonClick : undefined}
-                isLoading={isLoading}>
-                <Text content="제출하기" color="white" size="xl" weight="bold" />
-              </Button>
-            </ButtonWrapper>
+            <Flex direction="column" isFull>
+              <ButtonWrapper justify="center" isFull>
+                <Button
+                  ghost
+                  rightElement={<CaretRightIcon />}
+                  onClick={handleMoveToResultButtonClick}>
+                  <Text content="다른 참여자의 시간표가 궁금하신가요?" size="sm" />
+                </Button>
+              </ButtonWrapper>
+              <ButtonWrapper justify="center" isFull>
+                <Button
+                  radius="pill"
+                  size="2xl"
+                  color="primary"
+                  onClick={!isLoading ? handleSubmitButtonClick : undefined}
+                  isLoading={isLoading}>
+                  <Text content="제출하기" color="white" size="xl" weight="bold" />
+                </Button>
+              </ButtonWrapper>
+            </Flex>
           </Inner>
         </Paper>
       </Page>
@@ -237,7 +253,9 @@ const ShareButton = styled(Button, {
 });
 
 const ButtonWrapper = styled(Flex, {
-  pt: '$20',
+  '&:not(:last-child)': {
+    pt: '$20',
+  },
 });
 
 export default Event;
