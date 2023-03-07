@@ -210,7 +210,7 @@ const Inner = styled(Flex, {
   color: '$gray800',
 
   w: '$full',
-  px: '$10',
+  px: '$5',
   gap: '$12',
 
   '@bp2': {

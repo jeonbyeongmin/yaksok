@@ -227,7 +227,7 @@ const Cell = styled('div', {
     cellHeight: {
       sm: { minH: '$10' },
       md: {
-        minH: '$12',
+        minH: '$25',
         '@bp1': { minH: '$18' },
       },
       lg: { minH: '$16' },
