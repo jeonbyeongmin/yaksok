@@ -1,5 +1,5 @@
 import { ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
-import { ComponentProps, ElementRef, ReactNode, forwardRef } from 'react';
+import { ComponentProps, ElementRef, ReactNode, forwardRef, useEffect, useState } from 'react';
 import {
   Content,
   Icon,
@@ -36,6 +36,8 @@ const CustomContent = styled(Content, {
   boxShadow: '$2',
   fs: '$sm',
   p: '$3',
+  zIndex: 101,
+  userSelect: 'none',
 
   '@bp1': {
     fs: '$md',
@@ -56,6 +58,7 @@ const CustomTrigger = styled(Trigger, {
   outline: 'none',
   w: '$full',
   color: '$gray800',
+  zIndex: 101,
 
   [`.${darkTheme} &`]: {
     color: '$white',
@@ -124,10 +127,42 @@ const CustomScrollUpButton = styled(ScrollUpButton, {
   outline: 'none',
 });
 
+const StyledOverlay = styled('div', {
+  position: 'fixed',
+  top: 0,
+  right: 0,
+  bottom: 0,
+  left: 0,
+  zIndex: 100,
+  isolation: 'isolate',
+});
+
+/* Workaround for touch events propagating to underlying elements https://github.com/radix-ui/primitives/issues/1658 */
+const Overlay = ({ open }: { open?: boolean }) => {
+  const [visible, setVisible] = useState<boolean | undefined>(open);
+
+  useEffect(() => {
+    if (!open) {
+      const timer = setTimeout(() => {
+        setVisible(false);
+      }, 200);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+    setVisible(true);
+    return () => {};
+  }, [open]);
+
+  return visible ? <StyledOverlay onClick={(e) => e.stopPropagation()} /> : null;
+};
+
 export const SelectWrapper = forwardRef<ElementRef<typeof CustomTrigger>, ISelect>(
   ({ children, variant, radius, scale, placeholder, ...props }, forwardedRef) => {
+    const [open, setOpen] = useState(false);
+
     return (
-      <Root {...props}>
+      <Root {...props} onOpenChange={setOpen} open={open}>
         <CustomTrigger variant={variant} radius={radius} scale={scale} ref={forwardedRef}>
           <Value placeholder={placeholder} />
           <Icon>
@@ -135,15 +170,18 @@ export const SelectWrapper = forwardRef<ElementRef<typeof CustomTrigger>, ISelec
           </Icon>
         </CustomTrigger>
         <Portal>
-          <CustomContent>
-            <CustomScrollUpButton>
-              <ChevronUpIcon />
-            </CustomScrollUpButton>
-            <Viewport>{children}</Viewport>
-            <CustomScrollDownButton>
-              <ChevronDownIcon />
-            </CustomScrollDownButton>
-          </CustomContent>
+          <>
+            <Overlay open={open} />
+            <CustomContent>
+              <CustomScrollUpButton>
+                <ChevronUpIcon />
+              </CustomScrollUpButton>
+              <Viewport>{children}</Viewport>
+              <CustomScrollDownButton>
+                <ChevronDownIcon />
+              </CustomScrollDownButton>
+            </CustomContent>
+          </>
         </Portal>
       </Root>
     );
