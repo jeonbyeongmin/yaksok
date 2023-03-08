@@ -23,8 +23,7 @@ interface IInput extends CustomInputProps {
 const InputWrapper = styled(Flex, {
   bgColor: '$white',
   p: '$sm',
-  ai: 'center',
-  jc: 'space-between',
+  alignItems: 'center',
   w: '$full',
 
   variants: {

@@ -100,7 +100,7 @@ export default function Home() {
         <AnimateContainer>
           <TopsideInner justify="center" align="center" direction="column">
             <Input
-              leftElement={<CalendarIcon size={30} />}
+              leftElement={<CalendarIcon size={20} />}
               placeholder="약속 제목을 입력해주세요"
               value={title}
               onChange={handleTitleChange}
