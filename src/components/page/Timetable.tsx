@@ -50,8 +50,11 @@ function Timetable({
 
   const dates = useMemo(() => {
     const dates = [];
-    for (let date = dayjs(startDate); date.isBefore(dayjs(endDate)); date = date.add(1, 'day')) {
+    let date = dayjs(startDate);
+    const end = dayjs(endDate);
+    while (date.isBefore(end)) {
       dates.push(date);
+      date = date.add(1, 'day');
     }
     return dates;
   }, [endDate, startDate]);
@@ -79,11 +82,10 @@ function Timetable({
       const target = e.target as HTMLDivElement;
       const { row, col } = target.dataset;
 
-      if (!handleTimetableChange) return;
-      if (!row || !col) return;
+      if (!handleTimetableChange || !row || !col) return;
 
-      const newTimeTable = deepCopy2DArray(timetable);
-      newTimeTable[Number(row)][Number(col)] = newTimeTable[Number(row)][Number(col)] ? 0 : 1;
+      const newTimeTable = [...timetable];
+      newTimeTable[Number(row)][Number(col)] ^= 1;
 
       handleTimetableChange(newTimeTable);
     },
@@ -92,25 +94,20 @@ function Timetable({
 
   const handleMouseDown = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      const target = e.target as HTMLDivElement;
-      const { row, col } = target.dataset;
-
       if (!handleTimetableChange) return;
-      if (!row || !col) return;
 
-      const newTimeTable = deepCopy2DArray(timetable);
-      startTimeTable.current = deepCopy2DArray(timetable);
+      const { dataset } = e.target as HTMLDivElement;
+      const row = Number(dataset.row);
+      const col = Number(dataset.col);
 
-      if (!!startTimeTable.current[Number(row)][Number(col)]) {
-        newTimeTable[Number(row)][Number(col)] = 0;
-        selectMode.current = 0;
-      } else {
-        newTimeTable[Number(row)][Number(col)] = 1;
-        selectMode.current = 1;
-      }
+      if (Number.isNaN(row) || Number.isNaN(col)) return;
 
-      startRow.current = Number(row);
-      startCol.current = Number(col);
+      const newTimeTable = [...timetable];
+      startTimeTable.current = [...timetable];
+      selectMode.current = newTimeTable[row][col] ? 0 : 1;
+      newTimeTable[row][col] = selectMode.current;
+      startRow.current = row;
+      startCol.current = col;
 
       handleTimetableChange(newTimeTable);
     },
@@ -119,21 +116,18 @@ function Timetable({
 
   const handleMouseOver = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      const target = e.target as HTMLDivElement;
-      const { row, col } = target.dataset;
+      const { dataset } = e.target as HTMLDivElement;
 
-      if (!handleTimetableChange) return;
-      if (e.buttons !== 1) return;
-      if (!row || !col) return;
-      if (startTimeTable.current.length === 0) return;
+      if (!handleTimetableChange || e.buttons !== 1) return;
+
+      const row = Number(dataset.row);
+      const col = Number(dataset.col);
+
+      if (Number.isNaN(row) || Number.isNaN(col) || startTimeTable.current.length === 0) return;
 
       const newTimeTable = deepCopy2DArray(timetable);
-
-      const startRowNum = Math.min(startRow.current, Number(row));
-      const startColNum = Math.min(startCol.current, Number(col));
-
-      const endRowNum = Math.max(startRow.current, Number(row));
-      const endColNum = Math.max(startCol.current, Number(col));
+      const [startRowNum, endRowNum] = [startRow.current, row].sort((a, b) => a - b);
+      const [startColNum, endColNum] = [startCol.current, col].sort((a, b) => a - b);
 
       for (let i = 0; i < newTimeTable.length; i++) {
         for (let j = 0; j < newTimeTable[0].length; j++) {
@@ -174,6 +168,38 @@ function Timetable({
     [participantsNumber, resolvedTheme, selectedTimetablePartition]
   );
 
+  const handleEvent = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+    if (readOnly) return;
+    if (isMobile()) {
+      const event = e as React.TouchEvent<HTMLDivElement>;
+      switch (event.type) {
+        case 'touchstart':
+          handleTouchStart();
+          break;
+        case 'touchmove':
+          handleTouchMove();
+          break;
+        case 'touchend':
+          handleTouchEnd(event);
+          break;
+        default:
+          break;
+      }
+    } else {
+      const event = e as React.MouseEvent<HTMLDivElement>;
+      switch (event.type) {
+        case 'mousedown':
+          handleMouseDown(event);
+          break;
+        case 'mouseover':
+          handleMouseOver(event);
+          break;
+        default:
+          break;
+      }
+    }
+  };
+
   return (
     <TimetableWrapper direction="column" isFull>
       {!isSimple ? (
@@ -207,11 +233,11 @@ function Timetable({
 
           <Flex
             isFull
-            onTouchStart={!readOnly && isMobile() ? handleTouchStart : undefined}
-            onTouchMove={!readOnly && isMobile() ? handleTouchMove : undefined}
-            onTouchEnd={!readOnly && isMobile() ? handleTouchEnd : undefined}
-            onMouseDown={!readOnly && !isMobile() ? handleMouseDown : undefined}
-            onMouseOver={!readOnly && !isMobile() ? handleMouseOver : undefined}>
+            onTouchStart={handleEvent}
+            onTouchMove={handleEvent}
+            onTouchEnd={handleEvent}
+            onMouseDown={handleEvent}
+            onMouseOver={handleEvent}>
             {row.map((col, colIndex) => (
               <Flex key={colIndex} direction="column" isFull>
                 <Cell
