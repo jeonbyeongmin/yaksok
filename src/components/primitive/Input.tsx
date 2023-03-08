@@ -25,6 +25,8 @@ const InputWrapper = styled(Flex, {
   p: '$sm',
   alignItems: 'center',
   w: '$full',
+  color: '$black',
+  [`.${darkTheme} &`]: { color: '$white' },
 
   variants: {
     variant: {
