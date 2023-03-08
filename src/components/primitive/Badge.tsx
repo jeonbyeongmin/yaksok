@@ -14,12 +14,17 @@ export const BadgeWrapper = styled(Box, {
   borderRadius: '$md',
   cursor: 'pointer',
   userSelect: 'none',
-  fs: '$xs',
+  fs: '$sm',
 
   variants: {
     active: {
-      true: { bg: '$darken200', color: '$white' },
-      false: { bg: '$lighten300', color: '$darken200' },
+      true: {
+        bg: '$darken200',
+        color: '$white',
+        fontWeight: 'bold',
+        '&:active': { bg: '$darken300' },
+      },
+      false: { bg: '$lighten300', color: '$darken200', '&:active': { bg: '$lighten200' } },
     },
   },
 });

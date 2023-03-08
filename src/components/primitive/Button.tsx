@@ -171,10 +171,8 @@ export const Button = forwardRef<ElementRef<typeof CustomButton>, IButton>(
       <CustomButton ref={forwardedRef} size={size} {...props}>
         {isLoading ? (
           <Loader color="white" />
-        ) : !!leftElement ? (
-          leftElement
         ) : (
-          <Blank size={size} visible={!noBlank} />
+          leftElement || <Blank size={size} visible={!noBlank} />
         )}
         {children}
         {!!rightElement ? rightElement : <Blank size={size} visible={!noBlank} />}
@@ -196,7 +194,9 @@ const Blank = styled('div', {
         width: '$4',
       },
       sm: {},
-      md: {},
+      md: {
+        width: '$7',
+      },
       lg: {},
       xl: {},
       '2xl': {

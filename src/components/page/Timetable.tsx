@@ -232,7 +232,7 @@ function Timetable({
           {!isSimple ? (
             <BlankCell align="start" justify="end">
               {rowIndex % 2 === 0 && (
-                <Text color="gray400" size="sm" content={times[rowIndex / 2] + ':00'} />
+                <Text color="gray400" size="sm" content={`${times[rowIndex / 2]}시`} />
               )}
             </BlankCell>
           ) : null}
@@ -288,6 +288,7 @@ const DateCell = styled(Flex, {
 
 const BlankCell = styled(Flex, {
   w: '$10',
+  '@bp1': { w: '$15' },
   flexShrink: 0,
 });
 

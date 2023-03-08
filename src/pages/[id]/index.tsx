@@ -137,7 +137,7 @@ function Event({ eventID, participantCID }: EventProps) {
       <Page>
         <Paper>
           <Inner direction="column">
-            <Flex direction="column" isFull>
+            <Flex direction="column" isFull gap={3}>
               <Flex align="center" justify="end" isFull>
                 <ShareButton
                   onClick={handleShareButtonClick}
@@ -151,16 +151,17 @@ function Event({ eventID, participantCID }: EventProps) {
                 </ShareButton>
               </Flex>
               <Title direction="column">
-                <Flex align="center" gap={2}>
-                  <CalendarIcon size={36} />
-                  <Text content={event?.title ?? ''} size="2xl" weight="bold" />
+                <Flex align="center" gap={4}>
+                  <CalendarIcon size={25} />
+                  <Text content={event.title} size="2xl" weight="bold" />
                 </Flex>
                 {participant && (
                   <Flex gap={2}>
-                    <Text content={participant?.name ?? ''} weight="bold" size="sm" />
+                    <Text content={participant.name} weight="bold" size="sm" />
                     <Text content="님의 시간표" size="sm" />
                   </Flex>
                 )}
+                <Text content="30분 단위로 약속 시간을 선택해주세요" size="sm" />
               </Title>
             </Flex>
             <Timetable
@@ -217,10 +218,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 const Title = styled(Flex, {
-  pl: '$15',
-  '@bp3': {
-    gap: '$3',
-  },
+  gap: '$2',
+  '@bp3': { gap: '$3' },
 });
 
 const Inner = styled(Flex, {
