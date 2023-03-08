@@ -19,6 +19,7 @@ import { makeToast } from '@/components/primitive/Toast';
 import nookies from 'nookies';
 import { updateParticipant } from '@/api/participants/update-participant';
 import { useEventSWR } from '@/hooks/useEventSWR';
+import { useIsMounted } from '@/hooks/useIsMounted';
 import { useParticipantSWR } from '@/hooks/useParticipantSWR';
 import { useParticipantsSWR } from '@/hooks/useParticipantsSWR';
 import { useRouter } from 'next/router';
@@ -31,6 +32,7 @@ interface EventProps {
 
 function Event({ eventID, participantCID }: EventProps) {
   const router = useRouter();
+  const isMounted = useIsMounted();
 
   const [participantID, setParticipantID] = useState(participantCID ?? '');
   const [isLoading, setIsLoading] = useState(false);

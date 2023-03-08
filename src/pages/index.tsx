@@ -78,12 +78,6 @@ export default function Home() {
       const eventID = await createEvent();
       await createParticipant(eventID);
 
-      await navigator.clipboard.writeText(`${window.location.href}/${eventID}`);
-      makeToast({
-        type: 'success',
-        title: '초대 링크를 클립보드에 복사했어요',
-        message: '친구들에게 공유해보세요!',
-      });
       router.push(`/${eventID}`);
     } catch (error) {
       const err = error as Error;
