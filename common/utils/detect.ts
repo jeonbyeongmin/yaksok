@@ -1,7 +1,3 @@
-export function isDesktopOS() {
-  return (
-    'win16|win32|win64|windows|mac|macintel|linux|freebsd|openbsd|sunos'.indexOf(
-      navigator.platform.toLowerCase()
-    ) >= 0
-  );
+export function isMobile() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }

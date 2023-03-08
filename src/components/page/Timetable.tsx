@@ -6,7 +6,7 @@ import { Text } from '@/components/primitive/Text';
 import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
 import dayjs from 'dayjs';
 import { deepCopy2DArray } from 'common/utils/copy';
-import { isDesktopOS } from 'common/utils/detect';
+import { isMobile } from 'common/utils/detect';
 import { useTheme } from 'next-themes';
 
 type CellType = VariantProps<typeof Cell>;
@@ -42,6 +42,7 @@ function Timetable({
   const startCol = useRef<number>(0);
   const selectMode = useRef<number>(0);
   const startTimeTable = useRef<number[][]>([]);
+  const moveFlag = useRef<boolean>(false);
 
   const readOnly = useMemo(() => {
     return !handleTimetableChange;
@@ -62,6 +63,32 @@ function Timetable({
     }
     return times;
   }, [endTime, startTime]);
+
+  const handleTouchStart = useCallback(() => {
+    moveFlag.current = false;
+  }, []);
+
+  const handleTouchMove = useCallback(() => {
+    moveFlag.current = true;
+  }, []);
+
+  const handleTouchEnd = useCallback(
+    (e: React.TouchEvent<HTMLDivElement>) => {
+      if (moveFlag.current) return;
+
+      const target = e.target as HTMLDivElement;
+      const { row, col } = target.dataset;
+
+      if (!handleTimetableChange) return;
+      if (!row || !col) return;
+
+      const newTimeTable = deepCopy2DArray(timetable);
+      newTimeTable[Number(row)][Number(col)] = newTimeTable[Number(row)][Number(col)] ? 0 : 1;
+
+      handleTimetableChange(newTimeTable);
+    },
+    [handleTimetableChange, timetable]
+  );
 
   const handleMouseDown = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -180,8 +207,11 @@ function Timetable({
 
           <Flex
             isFull
-            onMouseDown={!readOnly ? handleMouseDown : undefined}
-            onMouseOver={!readOnly && isDesktopOS() ? handleMouseOver : undefined}>
+            onTouchStart={!readOnly && isMobile() ? handleTouchStart : undefined}
+            onTouchMove={!readOnly && isMobile() ? handleTouchMove : undefined}
+            onTouchEnd={!readOnly && isMobile() ? handleTouchEnd : undefined}
+            onMouseDown={!readOnly && !isMobile() ? handleMouseDown : undefined}
+            onMouseOver={!readOnly && !isMobile() ? handleMouseOver : undefined}>
             {row.map((col, colIndex) => (
               <Flex key={colIndex} direction="column" isFull>
                 <Cell
