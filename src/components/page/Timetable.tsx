@@ -11,6 +11,14 @@ import { useTheme } from 'next-themes';
 
 type CellType = VariantProps<typeof Cell>;
 
+type TouchEventMapType = {
+  [key: string]: (e: React.TouchEvent<HTMLDivElement>) => void;
+};
+
+type MouseEventMapType = {
+  [key: string]: (e: React.MouseEvent<HTMLDivElement>) => void;
+};
+
 interface TimetableProps {
   startDate: Date;
   endDate: Date;
@@ -79,15 +87,17 @@ function Timetable({
     (e: React.TouchEvent<HTMLDivElement>) => {
       if (moveFlag.current) return;
 
-      const target = e.target as HTMLDivElement;
-      const { row, col } = target.dataset;
+      const { dataset } = e.target as HTMLDivElement;
+      const row = Number(dataset.row);
+      const col = Number(dataset.col);
 
-      if (!handleTimetableChange || !row || !col) return;
+      if (!handleTimetableChange || Number.isNaN(row) || Number.isNaN(col)) return;
 
       const newTimeTable = [...timetable];
-      newTimeTable[Number(row)][Number(col)] ^= 1;
+      newTimeTable[row][col] = newTimeTable[row][col] ? 0 : 1;
 
       handleTimetableChange(newTimeTable);
+      e.preventDefault();
     },
     [handleTimetableChange, timetable]
   );
@@ -144,6 +154,34 @@ function Timetable({
     [handleTimetableChange, timetable]
   );
 
+  const handleMouseUp = useCallback(() => {
+    startTimeTable.current = [];
+  }, []);
+
+  const mouseEventMap: MouseEventMapType = {
+    mousedown: handleMouseDown,
+    mouseover: handleMouseOver,
+    mouseup: handleMouseUp,
+  };
+
+  const touchEventMap: TouchEventMapType = {
+    touchstart: handleTouchStart,
+    touchmove: handleTouchMove,
+    touchend: handleTouchEnd,
+  };
+
+  const handleEvent = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+    if (readOnly) return;
+    const eventType = e.type;
+    if (isMobile()) {
+      const event = e as React.TouchEvent<HTMLDivElement>;
+      touchEventMap[eventType](event);
+    } else {
+      const event = e as React.MouseEvent<HTMLDivElement>;
+      mouseEventMap[eventType](event);
+    }
+  };
+
   const getTimetableBorders = useCallback((row: number, column: number) => {
     const borderTop: CellType['borderTop'] = row === 0 ? 'solidGray' : 'none';
     const borderLeft: CellType['borderLeft'] = column === 0 ? 'solidGray' : 'none';
@@ -167,38 +205,6 @@ function Timetable({
     },
     [participantsNumber, resolvedTheme, selectedTimetablePartition]
   );
-
-  const handleEvent = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
-    if (readOnly) return;
-    if (isMobile()) {
-      const event = e as React.TouchEvent<HTMLDivElement>;
-      switch (event.type) {
-        case 'touchstart':
-          handleTouchStart();
-          break;
-        case 'touchmove':
-          handleTouchMove();
-          break;
-        case 'touchend':
-          handleTouchEnd(event);
-          break;
-        default:
-          break;
-      }
-    } else {
-      const event = e as React.MouseEvent<HTMLDivElement>;
-      switch (event.type) {
-        case 'mousedown':
-          handleMouseDown(event);
-          break;
-        case 'mouseover':
-          handleMouseOver(event);
-          break;
-        default:
-          break;
-      }
-    }
-  };
 
   return (
     <TimetableWrapper direction="column" isFull>
@@ -237,7 +243,8 @@ function Timetable({
             onTouchMove={handleEvent}
             onTouchEnd={handleEvent}
             onMouseDown={handleEvent}
-            onMouseOver={handleEvent}>
+            onMouseOver={handleEvent}
+            onMouseUp={handleEvent}>
             {row.map((col, colIndex) => (
               <Flex key={colIndex} direction="column" isFull>
                 <Cell

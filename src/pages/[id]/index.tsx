@@ -73,7 +73,9 @@ function Event({ eventID, participantCID }: EventProps) {
         title: '초대 링크를 클립보드에 복사했어요',
         message: '친구들에게 공유해보세요!',
       });
-    } catch (error) {}
+    } catch (error) {
+      logOnBrowser(error);
+    }
   }, []);
 
   const handleMoveToResultButtonClick = useCallback(() => {
@@ -81,10 +83,9 @@ function Event({ eventID, participantCID }: EventProps) {
   }, [eventID, router]);
 
   const handleSubmitButtonClick = useCallback(async () => {
-    const availableIndexes = getAvailableIndexes();
-
     try {
       setIsLoading(true);
+      const availableIndexes = getAvailableIndexes();
 
       const { success } = await updateParticipant({
         participantID,
@@ -96,9 +97,9 @@ function Event({ eventID, participantCID }: EventProps) {
       }
     } catch (error) {
       logOnBrowser(error);
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   }, [getAvailableIndexes, handleMoveToResultButtonClick, participantID]);
 
   useEffect(() => {

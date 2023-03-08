@@ -58,6 +58,7 @@ const CustomButton = styled('button', {
       md: {
         height: '$22',
         px: '$12',
+        gap: '$2',
       },
       lg: {
         height: '$24',
@@ -175,7 +176,6 @@ export const Button = forwardRef<ElementRef<typeof CustomButton>, IButton>(
         ) : (
           <Blank size={size} visible={!noBlank} />
         )}
-
         {children}
         {!!rightElement ? rightElement : <Blank size={size} visible={!noBlank} />}
       </CustomButton>
