@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Badge } from '@/components/primitive/Badge';
 import { Button } from '@/components/primitive/Button';
 import { CalendarIcon } from '@/components/assets/CalendarIcon';
+import { CaretRightIcon } from '@/components/assets/CaretRightIcon';
 import { Flex } from '@/components/primitive/Flex';
 import { GetServerSideProps } from 'next';
 import { Grid } from '@/components/primitive/Grid';
@@ -51,29 +52,18 @@ function EventResult({ eventID }: EventResultProps) {
   const handleParticipantSelect = useCallback(
     (participantID: string) => {
       if (!participants) return;
-      if (selectedParticipant.includes(participantID)) {
-        setSelectedParticipant((selectedParticipant) => {
-          const newSelectedParticipant = selectedParticipant.filter((id) => id !== participantID);
-          const newSelectedParticipants = participants.filter((participant) =>
-            newSelectedParticipant.includes(participant._id)
-          );
-          const newTimetable = paintTimetable(newSelectedParticipants);
-          handleTimetableChange(newTimetable);
 
-          return newSelectedParticipant;
-        });
-      } else {
-        setSelectedParticipant((selectedParticipant) => {
-          const newSelectedParticipant = [...selectedParticipant, participantID];
-          const newSelectedParticipants = participants.filter((participant) =>
-            newSelectedParticipant.includes(participant._id)
-          );
-          const newTimetable = paintTimetable(newSelectedParticipants);
-          handleTimetableChange(newTimetable);
+      const newSelectedParticipant = selectedParticipant.includes(participantID)
+        ? selectedParticipant.filter((id) => id !== participantID)
+        : [...selectedParticipant, participantID];
 
-          return newSelectedParticipant;
-        });
-      }
+      const newSelectedParticipants = participants.filter((participant) =>
+        newSelectedParticipant.includes(participant._id)
+      );
+      const newTimetable = paintTimetable(newSelectedParticipants);
+      handleTimetableChange(newTimetable);
+
+      setSelectedParticipant(newSelectedParticipant);
     },
     [handleTimetableChange, paintTimetable, participants, selectedParticipant]
   );
@@ -152,8 +142,14 @@ function EventResult({ eventID }: EventResultProps) {
     <Layout ref={currentRef}>
       <Page>
         <Paper transparent>
-          <ButtonWrapper align="center" justify="end" isFull>
-            <Button size="xl" onClick={handleCopyClipBoard} radius="pill" color="primary">
+          <ButtonWrapper align="center" justify="end" isFull color="white">
+            <Button
+              rightElement={<CaretRightIcon />}
+              size="md"
+              onClick={handleCopyClipBoard}
+              radius="pill"
+              color="primary"
+              noBlank>
               <Text content="결과 공유하기" color="white" size="md" weight="bold" />
             </Button>
           </ButtonWrapper>
@@ -161,36 +157,34 @@ function EventResult({ eventID }: EventResultProps) {
           <CustomGrid align="start">
             <Card direction="column">
               <CardInner align="start" gap={5}>
-                <Flex isFull justify="start" gap={3}>
-                  <ButtonWrapper align="center" justify="start" isFull gap={3}>
-                    <Button
-                      onClick={handleReloadButtonClick}
-                      leftElement={<RefreshIcon size={12} />}
-                      size="xs"
-                      color="light"
-                      radius="pill"
-                      noBlank>
-                      <Text content="다시 불러오기" size="xs" />
-                    </Button>
-                    <Button
-                      onClick={handleEditButtonClick}
-                      size="xs"
-                      color="light"
-                      radius="pill"
-                      noBlank>
-                      <Text content="내 시간표 수정하기" size="xs" />
-                    </Button>
-                  </ButtonWrapper>
-                </Flex>
+                <ButtonWrapper align="center" justify="start" isFull gap={2}>
+                  <Button
+                    onClick={handleReloadButtonClick}
+                    leftElement={<RefreshIcon size={12} />}
+                    size="xs"
+                    color="light"
+                    radius="pill"
+                    noBlank>
+                    <Text content="다시 불러오기" size="xs" />
+                  </Button>
+                  <Button
+                    onClick={handleEditButtonClick}
+                    size="xs"
+                    color="light"
+                    radius="pill"
+                    noBlank>
+                    <Text content="내 시간표 수정하기" size="xs" />
+                  </Button>
+                </ButtonWrapper>
                 <Flex align="center" gap={3}>
-                  <CalendarIcon size={28} />
+                  <CalendarIcon size={20} />
                   <Text content={event?.title ?? ''} size="lg" weight="bold" />
                 </Flex>
                 <Text
                   content={`${participants?.length}/${event?.participantsNumber} 참여`}
                   size="xs"
                 />
-                <Flex isFull gap={10}>
+                <Flex isFull gap={7}>
                   <Timetable
                     startDate={event.startDate}
                     endDate={event.endDate}
@@ -202,7 +196,7 @@ function EventResult({ eventID }: EventResultProps) {
                     selectedTimetablePartition={selectedTimetablePartition}
                     isSimple
                   />
-                  <Flex direction="column" gap={4}>
+                  <Flex direction="column" gap={5}>
                     {participants?.map((participant) => (
                       <Badge
                         key={participant._id}
@@ -216,7 +210,7 @@ function EventResult({ eventID }: EventResultProps) {
               </CardInner>
             </Card>
 
-            <Flex direction="column" gap={10}>
+            <Flex direction="column" gap={6}>
               {event &&
                 partitionGroups.map((partitionGroup, rank) => (
                   <PartitionGroup
@@ -238,7 +232,7 @@ function EventResult({ eventID }: EventResultProps) {
 }
 
 const CustomGrid = styled(Grid, {
-  gap: '$5',
+  gap: '$8',
   '@bp1': { gridTemplateColumns: 'repeat(1, 1fr)' },
   '@bp2': { gridTemplateColumns: 'repeat(2, 1fr)' },
   '@bp3': { gridTemplateColumns: 'repeat(2, 1fr)' },
@@ -246,8 +240,15 @@ const CustomGrid = styled(Grid, {
 
 const ButtonWrapper = styled(Flex, {
   mb: '$5',
-
   '@bp1': { mb: '$10' },
+
+  variants: {
+    color: {
+      white: {
+        color: '$white',
+      },
+    },
+  },
 });
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {

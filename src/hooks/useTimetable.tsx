@@ -30,20 +30,19 @@ export function useTimetable(
 
       if (!newTimeTable) return [];
 
-      if (!Array.isArray(participants)) {
-        participants.availableIndexes.forEach((index) => {
-          const [rowIndex, colIndex] = index.split('-').map((v) => Number(v));
+      const paintParticipant = (participant: Participant) => {
+        participant.availableIndexes.forEach((index) => {
+          const [rowIndex, colIndex] = index.split('-').map(Number);
           newTimeTable[rowIndex][colIndex] += 1;
         });
-        return newTimeTable;
+      };
+
+      if (!Array.isArray(participants)) {
+        paintParticipant(participants);
+      } else {
+        participants.forEach(paintParticipant);
       }
 
-      participants.forEach((participant) => {
-        participant.availableIndexes.forEach((index) => {
-          const [rowIndex, colIndex] = index.split('-').map((v) => Number(v));
-          newTimeTable[rowIndex][colIndex] += 1;
-        });
-      });
       return newTimeTable;
     },
     [getPlainTimetable]
@@ -56,29 +55,23 @@ export function useTimetable(
   }, [participants, paintTimetable]);
 
   const participantsByCell = useMemo(() => {
-    if (!participants) return {};
-    if (!Array.isArray(participants)) return {};
+    if (!participants || !Array.isArray(participants)) return {};
 
     const map: { [key: string]: string[] } = {};
     participants.forEach((participant) => {
       participant.availableIndexes.forEach((index) => {
-        if (map[index]) {
-          map[index].push(participant._id);
-        } else {
-          map[index] = [participant._id];
-        }
+        map[index] = map[index] ? [...map[index], participant._id] : [participant._id];
       });
     });
     return map;
   }, [participants]);
 
   const partitionsInfo = useMemo(() => {
-    if (!participants) return [];
-    if (!Array.isArray(participants)) return [];
+    if (!participants || !Array.isArray(participants)) return [];
 
-    const participantsByCellArr = Object.entries(participantsByCell).sort((a, b) => {
-      const [aRow, aCol] = a[0].split('-').map((v) => Number(v));
-      const [bRow, bCol] = b[0].split('-').map((v) => Number(v));
+    const sortedParticipantsByCell = Object.entries(participantsByCell).sort((a, b) => {
+      const [aRow, aCol] = a[0].split('-').map(Number);
+      const [bRow, bCol] = b[0].split('-').map(Number);
       return aCol === bCol ? aRow - bRow : aCol - bCol;
     });
 
@@ -89,15 +82,16 @@ export function useTimetable(
     let col = 0;
     let tempParticipants: string[] = [];
 
-    participantsByCellArr.forEach(([index, participantIDs]) => {
-      const [currentRow, currentCol] = index.split('-').map((v) => Number(v));
+    sortedParticipantsByCell.forEach(([index, participantIDs]) => {
+      const [currentRow, currentCol] = index.split('-').map(Number);
 
-      if (
-        currentCol === col &&
-        currentRow === endRow + 1 &&
+      const isSameColumn = currentCol === col;
+      const isConsecutiveRow = currentRow === endRow + 1;
+      const isSameParticipants =
         tempParticipants.length === participantIDs.length &&
-        tempParticipants.every((v, i) => v === participantIDs[i])
-      ) {
+        tempParticipants.every((v, i) => v === participantIDs[i]);
+
+      if (isSameColumn && isConsecutiveRow && isSameParticipants) {
         endRow = currentRow;
         return;
       }
