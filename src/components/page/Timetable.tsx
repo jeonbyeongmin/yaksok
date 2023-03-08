@@ -6,6 +6,7 @@ import { Text } from '@/components/primitive/Text';
 import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
 import dayjs from 'dayjs';
 import { deepCopy2DArray } from 'common/utils/copy';
+import { isDesktopOS } from 'common/utils/detect';
 import { useTheme } from 'next-themes';
 
 type CellType = VariantProps<typeof Cell>;
@@ -187,7 +188,7 @@ function Timetable({
                   borderRight={getTimetableBorders(rowIndex, colIndex).borderRight}
                   borderBottom={getTimetableBorders(rowIndex, colIndex).borderBottom}
                   onMouseDown={!readOnly ? handleMouseDown : undefined}
-                  onMouseOver={!readOnly ? handleMouseOver : undefined}
+                  onMouseOver={!readOnly && isDesktopOS() ? handleMouseOver : undefined}
                   css={{
                     bgColor: getTimetableBackground(rowIndex, colIndex, col),
                   }}
