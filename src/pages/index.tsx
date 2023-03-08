@@ -1,5 +1,4 @@
 import { darkTheme, styled } from '@/styles/stitches.config';
-import { useCallback, useMemo, useState } from 'react';
 
 import AnimateContainer from '@/components/page/home/AnimateContainer';
 import { Box } from '@/components/primitive/Box';
@@ -19,6 +18,7 @@ import { logOnBrowser } from 'common/utils/log';
 import { makeToast } from '@/components/primitive/Toast';
 import { useInputText } from '@/hooks/useInputText';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 export default function Home() {
   const router = useRouter();
@@ -30,13 +30,34 @@ export default function Home() {
   const [startTime, setStartTime] = useState<string>('0');
   const [endTime, setEndTime] = useState<string>('1');
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string>('');
 
-  const isAvailable = useMemo(() => {
-    if (title && name && participantsNumber && date && startTime && endTime) {
-      return true;
-    }
-    return false;
-  }, [date, endTime, name, participantsNumber, startTime, title]);
+  const validate = () => {
+    if (!title) throw new Error('제목을 입력해주세요');
+    if (!name) throw new Error('이름을 입력해주세요');
+    if (!participantsNumber) throw new Error('참여 인원을 선택해주세요');
+    if (!date) throw new Error('날짜를 선택해주세요');
+    if (!startTime) throw new Error('시작 시간을 선택해주세요');
+    if (!endTime) throw new Error('종료 시간을 선택해주세요');
+  };
+
+  const createEvent = async () => {
+    const [startDate, endDate] = date as [Date, Date];
+    const event = await CreateEventAPI({
+      title,
+      startDate,
+      endDate,
+      participantsNumber: Number(participantsNumber),
+      startTime: Number(startTime),
+      endTime: Number(endTime) - 1,
+    });
+    return event.data._id;
+  };
+
+  const createParticipant = async (eventID: string) => {
+    const { success } = await CreateParticipantAPI({ name, eventID, availableIndexes: [] });
+    if (!success) throw new Error('참여자 생성에 실패하였습니다.');
+  };
 
   const handleStartTime = (value: string) => {
     setStartTime(value);
@@ -49,39 +70,29 @@ export default function Home() {
     setEndTime(value);
   };
 
-  const handleCreateEvent = useCallback(async () => {
+  const handleCreateEvent = async () => {
     try {
+      validate();
       setIsLoading(true);
-      const [startDate, endDate] = date as [Date, Date];
-      const event = await CreateEventAPI({
-        title,
-        startDate,
-        endDate,
-        participantsNumber: Number(participantsNumber),
-        startTime: Number(startTime),
-        endTime: Number(endTime) - 1,
-      });
 
-      const { _id } = event.data;
-      const { success } = await CreateParticipantAPI({ name, eventID: _id, availableIndexes: [] });
+      const eventID = await createEvent();
+      await createParticipant(eventID);
 
-      if (!success) return;
-
-      router.push(`/${_id}`);
-
-      await navigator.clipboard.writeText(`${window.location.href}/${_id}`);
-
+      await navigator.clipboard.writeText(`${window.location.href}/${eventID}`);
       makeToast({
         type: 'success',
         title: '초대 링크를 클립보드에 복사했어요',
         message: '친구들에게 공유해보세요!',
       });
+      router.push(`/${eventID}`);
     } catch (error) {
-      logOnBrowser(error);
+      const err = error as Error;
+      setError(err.message);
+      logOnBrowser(err);
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
-  }, [date, endTime, name, participantsNumber, router, startTime, title]);
+  };
 
   return (
     <Layout>
@@ -146,13 +157,15 @@ export default function Home() {
         </BottomsideInnerWrapper>
       </BottomsideWrapper>
 
-      <ButtonWrapper justify="center">
+      <ButtonWrapper justify="center" align="center" direction="column">
+        <ErrorWrapper>
+          <Text content={error} color="red" size="sm" />
+        </ErrorWrapper>
         <Button
           size="2xl"
           onClick={!isLoading ? handleCreateEvent : undefined}
           radius="pill"
           color="primary"
-          disabled={!isAvailable}
           isLoading={isLoading}>
           <Text content="약속 만들기" color="white" size="xl" weight="bold" />
         </Button>
@@ -218,6 +231,12 @@ const ButtonWrapper = styled(Flex, {
   py: '$20',
   background: '$panel',
   flex: 1,
+  position: 'relative',
+});
+const ErrorWrapper = styled(Flex, {
+  py: '$5',
+  position: 'absolute',
+  top: '0',
 });
 
 const Divider = styled(Box, {
