@@ -222,7 +222,7 @@ function Timetable({
       ) : null}
 
       {timetable.map((row, rowIndex) => (
-        <Flex key={rowIndex} gap={3} isFull>
+        <Table key={rowIndex} gap={3} isFull>
           {!isSimple ? (
             <BlankCell align="start" justify="end">
               {rowIndex % 2 === 0 && (
@@ -250,12 +250,13 @@ function Timetable({
                   borderBottom={getTimetableBorders(rowIndex, colIndex).borderBottom}
                   css={{
                     bgColor: getTimetableBackground(rowIndex, colIndex, col),
+                    transition: 'all 0.1s ease',
                   }}
                 />
               </Flex>
             ))}
           </Flex>
-        </Flex>
+        </Table>
       ))}
     </TimetableWrapper>
   );
@@ -263,6 +264,10 @@ function Timetable({
 
 const TimetableWrapper = styled(Flex, {
   userSelect: 'none',
+});
+
+const Table = styled(Flex, {
+  cursor: 'pointer',
 });
 
 const DateRow = styled(Flex, {

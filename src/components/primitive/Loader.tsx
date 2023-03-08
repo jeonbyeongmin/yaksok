@@ -33,8 +33,8 @@ const LdsEllipsis = styled('div', {
         height: '$15',
       },
       lg: {
-        width: '$40',
-        height: '$40',
+        width: '$32',
+        height: '$32',
       },
     },
   },
@@ -80,7 +80,7 @@ const LdsEllipsisChild = styled('div', {
         '&:nth-child(4)': { left: '$10' },
       },
       lg: {
-        top: '$15',
+        top: '$13',
         width: '$7',
         height: '$7',
         '&:nth-child(1)': { left: '0' },

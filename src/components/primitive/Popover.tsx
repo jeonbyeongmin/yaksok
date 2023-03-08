@@ -29,13 +29,13 @@ const CustomContent = styled(PopoverPrimitive.Content, {
   boxShadow: '$1',
   padding: '$10',
   width: '$100',
-  maxWidth: '100%',
   color: '$gray800',
   fontSize: '$sm',
   lineHeight: 1.5,
   willChange: 'transform, opacity',
   animationDuration: '400ms',
   animationTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+  outline: 'none',
 
   [`.${darkTheme} &`]: {
     backgroundColor: '$gray800',

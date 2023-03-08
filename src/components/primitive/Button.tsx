@@ -100,34 +100,34 @@ const CustomButton = styled('button', {
       // grayscale
       gray: {
         bgColor: '$gray100',
-
-        '&:active': {
-          bgColor: '$gray200',
-        },
+        '&:active': { bgColor: '$gray200' },
 
         [`.${darkTheme} &`]: {
           bgColor: '$gray700',
-          '&:active': {
-            bgColor: '$gray600',
-          },
+          '&:active': { bgColor: '$gray600' },
         },
       },
       light: {
         bgColor: '$panel',
         border: '1px solid $gray200',
+        '&:active': { bgColor: '$gray100' },
+
         [`.${darkTheme} &`]: {
           border: '1px solid $gray700',
+          '&:active': { bgColor: '$black' },
         },
       },
-      black: { bgColor: '#000000' },
+      black: { bgColor: '$black' },
 
       // brand
       primary: {
         bgColor: '$primary',
         '&:disabled': { bgColor: '$gray200' },
+        '&:active': { bgColor: '$darken100' },
 
         [`.${darkTheme} &`]: {
           bgColor: '$darken100',
+          '&:active': { bgColor: '$darken200' },
           '&:disabled': { bgColor: '$gray700' },
         },
       },
