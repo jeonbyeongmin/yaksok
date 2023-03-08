@@ -65,7 +65,8 @@ function Timetable({
 
   const handleMouseDown = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      const { row, col } = e.currentTarget.dataset;
+      const target = e.target as HTMLDivElement;
+      const { row, col } = target.dataset;
 
       if (!handleTimetableChange) return;
       if (!row || !col) return;
@@ -91,7 +92,8 @@ function Timetable({
 
   const handleMouseOver = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      const { row, col } = e.currentTarget.dataset;
+      const target = e.target as HTMLDivElement;
+      const { row, col } = target.dataset;
 
       if (!handleTimetableChange) return;
       if (e.buttons !== 1) return;
@@ -176,7 +178,10 @@ function Timetable({
             </BlankCell>
           ) : null}
 
-          <Flex isFull>
+          <Flex
+            isFull
+            onMouseDown={!readOnly ? handleMouseDown : undefined}
+            onMouseOver={!readOnly && isDesktopOS() ? handleMouseOver : undefined}>
             {row.map((col, colIndex) => (
               <Flex key={colIndex} direction="column" isFull>
                 <Cell
@@ -187,8 +192,6 @@ function Timetable({
                   borderLeft={getTimetableBorders(rowIndex, colIndex).borderLeft}
                   borderRight={getTimetableBorders(rowIndex, colIndex).borderRight}
                   borderBottom={getTimetableBorders(rowIndex, colIndex).borderBottom}
-                  onMouseDown={!readOnly ? handleMouseDown : undefined}
-                  onMouseOver={!readOnly && isDesktopOS() ? handleMouseOver : undefined}
                   css={{
                     bgColor: getTimetableBackground(rowIndex, colIndex, col),
                   }}
