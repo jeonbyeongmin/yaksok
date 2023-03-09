@@ -20,7 +20,6 @@ import { logOnBrowser } from 'common/utils/log';
 import { makeToast } from '@/components/primitive/Toast';
 import nookies from 'nookies';
 import { updateParticipant } from '@/api/participants/update-participant';
-import { useEventSWR } from '@/hooks/useEventSWR';
 import { useParticipantSWR } from '@/hooks/useParticipantSWR';
 import { useParticipantsSWR } from '@/hooks/useParticipantsSWR';
 import { useRouter } from 'next/router';
@@ -148,6 +147,12 @@ function Event({ eventID, participantCID, event }: EventProps) {
 
   return (
     <Layout eventMeta={eventMeta}>
+      <Head>
+        <meta
+          property="og:image"
+          content={`https://yaksok.vercel.app/api/og?title=${eventMeta.eventTitle}&startDate=${eventMeta.startDate}&endDate=${eventMeta.endDate}&startTime=${eventMeta.startTime}&endTime=${eventMeta.endTime}&participantsNumber=${eventMeta.articipantsNumber}`}
+        />
+      </Head>
       <Page>
         <Paper>
           <Inner direction="column">
