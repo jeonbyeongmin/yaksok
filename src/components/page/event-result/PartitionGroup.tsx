@@ -56,7 +56,16 @@ function PartitionGroup({
       <CardInner css={{ pb: '$5' }}>
         <Flex gap={4} isFull>
           <RankWrapper>
-            <Text content={`${rank + 1}`} color="white" size="lg" weight="bold" />
+            <Text
+              content={`${rank + 1}`}
+              color="white"
+              size="lg"
+              weight="bold"
+              css={{
+                position: 'absolute',
+                top: '1px',
+              }}
+            />
           </RankWrapper>
           <UnderLineBox>
             <Text
@@ -128,12 +137,15 @@ const CollapsibleTriggerWrapper = styled(Flex, {
 
 const RankWrapper = styled(Flex, {
   justifyContent: 'center',
+  position: 'relative',
   alignItems: 'center',
-  w: '$15',
-  h: '$15',
+  w: '$13',
+  h: '$13',
   bgColor: '$primary',
   borderRadius: '$round',
   flexShrink: 0,
+  '@bp1': { w: '$15', h: '$15' },
+
   [`.${darkTheme} &`]: { bg: '$darken100' },
 });
 
