@@ -22,7 +22,7 @@ const notoSans = Noto_Sans_KR({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <div className={notoSans.className}>
-      <NextNProgress />
+      <NextNProgress options={{ showSpinner: false }} />
       <SWRConfig
         value={{
           revalidateOnFocus: false,

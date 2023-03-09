@@ -54,7 +54,7 @@ function PartitionItem({
       onClick={handleClick}>
       <Flex gap={5}>
         <Text
-          content={`${convertIndexToDate(partition.col, event.startDate)}`}
+          content={`${convertIndexToDate(partition.col, event.startDate, { isShort: true })}`}
           color="primary"
           weight="bold"
         />

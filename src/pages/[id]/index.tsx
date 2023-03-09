@@ -1,3 +1,4 @@
+import { convertDateToString, convertTimeToString } from 'common/utils/convert';
 import { darkTheme, styled } from '@/styles/stitches.config';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -19,7 +20,6 @@ import { makeToast } from '@/components/primitive/Toast';
 import nookies from 'nookies';
 import { updateParticipant } from '@/api/participants/update-participant';
 import { useEventSWR } from '@/hooks/useEventSWR';
-import { useIsMounted } from '@/hooks/useIsMounted';
 import { useParticipantSWR } from '@/hooks/useParticipantSWR';
 import { useParticipantsSWR } from '@/hooks/useParticipantsSWR';
 import { useRouter } from 'next/router';
@@ -32,7 +32,6 @@ interface EventProps {
 
 function Event({ eventID, participantCID }: EventProps) {
   const router = useRouter();
-  const isMounted = useIsMounted();
 
   const [participantID, setParticipantID] = useState(participantCID ?? '');
   const [isLoading, setIsLoading] = useState(false);
@@ -44,6 +43,18 @@ function Event({ eventID, participantCID }: EventProps) {
   const { participants } = useParticipantsSWR({ eventID });
 
   const { timetable, completeTimetable, handleTimetableChange } = useTimetable(event, participant);
+
+  const eventMeta = useMemo(() => {
+    if (!event) return null;
+    return {
+      eventTitle: event.title,
+      startDate: convertDateToString(event.startDate),
+      endDate: convertDateToString(event.endDate),
+      startTime: convertTimeToString(event.startTime),
+      endTime: convertTimeToString(event.endTime),
+      participantsNumber: event.participantsNumber,
+    };
+  }, [event]);
 
   const isPossibleCreateParticipant = useMemo(() => {
     if (!participants || !event) return false;
@@ -135,7 +146,7 @@ function Event({ eventID, participantCID }: EventProps) {
   }
 
   return (
-    <Layout>
+    <Layout eventMeta={eventMeta}>
       <Page>
         <Paper>
           <Inner direction="column">

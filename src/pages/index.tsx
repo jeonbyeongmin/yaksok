@@ -15,7 +15,6 @@ import ParticipantNumberSelector from '@/components/page/home/ParticipantNumberS
 import { Text } from '@/components/primitive/Text';
 import TimeSelector from '@/components/page/home/TimeSelector';
 import { logOnBrowser } from 'common/utils/log';
-import { makeToast } from '@/components/primitive/Toast';
 import { useInputText } from '@/hooks/useInputText';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
