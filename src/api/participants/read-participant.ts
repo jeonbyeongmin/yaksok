@@ -9,15 +9,18 @@ export interface ReadParticipantReturn {
   participant: Participant;
 }
 
-export const ReadParticipantPath = ({
-  participantID,
-}: ReadParticipantParams) => {
+export const ReadParticipantPath = ({ participantID }: ReadParticipantParams) => {
   return `/api/participants/${participantID}`;
 };
 
 export const ReadParticipantAPI = async ({
   participantID,
 }: ReadParticipantParams): Promise<ReadParticipantReturn> => {
-  const response = await fetch(ReadParticipantPath({ participantID }));
+  const response = await fetch(ReadParticipantPath({ participantID }), {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
   return response.json();
 };

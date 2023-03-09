@@ -1,20 +1,22 @@
 import { Event } from 'common/inerfaces/Event.interface';
 
-interface ReadEventParams {
-  eventID: string;
+interface GetEventParams {
+  path: string;
 }
 
-export interface ReadEventReturn {
+export interface GetEventReturn {
   success: boolean;
   event: Event;
 }
 
-export const ReadEventPath = ({ eventID }: ReadEventParams) =>
-  `/api/events/${eventID}`;
+export const getEventPath = ({ eventID }: { eventID: string }) => `/api/events/${eventID}`;
 
-export const ReadEventAPI = async ({
-  eventID,
-}: ReadEventParams): Promise<ReadEventReturn> => {
-  const response = await fetch(ReadEventPath({ eventID }));
+export const getEventAPI = async ({ path }: GetEventParams): Promise<GetEventReturn> => {
+  const response = await fetch(path, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
   return response.json();
 };

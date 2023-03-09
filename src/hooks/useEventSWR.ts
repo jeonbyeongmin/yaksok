@@ -1,4 +1,4 @@
-import { ReadEventPath, ReadEventReturn } from '@/api/events/read-event';
+import { GetEventReturn, getEventPath } from '@/api/events/read-event';
 
 import useSWR from 'swr';
 
@@ -7,9 +7,7 @@ interface UseEventParams {
 }
 
 export function useEventSWR({ eventID }: UseEventParams) {
-  const { data, isValidating } = useSWR<ReadEventReturn>(
-    eventID ? ReadEventPath({ eventID }) : null
-  );
+  const { data, isValidating } = useSWR<GetEventReturn>(eventID ? getEventPath({ eventID }) : null);
 
   return {
     event: data?.event,

@@ -1,5 +1,6 @@
 import { convertDateToString, convertTimeToString } from 'common/utils/convert';
 import { darkTheme, styled } from '@/styles/stitches.config';
+import { getEventAPI, getEventPath } from '@/api/events/read-event';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Button } from '@/components/primitive/Button';
@@ -24,28 +25,28 @@ import { useParticipantSWR } from '@/hooks/useParticipantSWR';
 import { useParticipantsSWR } from '@/hooks/useParticipantsSWR';
 import { useRouter } from 'next/router';
 import { useTimetable } from '@/hooks/useTimetable';
+import { Event } from 'common/inerfaces/Event.interface';
+import Head from 'next/head';
 
 interface EventProps {
   eventID: string;
   participantCID: string;
+  event: Event;
 }
 
-function Event({ eventID, participantCID }: EventProps) {
+function Event({ eventID, participantCID, event }: EventProps) {
   const router = useRouter();
 
   const [participantID, setParticipantID] = useState(participantCID ?? '');
   const [isLoading, setIsLoading] = useState(false);
 
-  const { event } = useEventSWR({ eventID });
   const { participant } = useParticipantSWR({
     participantID: participantID ?? '',
   });
   const { participants } = useParticipantsSWR({ eventID });
-
   const { timetable, completeTimetable, handleTimetableChange } = useTimetable(event, participant);
 
   const eventMeta = useMemo(() => {
-    if (!event) return null;
     return {
       eventTitle: event.title,
       startDate: convertDateToString(event.startDate),
@@ -147,6 +148,12 @@ function Event({ eventID, participantCID }: EventProps) {
 
   return (
     <Layout eventMeta={eventMeta}>
+      <Head>
+        <meta
+          property="og:image"
+          content={`https://yaksok.vercel.app/api/og?title=${eventMeta.eventTitle}&startDate=${eventMeta.startDate}&endDate=${eventMeta.endDate}&startTime=${eventMeta.startTime}&endTime=${eventMeta.endTime}&participantsNumber=${eventMeta.participantsNumber}`}
+        />
+      </Head>
       <Page>
         <Paper>
           <Inner direction="column">
@@ -222,8 +229,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     participantCID = cookies[`${id}-participantID`];
   }
 
+  const baseurl = process.env.NEXT_PUBLIC_BASEURL;
+
+  const { event } = await getEventAPI({ path: baseurl + getEventPath({ eventID: id }) });
+
   return {
     props: {
+      event,
       eventID: id,
       participantCID,
     },
