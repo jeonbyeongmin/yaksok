@@ -147,13 +147,7 @@ function Event({ eventID, participantCID, event }: EventProps) {
   }
 
   return (
-    <Layout>
-      <Head>
-        <meta
-          property="og:image"
-          content={`https://yaksok.vercel.app/api/og?title=${eventMeta.eventTitle}&startDate=${eventMeta.startDate}&endDate=${eventMeta.endDate}&startTime=${eventMeta.startTime}&endTime=${eventMeta.endTime}&participantsNumber=${eventMeta.participantsNumber}`}
-        />
-      </Head>
+    <Layout eventMeta={eventMeta}>
       <Page>
         <Paper>
           <Inner direction="column">
