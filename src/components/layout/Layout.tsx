@@ -9,7 +9,6 @@ import { styled } from '@/styles/stitches.config';
 interface LayoutProps {
   children: ReactNode;
   title?: string;
-  eventMeta?: EventMeta | null;
 }
 
 const Container = styled(Box, {

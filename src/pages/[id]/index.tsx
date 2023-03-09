@@ -147,13 +147,13 @@ function Event({ eventID, participantCID, event }: EventProps) {
   }
 
   return (
-    <Layout eventMeta={eventMeta}>
-      <Head>
+    <Layout>
+      {/* <Head>
         <meta
           property="og:image"
           content={`https://yaksok.vercel.app/api/og?title=${eventMeta.eventTitle}&startDate=${eventMeta.startDate}&endDate=${eventMeta.endDate}&startTime=${eventMeta.startTime}&endTime=${eventMeta.endTime}&participantsNumber=${eventMeta.participantsNumber}`}
         />
-      </Head>
+      </Head> */}
       <Page>
         <Paper>
           <Inner direction="column">
@@ -230,7 +230,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   const baseurl = process.env.NEXT_PUBLIC_BASEURL;
-
   const { event } = await getEventAPI({ path: baseurl + getEventPath({ eventID: id }) });
 
   return {
