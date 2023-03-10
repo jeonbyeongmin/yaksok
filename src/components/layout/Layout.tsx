@@ -6,19 +6,9 @@ import Head from 'next/head';
 import Header from '@/components/layout/Header';
 import { styled } from '@/styles/stitches.config';
 
-interface EventMeta {
-  eventTitle: string;
-  startDate: string;
-  endDate: string;
-  startTime: string;
-  endTime: string;
-  participantsNumber: number;
-}
-
 interface LayoutProps {
   children: ReactNode;
   title?: string;
-  eventMeta?: EventMeta | null;
 }
 
 const Container = styled(Box, {
@@ -36,23 +26,17 @@ const Content = styled('main', {
 });
 
 export const Layout = forwardRef<ElementRef<typeof Container>, LayoutProps>(
-  ({ children, title = 'YAKSOK - 모두 가능한 시간을 한번에', eventMeta }, forwardedRef) => {
-    const { eventTitle, startDate, endDate, startTime, endTime, participantsNumber } =
-      eventMeta || {};
-
+  ({ children, title = 'YAKSOK - 모두 가능한 시간을 한번에' }, forwardedRef) => {
     return (
       <>
         <Head>
           <title>{title}</title>
-          <meta name="description" content="from" />
+          <meta name="description" content="약속 잡기 캘린더 - YAKSOK" />
           <meta
             name="viewport"
             content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width"
           />
-          <meta
-            property="og:image"
-            content={`https://yaksok.vercel.app/api/og?title=${eventTitle}&startDate=${startDate}&endDate=${endDate}&startTime=${startTime}&endTime=${endTime}&participantsNumber=${participantsNumber}`}
-          />
+          <meta property="og:image" content="/og.png" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <Container ref={forwardedRef}>

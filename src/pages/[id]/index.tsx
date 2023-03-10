@@ -1,4 +1,3 @@
-import { convertDateToString, convertTimeToString } from 'common/utils/convert';
 import { darkTheme, styled } from '@/styles/stitches.config';
 import { getEventAPI, getEventPath } from '@/api/events/read-event';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -25,7 +24,6 @@ import { useParticipantsSWR } from '@/hooks/useParticipantsSWR';
 import { useRouter } from 'next/router';
 import { useTimetable } from '@/hooks/useTimetable';
 import { Event } from 'common/inerfaces/Event.interface';
-import Head from 'next/head';
 
 interface EventProps {
   eventID: string;
@@ -44,17 +42,6 @@ function Event({ eventID, participantCID, event }: EventProps) {
   });
   const { participants } = useParticipantsSWR({ eventID });
   const { timetable, completeTimetable, handleTimetableChange } = useTimetable(event, participant);
-
-  const eventMeta = useMemo(() => {
-    return {
-      eventTitle: event.title,
-      startDate: convertDateToString(event.startDate),
-      endDate: convertDateToString(event.endDate),
-      startTime: convertTimeToString(event.startTime),
-      endTime: convertTimeToString(event.endTime),
-      participantsNumber: event.participantsNumber,
-    };
-  }, [event]);
 
   const isPossibleCreateParticipant = useMemo(() => {
     if (!participants || !event) return false;
@@ -146,13 +133,7 @@ function Event({ eventID, participantCID, event }: EventProps) {
   }
 
   return (
-    <Layout eventMeta={eventMeta}>
-      <Head>
-        <meta
-          property="og:image"
-          content={`https://yaksok.vercel.app/api/og?title=${eventMeta.eventTitle}&startDate=${eventMeta.startDate}&endDate=${eventMeta.endDate}&startTime=${eventMeta.startTime}&endTime=${eventMeta.endTime}&participantsNumber=${eventMeta.participantsNumber}`}
-        />
-      </Head>
+    <Layout>
       <Page>
         <Paper>
           <Inner direction="column">
@@ -222,6 +203,7 @@ function Event({ eventID, participantCID, event }: EventProps) {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.params as { id: string };
   let participantCID = null;
+
   const cookies = nookies.get(ctx);
 
   if (cookies[`${id}-participantID`]) {
@@ -230,6 +212,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const baseurl = process.env.NEXT_PUBLIC_BASEURL;
   const { event } = await getEventAPI({ path: baseurl + getEventPath({ eventID: id }) });
+
+  if (!event) return { notFound: true };
 
   return {
     props: {
