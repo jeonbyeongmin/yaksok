@@ -1,10 +1,12 @@
 import { Card, CardInner } from '@/components/primitive/Card';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { getEventAPI, getEventPath } from '@/api/events/read-event';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Badge } from '@/components/primitive/Badge';
 import { Button } from '@/components/primitive/Button';
 import { CalendarIcon } from '@/components/assets/CalendarIcon';
 import { CaretRightIcon } from '@/components/assets/CaretRightIcon';
+import { Event } from 'common/inerfaces/Event.interface';
 import { Flex } from '@/components/primitive/Flex';
 import { GetServerSideProps } from 'next';
 import { Grid } from '@/components/primitive/Grid';
@@ -19,20 +21,19 @@ import Timetable from '@/components/page/Timetable';
 import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
 import { makeToast } from '@/components/primitive/Toast';
 import { styled } from '@/styles/stitches.config';
-import { useEventSWR } from '@/hooks/useEventSWR';
 import { useParticipantsSWR } from '@/hooks/useParticipantsSWR';
 import { useRouter } from 'next/router';
 import { useTimetable } from '@/hooks/useTimetable';
 
 interface EventResultProps {
   eventID: string;
+  event: Event;
 }
 
-function EventResult({ eventID }: EventResultProps) {
+function EventResult({ eventID, event }: EventResultProps) {
   const router = useRouter();
 
   const currentRef = useRef<HTMLDivElement>(null);
-  const { event } = useEventSWR({ eventID });
   const { participants, reload } = useParticipantsSWR({ eventID });
 
   const { timetable, completeTimetable, partitionGroups, handleTimetableChange, paintTimetable } =
@@ -253,9 +254,16 @@ const ButtonWrapper = styled(Flex, {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.params as { id: string };
+
+  const baseurl = process.env.NEXT_PUBLIC_BASEURL;
+  const { event } = await getEventAPI({ path: baseurl + getEventPath({ eventID: id }) });
+
+  if (!event) return { notFound: true };
+
   return {
     props: {
       eventID: id,
+      event,
     },
   };
 };

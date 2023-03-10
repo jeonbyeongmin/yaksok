@@ -44,7 +44,7 @@ function Event({ eventID, participantCID, event }: EventProps) {
   const { timetable, completeTimetable, handleTimetableChange } = useTimetable(event, participant);
 
   const isPossibleCreateParticipant = useMemo(() => {
-    if (!participants || !event) return false;
+    if (!participants) return false;
     return participants.length < event.participantsNumber;
   }, [event, participants]);
 
@@ -110,7 +110,7 @@ function Event({ eventID, participantCID, event }: EventProps) {
     handleTimetableChange(completeTimetable);
   }, [completeTimetable, handleTimetableChange, participant]);
 
-  if (!event || !participant) {
+  if (!participant) {
     return (
       <Layout>
         <Page>
