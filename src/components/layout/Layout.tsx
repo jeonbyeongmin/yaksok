@@ -30,14 +30,21 @@ export const Layout = forwardRef<ElementRef<typeof Container>, LayoutProps>(
     return (
       <>
         <Head>
-          <title>{title}</title>
+          <script defer src="https://cdn.swygbro.com/public/widget/swyg-widget.js"></script>
+          <link rel="icon" href="/favicon.ico" />
           <meta name="description" content="약속 잡기 캘린더 - YAKSOK" />
           <meta
             name="viewport"
             content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width"
           />
+          <meta name="keywords" content="약속잡기,약속,캘린더" />
+          <meta name="og:site_name" content="YAKSOK" />
+          <meta name="og:title" content={title} />
+          <meta name="og:description" content="모두 가능한 약속 시간을 알아보세요" />
+          <meta name="og:type" content="website" />
+          <meta name="og:url" content="https://www.yaksok.swygbro.com" />
           <meta property="og:image" content="/og.png" />
-          <link rel="icon" href="/favicon.ico" />
+          <title>{title}</title>
         </Head>
         <Container ref={forwardedRef}>
           <Header />
