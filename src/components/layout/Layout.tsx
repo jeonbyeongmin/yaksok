@@ -31,7 +31,11 @@ export const Layout = forwardRef<ElementRef<typeof Container>, LayoutProps>(
       <>
         <Head>
           <script defer src="https://cdn.swygbro.com/public/widget/swyg-widget.js"></script>
+
           <link rel="icon" href="/favicon.ico" />
+          <link rel="apple-touch-icon" href="/icon.png" />
+          <link rel="shortcut icon" href="/icon.png" />
+
           <meta name="description" content="약속 잡기 캘린더 - YAKSOK" />
           <meta
             name="viewport"
@@ -44,6 +48,7 @@ export const Layout = forwardRef<ElementRef<typeof Container>, LayoutProps>(
           <meta name="og:type" content="website" />
           <meta name="og:url" content="https://www.yaksok.swygbro.com" />
           <meta property="og:image" content="/og.png" />
+
           <title>{title}</title>
         </Head>
         <Container ref={forwardedRef}>
