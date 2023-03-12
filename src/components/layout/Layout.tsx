@@ -46,7 +46,7 @@ export const Layout = forwardRef<ElementRef<typeof Container>, LayoutProps>(
           <meta name="og:title" content={title} />
           <meta name="og:description" content="모두 가능한 약속 시간을 알아보세요" />
           <meta name="og:type" content="website" />
-          <meta name="og:url" content="https://www.yaksok.swygbro.com" />
+          <meta name="og:url" content="https://yaksok.swygbro.com" />
           <meta property="og:image" content="/og.png" />
 
           <title>{title}</title>
