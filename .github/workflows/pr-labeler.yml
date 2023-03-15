@@ -1,6 +1,7 @@
-name: PR Labeler
+name: PR labeler
+
 on:
-  pull_request_target:
+  pull_request:
     types: [opened]
 
 jobs:
@@ -9,14 +10,9 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-      issues: read|write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Auto Label PR
+      - name: Check Labels
         id: labeler
-        uses: jimschubert/labeler-action@v2
+        uses: jimschubert/labeler-action@v1
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          LOG_LEVEL: 'debug'
