@@ -1,8 +1,11 @@
 name: Auto Labeler
 
 on:
-  pull_request:
+  pull_request_target:
     types: [opened]
+  # issue labeling 을 위한 설정
+  # issues:
+  #   types: [opened, edited, milestoned]
 
 jobs:
   labeler:
@@ -13,6 +16,6 @@ jobs:
     steps:
       - name: Check Labels
         id: labeler
-        uses: jimschubert/labeler-action@v1
+        uses: jimschubert/labeler-action@v2
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
