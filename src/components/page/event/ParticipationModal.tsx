@@ -99,10 +99,11 @@ function ParticipationModal({
           />
           <ButtonWrapper>
             <Button
-              color="gray"
+              variant="gray"
               size="sm"
-              onClick={!isLoading ? handleButtonClick : undefined}
-              radius="lg">
+              radius="lg"
+              onClick={handleButtonClick}
+              isLoading={isLoading}>
               <Text content="확인" />
             </Button>
           </ButtonWrapper>

@@ -1,88 +1,96 @@
 import { CSS, darkTheme, styled } from '@/styles/stitches.config';
-import { ComponentProps, ElementRef, ReactNode, forwardRef } from 'react';
+import { ComponentProps, ReactNode, forwardRef } from 'react';
 
 import { Loader } from '@/components/primitive/Loader';
 
 type ButtonVariants = ComponentProps<typeof CustomButton>;
-interface IButton extends ButtonVariants {
+interface ButtonProps extends ButtonVariants {
   css?: CSS;
   leftElement?: ReactNode;
   rightElement?: ReactNode;
   isLoading?: boolean;
-  noBlank?: boolean;
 }
 
 const CustomButton = styled('button', {
+  // Reset
   all: 'unset',
-  alignItems: 'center',
+  cursor: 'pointer',
+  WebkitTapHighlightColor: 'transparent',
   userSelect: 'none',
+  fontVariantNumeric: 'tabular-nums',
+
+  // Custom
+  display: 'inline-flex',
+  flexShrink: 0,
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '$4',
+
   boxSizing: 'border-box',
   '&::before': { boxSizing: 'border-box' },
   '&::after': { boxSizing: 'border-box' },
-
-  display: 'inline-flex',
-  flexShrink: 0,
-  justifyContent: 'center',
-  lineHeight: '1',
-  WebkitTapHighlightColor: 'rgba(0,0,0,0)',
-  gap: '$4',
-
-  fontWeight: '$regular',
-  fontVariantNumeric: 'tabular-nums',
-
-  cursor: 'pointer',
-
-  '&:disabled': {
-    cursor: 'not-allowed',
-  },
-
-  '@hover': {
-    '&:hover:not(:disabled)': {
-      opacity: 0.8,
-    },
-  },
+  '&:disabled': { cursor: 'not-allowed' },
+  border: '1px solid transparent',
 
   transition: '$fast',
 
+  // Variants
   variants: {
     size: {
       xs: {
-        height: '$16',
         px: '$8',
+        gap: '$3',
+        '@bp0': {
+          height: '$14',
+          minW: '$30',
+        },
+        '@bp1': {
+          height: '$16',
+        },
       },
       sm: {
-        height: '$20',
         px: '$10',
-        gap: '$2',
+        gap: '$3',
+
+        '@bp0': {
+          height: '$18',
+          minW: '$40',
+        },
+        '@bp1': {
+          height: '$20',
+        },
       },
       md: {
-        height: '$22',
         px: '$12',
         gap: '$2',
+        '@bp0': {
+          height: '$20',
+          minW: '$60',
+        },
+        '@bp1': {
+          height: '$22',
+        },
       },
-      lg: {
-        height: '$24',
-        px: '$14',
-      },
+      lg: {},
       xl: {
-        height: '$24',
         px: '$14',
-        '@bp1': { height: '$26' },
+        '@bp0': {
+          height: '$24',
+        },
+        '@bp1': {
+          height: '$26',
+        },
       },
       '2xl': {
-        height: '$28',
         px: '$14',
-        '@bp1': { height: '$32' },
+        '@bp0': {
+          height: '$28',
+          minW: '$100',
+        },
+        '@bp1': {
+          height: '$32',
+        },
       },
-    },
-
-    fontSize: {
-      xs: { fs: '$xs' },
-      sm: { fs: '$sm' },
-      md: { fs: '$md' },
-      lg: { fs: '$lg' },
-      xl: { fs: '$xl' },
-      '2xl': { fs: '$2xl' },
     },
 
     radius: {
@@ -97,50 +105,80 @@ const CustomButton = styled('button', {
       pill: { borderRadius: '$pill' },
     },
 
-    color: {
-      // grayscale
+    variant: {
       gray: {
         bgColor: '$gray100',
-        '&:active': { bgColor: '$gray200' },
+        '@hover': {
+          '&:hover:not(:disabled)': {
+            bgColor: '$gray200',
+          },
+        },
+        '&:active': { bgColor: '$gray300' },
+        '&:hover:active': { bgColor: '$gray300' },
 
         [`.${darkTheme} &`]: {
-          bgColor: '$gray700',
-          '&:active': { bgColor: '$gray600' },
+          bgColor: '$gray600',
+          '@hover': {
+            '&:hover:not(:disabled)': {
+              bgColor: '$gray700',
+            },
+          },
+          '&:active': { bgColor: '$gray800' },
+          '&:hover:active': { bgColor: '$gray800' },
         },
       },
-      light: {
+
+      outline: {
         bgColor: '$panel',
         border: '1px solid $gray200',
-        '&:active': { bgColor: '$gray100' },
+        '@hover': {
+          '&:hover:not(:disabled)': {
+            bgColor: '$gray100',
+          },
+        },
+        '&:active': { bgColor: '$gray200' },
+        '&:hover:active': { bgColor: '$gray200' },
 
         [`.${darkTheme} &`]: {
           border: '1px solid $gray700',
+          '@hover': {
+            '&:hover:not(:disabled)': {
+              bgColor: '$darken400',
+            },
+          },
           '&:active': { bgColor: '$black' },
+          '&:hover:active': { bgColor: '$black' },
         },
       },
-      black: { bgColor: '$black' },
 
-      // brand
       primary: {
-        bgColor: '$primary',
+        bgColor: '$primary100',
+        '@hover': {
+          '&:hover:not(:disabled)': {
+            bgColor: '$primary200',
+          },
+        },
+        '&:active': { bgColor: '$primary300' },
+        '&:hover:active': { bgColor: '$primary300' },
         '&:disabled': { bgColor: '$gray200' },
-        '&:active': { bgColor: '$darken100' },
 
         [`.${darkTheme} &`]: {
           bgColor: '$darken100',
-          '&:active': { bgColor: '$darken200' },
+          '@hover': {
+            '&:hover:not(:disabled)': {
+              bgColor: '$darken200',
+            },
+          },
+          '&:active': { bgColor: '$darken300' },
+          '&:hover:active': { bgColor: '$darken300' },
           '&:disabled': { bgColor: '$gray700' },
         },
       },
-      lighten100: { bgColor: '#86CCF3' },
-      lighten200: { bgColor: '#B5DFF7' },
-      lighten300: { bgColor: '#E3F3FC' },
-      lighten400: { bgColor: '#F2F9FE' },
 
-      darken100: { bgColor: '#106A9D' },
-      darken200: { bgColor: '#0B4B6F' },
-      darken300: { bgColor: '#072C40' },
-      darken400: { bgColor: '#020C12' },
+      ghost: {
+        bgColor: 'transparent',
+        '&:active': { opacity: 0.8 },
+      },
     },
 
     shadow: {
@@ -148,62 +186,30 @@ const CustomButton = styled('button', {
         boxShadow: '$1',
       },
     },
-
-    ghost: {
-      true: {
-        p: 0,
-        bgColor: 'transparent',
-        boxShadow: 'none',
-      },
-    },
   },
 
   defaultVariants: {
     size: 'md',
-    fontSize: 'md',
     radius: 'md',
   },
 });
 
-export const Button = forwardRef<ElementRef<typeof CustomButton>, IButton>(
-  ({ children, leftElement, isLoading, noBlank, size, rightElement, ...props }, forwardedRef) => {
-    return (
-      <CustomButton ref={forwardedRef} size={size} {...props}>
-        {isLoading ? (
-          <Loader color="white" />
-        ) : (
-          leftElement || <Blank size={size} visible={!noBlank} />
-        )}
-        {children}
-        {!!rightElement ? rightElement : <Blank size={size} visible={!noBlank} />}
-      </CustomButton>
-    );
-  }
-);
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
+  const { children, leftElement, isLoading, size, rightElement, onClick, ...rest } = props;
 
-const Blank = styled('div', {
-  variants: {
-    visible: {
-      true: {},
-      false: {
-        display: 'none',
-      },
-    },
-    size: {
-      xs: {
-        width: '$4',
-      },
-      sm: {},
-      md: {
-        width: '$7',
-      },
-      lg: {},
-      xl: {},
-      '2xl': {
-        width: '$15',
-      },
-    },
-  },
+  return (
+    <CustomButton ref={ref} size={size} onClick={!isLoading ? onClick : undefined} {...rest}>
+      {isLoading ? (
+        <Loader color="white" />
+      ) : (
+        <>
+          {leftElement}
+          {children}
+          {rightElement}
+        </>
+      )}
+    </CustomButton>
+  );
 });
 
 Button.displayName = 'Button';
