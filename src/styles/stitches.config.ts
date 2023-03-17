@@ -31,10 +31,14 @@ export const { css, config, createTheme, getCssText, globalCss, reset, styled, t
         gray600: '#5C5C5C',
         gray700: '#424242',
         gray800: '#292929',
+        gray900: '#0F0F0F',
         black: '#000000',
 
         // brand
         primary: '#58B8EE',
+        primary100: '#58B8EE',
+        primary200: '#4D9EDB',
+        primary300: '#3F85C8',
 
         lighten100: '#86CCF3',
         lighten200: '#B5DFF7',
@@ -48,7 +52,6 @@ export const { css, config, createTheme, getCssText, globalCss, reset, styled, t
 
         red: '#EB4D3D',
 
-        // light
         panel: '#FFFFFF',
         glass: 'rgba(255, 255, 255, 0.5)',
         box: 'rgba(255, 255, 255, 0.5)',
@@ -317,6 +320,7 @@ export const { css, config, createTheme, getCssText, globalCss, reset, styled, t
     },
 
     media: {
+      bp0: '(min-width: 0px)',
       bp1: '(min-width: 480px)',
       bp2: '(min-width: 768px)',
       bp3: '(min-width: 1024px)',

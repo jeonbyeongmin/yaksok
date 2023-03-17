@@ -156,9 +156,9 @@ export default function Home() {
         </ErrorWrapper>
         <Button
           size="2xl"
-          onClick={!isLoading ? handleCreateEvent : undefined}
+          onClick={handleCreateEvent}
           radius="pill"
-          color="primary"
+          variant="primary"
           isLoading={isLoading}>
           <Text content="약속 만들기" color="white" size="xl" weight="bold" />
         </Button>
