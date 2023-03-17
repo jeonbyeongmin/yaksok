@@ -103,7 +103,7 @@ export default function Home() {
             />
             <Flex direction="column" gap={7}>
               <Input
-                // placeholder="이름을 입력해주세요"
+                placeholder="이름을 입력해주세요"
                 onChange={handleNameChange}
                 value={name}
                 width="24rem"

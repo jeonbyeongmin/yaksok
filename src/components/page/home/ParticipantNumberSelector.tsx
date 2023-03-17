@@ -10,7 +10,7 @@ const participantNumbers = ['2', '3', '4', '5', '6', '7', '8', '9', '10'];
 function ParticipantNumberSelector({ handleValue, value }: TimeSelectorProps) {
   return (
     <Select
-      // placeholder="인원수를 선택해주세요"
+      placeholder="인원수를 선택해주세요"
       variant="blurred"
       onValueChange={handleValue}
       value={value}>

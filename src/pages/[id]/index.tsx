@@ -161,7 +161,7 @@ function Event({ eventID, participantCID, event }: EventProps) {
                     <Text content="님의 시간표" size="sm" />
                   </Flex>
                 )}
-                <Text content="30분 단위로 약속 시간을 선택해주세요" size="sm" />
+                {/* <Text content="30분 단위로 약속 시간을 선택해주세요" size="sm" /> */}
               </Title>
             </Flex>
             <Timetable
