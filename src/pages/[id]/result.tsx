@@ -151,7 +151,7 @@ function EventResult({ eventID, event }: EventResultProps) {
               radius="pill"
               color="primary"
               noBlank>
-              <Text content="결과 공유하기" color="white" size="md" weight="bold" />
+              {/* <Text content="결과 공유하기" color="white" size="md" weight="bold" /> */}
             </Button>
           </ButtonWrapper>
 
@@ -166,7 +166,7 @@ function EventResult({ eventID, event }: EventResultProps) {
                     color="light"
                     radius="pill"
                     noBlank>
-                    <Text content="다시 불러오기" size="xs" />
+                    {/* <Text content="다시 불러오기" size="xs" /> */}
                   </Button>
                   <Button
                     onClick={handleEditButtonClick}
@@ -174,17 +174,17 @@ function EventResult({ eventID, event }: EventResultProps) {
                     color="light"
                     radius="pill"
                     noBlank>
-                    <Text content="내 시간표 수정하기" size="xs" />
+                    {/* <Text content="내 시간표 수정하기" size="xs" /> */}
                   </Button>
                 </ButtonWrapper>
                 <Flex align="center" gap={3}>
                   <CalendarIcon size={20} />
                   <Text content={event?.title ?? ''} size="lg" weight="bold" />
                 </Flex>
-                <Text
+                {/* <Text
                   content={`${participants?.length}/${event?.participantsNumber} 참여`}
                   size="xs"
-                />
+                /> */}
                 <Flex isFull gap={7}>
                   <Timetable
                     startDate={event.startDate}

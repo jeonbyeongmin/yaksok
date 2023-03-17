@@ -147,7 +147,7 @@ function Event({ eventID, participantCID, event }: EventProps) {
                   size="sm"
                   shadow
                   noBlank>
-                  <Text content="초대 링크 공유" size="sm" />
+                  {/* <Text content="초대 링크 공유" size="sm" /> */}
                 </ShareButton>
               </Flex>
               <Title direction="column">
@@ -175,12 +175,12 @@ function Event({ eventID, participantCID, event }: EventProps) {
 
             <Flex direction="column" isFull>
               <ButtonWrapper justify="center" isFull>
-                <Button
+                {/* <Button
                   ghost
                   rightElement={<CaretRightIcon />}
                   onClick={handleMoveToResultButtonClick}>
                   <Text content="다른 참여자의 시간표가 궁금하신가요?" size="sm" />
-                </Button>
+                </Button> */}
               </ButtonWrapper>
               <ButtonWrapper justify="center" isFull>
                 <Button
@@ -189,7 +189,7 @@ function Event({ eventID, participantCID, event }: EventProps) {
                   color="primary"
                   onClick={!isLoading ? handleSubmitButtonClick : undefined}
                   isLoading={isLoading}>
-                  <Text content="제출하기" color="white" size="xl" weight="bold" />
+                  {/* <Text content="제출하기" color="white" size="xl" weight="bold" /> */}
                 </Button>
               </ButtonWrapper>
             </Flex>

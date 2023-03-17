@@ -94,7 +94,7 @@ export default function Home() {
           <TopsideInner justify="center" align="center" direction="column">
             <Input
               leftElement={<CalendarIcon size={20} />}
-              placeholder="약속 제목을 입력해주세요"
+              // placeholder="약속 제목을 입력해주세요"
               value={title}
               onChange={handleTitleChange}
               variant="blurred"
@@ -103,7 +103,7 @@ export default function Home() {
             />
             <Flex direction="column" gap={7}>
               <Input
-                placeholder="이름을 입력해주세요"
+                // placeholder="이름을 입력해주세요"
                 onChange={handleNameChange}
                 value={name}
                 width="24rem"
@@ -122,20 +122,20 @@ export default function Home() {
           <CustomGrid align="start" justify="center">
             <SelectorWrapper direction="column" gap={2}>
               <Divider />
-              <Text content="시작 날짜 / 종료 날짜를 선택해주세요" size="lg" weight="bold" />
-              <Text content="최대 7일까지 선택 가능합니다" size="xs" color="gray400" />
+              {/* <Text content="시작 날짜 / 종료 날짜를 선택해주세요" size="lg" weight="bold" />
+              <Text content="최대 7일까지 선택 가능합니다" size="xs" color="gray400" /> */}
               <Calendar date={date} setDate={setDate} />
             </SelectorWrapper>
             <SelectorWrapper direction="column" gap={2}>
               <Divider />
-              <Text content="시간을 선택해주세요" size="lg" weight="bold" />
+              {/* <Text content="시간을 선택해주세요" size="lg" weight="bold" /> */}
               <TimeSelectorWrapper align="center">
                 <TimeSelector
                   handleValue={handleStartTime}
                   value={startTime}
                   enableTime={[0, 23]}
                 />
-                <Text content="부터" weight="bold" color="gray500" />
+                {/* <Text content="부터" weight="bold" color="gray500" /> */}
               </TimeSelectorWrapper>
               <TimeSelectorWrapper align="center">
                 <TimeSelector
@@ -143,7 +143,7 @@ export default function Home() {
                   value={endTime}
                   enableTime={[Number(startTime) + 1, 24]}
                 />
-                <Text content="까지" weight="bold" color="gray500" />
+                {/* <Text content="까지" weight="bold" color="gray500" /> */}
               </TimeSelectorWrapper>
             </SelectorWrapper>
           </CustomGrid>
@@ -160,7 +160,7 @@ export default function Home() {
           radius="pill"
           color="primary"
           isLoading={isLoading}>
-          <Text content="약속 만들기" color="white" size="xl" weight="bold" />
+          {/* <Text content="약속 만들기" color="white" size="xl" weight="bold" /> */}
         </Button>
       </ButtonWrapper>
     </Layout>
