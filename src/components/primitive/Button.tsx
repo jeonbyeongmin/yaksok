@@ -9,6 +9,10 @@ interface ButtonProps extends ButtonVariants {
   leftElement?: ReactNode;
   rightElement?: ReactNode;
   isLoading?: boolean;
+  variant?: 'gray' | 'primary' | 'outline' | 'ghost';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+  radius?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'pill';
+  shadow?: boolean;
 }
 
 const CustomButton = styled('button', {
@@ -71,11 +75,22 @@ const CustomButton = styled('button', {
           height: '$22',
         },
       },
-      lg: {},
+      lg: {
+        px: '$12',
+        gap: '$2',
+        '@bp0': {
+          height: '$22',
+          minW: '$70',
+        },
+        '@bp1': {
+          height: '$24',
+        },
+      },
       xl: {
         px: '$14',
         '@bp0': {
           height: '$24',
+          minW: '$80',
         },
         '@bp1': {
           height: '$26',
@@ -101,7 +116,6 @@ const CustomButton = styled('button', {
       xl: { borderRadius: '$xl' },
       '2xl': { borderRadius: '$2xl' },
       '3xl': { borderRadius: '$3xl' },
-      round: { borderRadius: '$round' },
       pill: { borderRadius: '$pill' },
     },
 
@@ -190,6 +204,7 @@ const CustomButton = styled('button', {
 
   defaultVariants: {
     size: 'md',
+    variant: 'primary',
     radius: 'md',
   },
 });
