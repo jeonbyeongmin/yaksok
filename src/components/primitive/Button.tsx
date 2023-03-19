@@ -1,19 +1,29 @@
 import { CSS, darkTheme, styled } from '@/styles/stitches.config';
-import { ComponentProps, ReactNode, forwardRef } from 'react';
+import { ComponentProps, ReactNode, forwardRef, useMemo } from 'react';
 
 import { Loader } from '@/components/primitive/Loader';
 
-type ButtonVariants = ComponentProps<typeof CustomButton>;
+export type ButtonVariants = ComponentProps<typeof CustomButton>;
+export type ButtonVariant = 'solid' | 'outline' | 'ghost' | 'link';
+export type ButtonColorScheme = 'gray' | 'primary';
+export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+export type ButtonRadius = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'pill';
+
 interface ButtonProps extends ButtonVariants {
-  css?: CSS;
+  // controls
+  isLoading?: boolean;
+  shadow?: boolean;
+  variant?: ButtonVariant;
+  colorScheme?: ButtonColorScheme;
+  size?: ButtonSize;
+  radius?: ButtonRadius;
+
+  // elements
   leftElement?: ReactNode;
   rightElement?: ReactNode;
-  isLoading?: boolean;
-  variant?: 'solid' | 'outline' | 'ghost' | 'link';
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
-  radius?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'pill';
-  shadow?: boolean;
-  colorScheme?: 'gray' | 'primary';
+
+  // alternative
+  css?: CSS;
 }
 
 const CustomButton = styled('button', {
@@ -346,12 +356,38 @@ const CustomButton = styled('button', {
 });
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
-  const { children, leftElement, isLoading, size, rightElement, onClick, ...rest } = props;
+  const {
+    children,
+    leftElement,
+    isLoading,
+    colorScheme,
+    variant,
+    size,
+    rightElement,
+    onClick,
+    ...rest
+  } = props;
+
+  const loaderColor = useMemo(() => {
+    if (!variant || variant === 'solid') return 'white';
+    switch (colorScheme) {
+      case 'primary':
+        return 'primary';
+      case 'gray':
+        return 'gray';
+    }
+  }, [colorScheme, variant]);
 
   return (
-    <CustomButton ref={ref} size={size} onClick={!isLoading ? onClick : undefined} {...rest}>
+    <CustomButton
+      ref={ref}
+      size={size}
+      colorScheme={colorScheme}
+      variant={variant}
+      onClick={!isLoading ? onClick : undefined}
+      {...rest}>
       {isLoading ? (
-        <Loader color="white" />
+        <Loader size={size} color={loaderColor} />
       ) : (
         <>
           {leftElement}

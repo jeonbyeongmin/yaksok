@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '@/components/primitive/Button';
 import { Flex } from '@/components/primitive/Flex';
+import { Text } from '@/components/primitive/Text';
 
 const meta: Meta<typeof Button> = {
   title: 'Primitive / Button',
@@ -26,16 +27,36 @@ export const WithVariant: Story = {
     return (
       <Flex gap={5}>
         <Button {...args} variant="solid">
-          solid
+          <Text content="solid" size={args.size} />
         </Button>
         <Button {...args} variant="outline">
-          outline
+          <Text content="outline" size={args.size} />
         </Button>
         <Button {...args} variant="ghost">
-          ghost
+          <Text content="ghost" size={args.size} />
         </Button>
         <Button {...args} variant="link">
-          link
+          <Text content="link" size={args.size} />
+        </Button>
+      </Flex>
+    );
+  },
+};
+
+export const WithColorScheme: Story = {
+  argTypes: {
+    colorScheme: {
+      table: { disable: true },
+    },
+  },
+  render: (args) => {
+    return (
+      <Flex gap={5}>
+        <Button {...args} colorScheme="gray">
+          <Text content="gray" size={args.size} />
+        </Button>
+        <Button {...args} colorScheme="primary">
+          <Text content="primary" size={args.size} />
         </Button>
       </Flex>
     );
@@ -52,22 +73,22 @@ export const WithSize: Story = {
     return (
       <Flex gap={5}>
         <Button {...args} size="xs">
-          xs
+          <Text content="xs" size="xs" />
         </Button>
         <Button {...args} size="sm">
-          sm
+          <Text content="sm" size="sm" />
         </Button>
         <Button {...args} size="md">
-          md
+          <Text content="md" size="md" />
         </Button>
         <Button {...args} size="lg">
-          lg
+          <Text content="lg" size="lg" />
         </Button>
         <Button {...args} size="xl">
-          xl
+          <Text content="xl" size="xl" />
         </Button>
         <Button {...args} size="2xl">
-          2xl
+          <Text content="2xl" size="2xl" />
         </Button>
       </Flex>
     );
@@ -82,35 +103,31 @@ export const WithRadius: Story = {
   },
   render: (args) => {
     return (
-      <Flex direction="column" gap={5}>
-        <Flex gap={5}>
-          <Button {...args} radius="xs">
-            xs
-          </Button>
-          <Button {...args} radius="sm">
-            sm
-          </Button>
-          <Button {...args} radius="md">
-            md
-          </Button>
-          <Button {...args} radius="lg">
-            lg
-          </Button>
-        </Flex>
-        <Flex gap={5}>
-          <Button {...args} radius="xl">
-            xl
-          </Button>
-          <Button {...args} radius="2xl">
-            2xl
-          </Button>
-          <Button {...args} radius="3xl">
-            3xl
-          </Button>
-          <Button {...args} radius="pill">
-            pill
-          </Button>
-        </Flex>
+      <Flex gap={5}>
+        <Button {...args} radius="xs">
+          <Text content="xs" size={args.size} />
+        </Button>
+        <Button {...args} radius="sm">
+          <Text content="sm" size={args.size} />
+        </Button>
+        <Button {...args} radius="md">
+          <Text content="md" size={args.size} />
+        </Button>
+        <Button {...args} radius="lg">
+          <Text content="lg" size={args.size} />
+        </Button>
+        <Button {...args} radius="xl">
+          <Text content="xl" size={args.size} />
+        </Button>
+        <Button {...args} radius="2xl">
+          <Text content="2xl" size={args.size} />
+        </Button>
+        <Button {...args} radius="3xl">
+          <Text content="3xl" size={args.size} />
+        </Button>
+        <Button {...args} radius="pill">
+          <Text content="pill" size={args.size} />
+        </Button>
       </Flex>
     );
   },
@@ -125,9 +142,11 @@ export const WithShadow: Story = {
   render: (args) => {
     return (
       <Flex gap={5}>
-        <Button {...args}>normal</Button>
+        <Button {...args}>
+          <Text content="noral" size={args.size} />
+        </Button>
         <Button {...args} shadow>
-          shadow
+          <Text content="shadow" size={args.size} />
         </Button>
       </Flex>
     );
@@ -143,9 +162,11 @@ export const WithLoading: Story = {
   render: (args) => {
     return (
       <Flex gap={5}>
-        <Button {...args}>normal</Button>
+        <Button {...args}>
+          <Text content="normal" size={args.size} />
+        </Button>
         <Button {...args} isLoading>
-          loading
+          <Text content="loading" size={args.size} />
         </Button>
       </Flex>
     );
