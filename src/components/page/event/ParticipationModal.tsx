@@ -99,7 +99,7 @@ function ParticipationModal({
           />
           <ButtonWrapper>
             <Button
-              variant="gray"
+              colorScheme="gray"
               size="sm"
               radius="lg"
               onClick={handleButtonClick}

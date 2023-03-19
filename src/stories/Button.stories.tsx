@@ -4,7 +4,7 @@ import { Button } from '@/components/primitive/Button';
 import { Flex } from '@/components/primitive/Flex';
 
 const meta: Meta<typeof Button> = {
-  title: 'Components / Primitive / Button',
+  title: 'Primitive / Button',
   component: Button,
   argTypes: {
     css: { table: { disable: true } },
@@ -25,17 +25,17 @@ export const WithVariant: Story = {
   render: (args) => {
     return (
       <Flex gap={5}>
-        <Button {...args} variant="primary">
-          primary
+        <Button {...args} variant="solid">
+          solid
         </Button>
         <Button {...args} variant="outline">
           outline
         </Button>
-        <Button {...args} variant="gray">
-          gray
-        </Button>
         <Button {...args} variant="ghost">
           ghost
+        </Button>
+        <Button {...args} variant="link">
+          link
         </Button>
       </Flex>
     );

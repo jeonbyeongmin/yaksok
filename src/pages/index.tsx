@@ -154,12 +154,7 @@ export default function Home() {
         <ErrorWrapper>
           <Text content={error} color="red" size="sm" />
         </ErrorWrapper>
-        <Button
-          size="2xl"
-          onClick={handleCreateEvent}
-          radius="pill"
-          variant="primary"
-          isLoading={isLoading}>
+        <Button size="2xl" onClick={handleCreateEvent} radius="pill" isLoading={isLoading}>
           <Text content="약속 만들기" color="white" size="xl" weight="bold" />
         </Button>
       </ButtonWrapper>

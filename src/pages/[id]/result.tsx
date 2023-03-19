@@ -144,11 +144,7 @@ function EventResult({ eventID, event }: EventResultProps) {
       <Page>
         <Paper transparent>
           <ButtonWrapper align="center" justify="end" isFull color="white">
-            <Button
-              rightElement={<CaretRightIcon />}
-              onClick={handleCopyClipBoard}
-              radius="pill"
-              variant="primary">
+            <Button rightElement={<CaretRightIcon />} onClick={handleCopyClipBoard} radius="pill">
               <Text content="결과 공유하기" color="white" weight="bold" />
             </Button>
           </ButtonWrapper>
@@ -162,10 +158,16 @@ function EventResult({ eventID, event }: EventResultProps) {
                     leftElement={<RefreshIcon size={12} />}
                     size="xs"
                     variant="outline"
+                    colorScheme="gray"
                     radius="pill">
                     <Text content="다시 불러오기" size="xs" />
                   </Button>
-                  <Button onClick={handleEditButtonClick} size="xs" variant="outline" radius="pill">
+                  <Button
+                    onClick={handleEditButtonClick}
+                    size="xs"
+                    variant="outline"
+                    colorScheme="gray"
+                    radius="pill">
                     <Text content="내 시간표 수정하기" size="xs" />
                   </Button>
                 </ButtonWrapper>
