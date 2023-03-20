@@ -1,10 +1,10 @@
 import { Box, Flex, Icon, Text } from '@/components/primitive';
-import { Card, CardInner } from '@/components/primitive/Card';
 import {
   CollapsibleContent,
   CollapsibleRoot,
   CollapsibleTrigger,
 } from '@/components/primitive/Collapsisble';
+import { Panel, PanelInner } from '@/components/primitive/Panel';
 import { darkTheme, styled } from '@/styles/stitches.config';
 import { useMemo, useState } from 'react';
 
@@ -49,8 +49,8 @@ function PartitionGroup({
   }, [partitionGroup]);
 
   return (
-    <Card key={rank} align="start" direction="column" gap={5}>
-      <CardInner css={{ pb: '$5' }}>
+    <Panel key={rank} align="start" direction="column" gap={5}>
+      <PanelInner css={{ pb: '$5' }}>
         <Flex gap={4} isFull>
           <RankWrapper>
             <Text
@@ -111,8 +111,8 @@ function PartitionGroup({
             </CollapsibleTrigger>
           )}
         </CollapsibleRoot>
-      </CardInner>
-    </Card>
+      </PanelInner>
+    </Panel>
   );
 }
 

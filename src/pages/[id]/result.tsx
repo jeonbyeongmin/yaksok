@@ -1,5 +1,5 @@
 import { Badge, Button, Flex, Grid, Icon, Page, Paper, Text } from '@/components/primitive';
-import { Card, CardInner } from '@/components/primitive/Card';
+import { Panel, PanelInner } from '@/components/primitive/Panel';
 import { getEventAPI, getEventPath } from '@/api/events/read-event';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -144,8 +144,8 @@ function EventResult({ eventID, event }: EventResultProps) {
           </ButtonWrapper>
 
           <CustomGrid align="start">
-            <Card direction="column">
-              <CardInner align="start" gap={5}>
+            <Panel direction="column">
+              <PanelInner align="start" gap={5}>
                 <ButtonWrapper align="center" justify="start" isFull gap={2}>
                   <Button
                     onClick={handleReloadButtonClick}
@@ -197,8 +197,8 @@ function EventResult({ eventID, event }: EventResultProps) {
                     ))}
                   </Flex>
                 </Flex>
-              </CardInner>
-            </Card>
+              </PanelInner>
+            </Panel>
 
             <Flex direction="column" gap={6}>
               {event &&
