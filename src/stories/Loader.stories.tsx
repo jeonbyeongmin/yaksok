@@ -6,6 +6,7 @@ import { Loader } from '@/components/primitive/Loader';
 const meta: Meta<typeof Loader> = {
   title: 'Primitive / Loader',
   component: Loader,
+  tags: ['autodocs'],
 };
 
 export default meta;

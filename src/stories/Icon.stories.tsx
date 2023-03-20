@@ -4,6 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 const meta: Meta<typeof Icon> = {
   title: 'Primitive / Icon',
   component: Icon,
+  tags: ['autodocs'],
 };
 
 export default meta;

@@ -4,10 +4,12 @@ import type { Meta, StoryObj } from '@storybook/react';
 const meta: Meta<typeof Button> = {
   title: 'Primitive / Button',
   component: Button,
+  tags: ['autodocs'],
   argTypes: {
     css: { table: { disable: true } },
     leftElement: { table: { disable: true } },
     rightElement: { table: { disable: true } },
+    loading: { table: { disable: true } },
   },
 };
 
