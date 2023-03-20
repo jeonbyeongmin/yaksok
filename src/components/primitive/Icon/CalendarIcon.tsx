@@ -5,7 +5,7 @@ export function CalendarIcon({ size = 20 }: IconProps) {
     <svg
       width={size}
       height={size}
-      viewBox="0 0 34 34"
+      viewBox="0 0 30 34"
       fill="none"
       xmlns="http://www.w3.org/2000/svg">
       <path

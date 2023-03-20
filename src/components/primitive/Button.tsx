@@ -26,6 +26,158 @@ interface ButtonProps extends ButtonVariants {
   css?: CSS;
 }
 
+export const ButtonCompound = [
+  // Solid
+  {
+    variant: 'solid',
+    colorScheme: 'gray',
+    css: {
+      bgColor: '$gray100',
+      '@hover': {
+        '&:hover:not(:disabled)': {
+          bgColor: '$gray200',
+        },
+      },
+      '&:active': { bgColor: '$gray300' },
+      '&:hover:active': { bgColor: '$gray300' },
+
+      [`.${darkTheme} &`]: {
+        bgColor: '$gray600',
+        color: '$white',
+        '@hover': {
+          '&:hover:not(:disabled)': {
+            bgColor: '$gray700',
+          },
+        },
+        '&:active': { bgColor: '$gray800' },
+        '&:hover:active': { bgColor: '$gray800' },
+      },
+    },
+  },
+  {
+    variant: 'solid',
+    colorScheme: 'primary',
+    css: {
+      bgColor: '$primary100',
+      color: '$white',
+      '@hover': {
+        '&:hover:not(:disabled)': {
+          bgColor: '$primary200',
+        },
+      },
+      '&:active': { bgColor: '$primary300' },
+      '&:hover:active': { bgColor: '$primary300' },
+      '&:disabled': { bgColor: '$gray200' },
+
+      [`.${darkTheme} &`]: {
+        bgColor: '$darken100',
+        '@hover': {
+          '&:hover:not(:disabled)': {
+            bgColor: '$darken200',
+          },
+        },
+        '&:active': { bgColor: '$darken300' },
+        '&:hover:active': { bgColor: '$darken300' },
+        '&:disabled': { bgColor: '$gray700' },
+      },
+    },
+  },
+
+  // Outline
+  {
+    variant: 'outline',
+    colorScheme: 'gray',
+    css: {
+      border: '1px solid $gray200',
+      color: '$gray300',
+      '@hover': {
+        '&:hover:not(:disabled)': {
+          bgColor: '$gray100',
+        },
+      },
+      '&:active': { bgColor: '$gray200' },
+      '&:hover:active': { bgColor: '$gray200' },
+
+      [`.${darkTheme} &`]: {
+        border: '1px solid $gray700',
+        color: '$gray600',
+      },
+    },
+  },
+  {
+    variant: 'outline',
+    colorScheme: 'primary',
+    css: {
+      border: '1px solid $primary200',
+      color: '$primary200',
+      '@hover': {
+        '&:hover:not(:disabled)': {
+          bgColor: '$lighten400',
+        },
+      },
+      '&:active': { bgColor: '$lighten300' },
+      '&:hover:active': { bgColor: '$lighten300' },
+
+      [`.${darkTheme} &`]: {
+        border: '1px solid $darken200',
+        color: '$darken100',
+      },
+    },
+  },
+
+  // Ghost
+  {
+    variant: 'ghost',
+    colorScheme: 'gray',
+    css: {
+      color: '$gray300',
+      '@hover': {
+        '&:hover:not(:disabled)': {
+          bgColor: '$gray100',
+        },
+      },
+      '&:active': { bgColor: '$gray200' },
+      '&:hover:active': { bgColor: '$gray200' },
+
+      [`.${darkTheme} &`]: {
+        color: '$gray100',
+        '@hover': {
+          '&:hover:not(:disabled)': {
+            bgColor: '$gray600',
+          },
+        },
+        '&:active': { bgColor: '$gray700' },
+        '&:hover:active': { bgColor: '$gray700' },
+      },
+    },
+  },
+  {
+    variant: 'ghost',
+    colorScheme: 'primary',
+    css: {
+      color: '$primary200',
+      '@hover': {
+        '&:hover:not(:disabled)': {
+          bgColor: '$lighten300',
+        },
+      },
+      '&:active': { bgColor: '$lighten200' },
+      '&:hover:active': { bgColor: '$lighten200' },
+
+      [`.${darkTheme} &`]: {
+        color: '$lighten300',
+        '@hover': {
+          '&:hover:not(:disabled)': {
+            bgColor: '$darken100',
+          },
+        },
+        '&:active': { bgColor: '$darken200' },
+        '&:hover:active': { bgColor: '$darken200' },
+      },
+    },
+  },
+];
+
 const CustomButton = styled('button', {
   // Reset
   all: 'unset',
@@ -135,6 +287,13 @@ const CustomButton = styled('button', {
       },
     },
 
+    loading: {
+      true: {
+        opacity: 0.5,
+        pointerEvents: 'none',
+      },
+    },
+
     colorScheme: {
       gray: {},
       primary: {},
@@ -166,155 +325,7 @@ const CustomButton = styled('button', {
   },
 
   compoundVariants: [
-    // Solid
-    {
-      variant: 'solid',
-      colorScheme: 'gray',
-      css: {
-        bgColor: '$gray100',
-        '@hover': {
-          '&:hover:not(:disabled)': {
-            bgColor: '$gray200',
-          },
-        },
-        '&:active': { bgColor: '$gray300' },
-        '&:hover:active': { bgColor: '$gray300' },
-
-        [`.${darkTheme} &`]: {
-          bgColor: '$gray600',
-          color: '$white',
-          '@hover': {
-            '&:hover:not(:disabled)': {
-              bgColor: '$gray700',
-            },
-          },
-          '&:active': { bgColor: '$gray800' },
-          '&:hover:active': { bgColor: '$gray800' },
-        },
-      },
-    },
-    {
-      variant: 'solid',
-      colorScheme: 'primary',
-      css: {
-        bgColor: '$primary100',
-        color: '$white',
-        '@hover': {
-          '&:hover:not(:disabled)': {
-            bgColor: '$primary200',
-          },
-        },
-        '&:active': { bgColor: '$primary300' },
-        '&:hover:active': { bgColor: '$primary300' },
-        '&:disabled': { bgColor: '$gray200' },
-
-        [`.${darkTheme} &`]: {
-          bgColor: '$darken100',
-          '@hover': {
-            '&:hover:not(:disabled)': {
-              bgColor: '$darken200',
-            },
-          },
-          '&:active': { bgColor: '$darken300' },
-          '&:hover:active': { bgColor: '$darken300' },
-          '&:disabled': { bgColor: '$gray700' },
-        },
-      },
-    },
-
-    // Outline
-    {
-      variant: 'outline',
-      colorScheme: 'gray',
-      css: {
-        border: '1px solid $gray200',
-        color: '$gray300',
-        '@hover': {
-          '&:hover:not(:disabled)': {
-            bgColor: '$gray100',
-          },
-        },
-        '&:active': { bgColor: '$gray200' },
-        '&:hover:active': { bgColor: '$gray200' },
-
-        [`.${darkTheme} &`]: {
-          border: '1px solid $gray700',
-          color: '$gray600',
-        },
-      },
-    },
-    {
-      variant: 'outline',
-      colorScheme: 'primary',
-      css: {
-        border: '1px solid $primary200',
-        color: '$primary300',
-        '@hover': {
-          '&:hover:not(:disabled)': {
-            bgColor: '$lighten400',
-          },
-        },
-        '&:active': { bgColor: '$lighten300' },
-        '&:hover:active': { bgColor: '$lighten300' },
-
-        [`.${darkTheme} &`]: {
-          border: '1px solid $darken200',
-          color: '$darken100',
-        },
-      },
-    },
-
-    // Ghost
-    {
-      variant: 'ghost',
-      colorScheme: 'gray',
-      css: {
-        color: '$gray300',
-        '@hover': {
-          '&:hover:not(:disabled)': {
-            bgColor: '$gray100',
-          },
-        },
-        '&:active': { bgColor: '$gray200' },
-        '&:hover:active': { bgColor: '$gray200' },
-
-        [`.${darkTheme} &`]: {
-          color: '$gray100',
-          '@hover': {
-            '&:hover:not(:disabled)': {
-              bgColor: '$gray600',
-            },
-          },
-          '&:active': { bgColor: '$gray700' },
-          '&:hover:active': { bgColor: '$gray700' },
-        },
-      },
-    },
-    {
-      variant: 'ghost',
-      colorScheme: 'primary',
-      css: {
-        color: '$primary200',
-        '@hover': {
-          '&:hover:not(:disabled)': {
-            bgColor: '$lighten300',
-          },
-        },
-        '&:active': { bgColor: '$lighten200' },
-        '&:hover:active': { bgColor: '$lighten200' },
-
-        [`.${darkTheme} &`]: {
-          color: '$lighten300',
-          '@hover': {
-            '&:hover:not(:disabled)': {
-              bgColor: '$darken100',
-            },
-          },
-          '&:active': { bgColor: '$darken200' },
-          '&:hover:active': { bgColor: '$darken200' },
-        },
-      },
-    },
+    ...ButtonCompound,
 
     // Link
     {
@@ -385,6 +396,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) =>
       colorScheme={colorScheme}
       variant={variant}
       onClick={!isLoading ? onClick : undefined}
+      loading={isLoading}
       {...rest}>
       {isLoading ? (
         <Loader size={size} color={loaderColor} />

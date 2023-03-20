@@ -28,7 +28,7 @@ interface IconProps {
   size?: number;
 }
 
-export const Icon = ({ name, size }: IconProps) => {
+export const Icon = ({ name, size = 20 }: IconProps) => {
   const IconComponent = iconMap[name];
   return <IconComponent size={size} />;
 };

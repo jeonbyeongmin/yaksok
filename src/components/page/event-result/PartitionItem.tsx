@@ -64,7 +64,7 @@ function PartitionItem({
       </Flex>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger onClick={(e) => e.stopPropagation()}>
-          <IconButton name="person" visible={value || open} />
+          <IconButton name="person" variant="embossing" visible={value || open} />
         </PopoverTrigger>
         <PopoverContent align="end" onClick={(e) => e.stopPropagation()}>
           <Flex direction="column" isFull gap={5}>
