@@ -1,9 +1,8 @@
-import { Button, Flex, Grid, Icon, Page, Paper, Text } from '@/components/primitive';
+import { Badge, Button, Flex, Grid, Icon, Page, Paper, Text } from '@/components/primitive';
 import { Card, CardInner } from '@/components/primitive/Card';
 import { getEventAPI, getEventPath } from '@/api/events/read-event';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { Badge } from '@/components/primitive/Badge';
 import { Event } from 'common/inerfaces/Event.interface';
 import { GetServerSideProps } from 'next';
 import { Layout } from '@/components/layout/Layout';
@@ -190,6 +189,7 @@ function EventResult({ eventID, event }: EventResultProps) {
                     {participants?.map((participant) => (
                       <Badge
                         key={participant._id}
+                        size="sm"
                         active={isSelected(participant._id)}
                         onClick={() => handleParticipantSelect(participant._id)}
                         content={participant.name}
