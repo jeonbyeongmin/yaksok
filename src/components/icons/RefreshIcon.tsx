@@ -1,4 +1,4 @@
-import { IconProps } from '@/components/assets/common/iconTypes';
+import { IconProps } from '@/types/icon-type';
 
 export function RefreshIcon({ size = 20 }: IconProps) {
   return (
