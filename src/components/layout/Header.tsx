@@ -1,11 +1,9 @@
+import { Flex, Icon, Switch } from '@/components/primitive';
 import { darkTheme, styled } from '@/styles/stitches.config';
 import { useEffect, useState } from 'react';
 
-import { Flex } from '@/components/primitive/Flex';
-import { Icon } from '@/components/primitive';
 import Image from 'next/image';
 import Link from 'next/link';
-import Switch from '@/components/primitive/Switch';
 import { useTheme } from 'next-themes';
 
 function Header() {

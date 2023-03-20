@@ -2,11 +2,17 @@
 
 import '@/styles/globals.css';
 
+import { Flex, Icon, Switch } from '../src/components/primitive';
+import React, { useEffect, useState } from 'react';
+import { ThemeProvider, useTheme } from 'next-themes';
+import { darkTheme, styled } from '../src/styles/stitches.config';
+
 import { Preview } from '@storybook/react';
-import React from 'react';
-import { ThemeProvider } from 'next-themes';
 
 const preview: Preview = {
+  parameters: {
+    layout: 'fullscreen',
+  },
   decorators: [
     (Story) => (
       <ThemeProvider
@@ -17,10 +23,45 @@ const preview: Preview = {
           light: 'light',
           dark: 'dark-theme',
         }}>
-        <Story />
+        <StoryWrapper direction="column" gap={10}>
+          <SwitchWithHook />
+          <Story />
+        </StoryWrapper>
       </ThemeProvider>
     ),
   ],
+};
+
+const StoryWrapper = styled(Flex, {
+  w: '$full',
+  h: '$full',
+  p: '$10',
+
+  [`.${darkTheme} &`]: {
+    backgroundColor: '#1E1F21',
+  },
+});
+
+const SwitchWithHook = () => {
+  const { resolvedTheme, setTheme } = useTheme();
+  const [isOn, setIsOn] = useState<boolean>(false);
+
+  const onSwitch = () => {
+    setIsOn((prev) => !prev);
+    setTheme(resolvedTheme === 'light' ? 'dark' : 'light');
+  };
+
+  useEffect(() => {
+    setIsOn(resolvedTheme !== 'light');
+  }, [resolvedTheme]);
+
+  return (
+    <Switch
+      onSwitch={onSwitch}
+      checked={isOn}
+      icon={isOn ? <Icon name="moon" size={16} /> : <Icon name="sun" size={16} />}
+    />
+  );
 };
 
 export default preview;
