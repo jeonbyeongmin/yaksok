@@ -1,19 +1,10 @@
 import { darkTheme, styled } from '@/styles/stitches.config';
 import { getEventAPI, getEventPath } from '@/api/events/read-event';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-
-import { Button } from '@/components/primitive/Button';
-import { CalendarIcon } from '@/components/assets/CalendarIcon';
-import { CaretRightIcon } from '@/components/assets/CaretRightIcon';
-import { Flex } from '@/components/primitive/Flex';
 import { GetServerSideProps } from 'next';
 import { Layout } from '@/components/layout/Layout';
 import LoadingMessage from '@/components/page/LoadingMessage';
-import { Page } from '@/components/primitive/Page';
-import { Paper } from '@/components/primitive/Paper';
 import ParticipationModal from '@/components/page/event/ParticipationModal';
-import { ShareIcon } from '@/components/assets';
-import { Text } from '@/components/primitive/Text';
 import Timetable from '@/components/page/Timetable';
 import { logOnBrowser } from 'common/utils/log';
 import { makeToast } from '@/components/primitive/Toast';
@@ -24,6 +15,7 @@ import { useParticipantsSWR } from '@/hooks/useParticipantsSWR';
 import { useRouter } from 'next/router';
 import { useTimetable } from '@/hooks/useTimetable';
 import { Event } from 'common/inerfaces/Event.interface';
+import { Button, Flex, Icon, Page, Paper, Text } from '@/components/primitive';
 
 interface EventProps {
   eventID: string;
@@ -139,20 +131,20 @@ function Event({ eventID, participantCID, event }: EventProps) {
           <Inner direction="column">
             <Flex direction="column" isFull gap={3}>
               <Flex align="center" justify="end" isFull>
-                <ShareButton
+                <Button
                   onClick={handleShareButtonClick}
                   variant="outline"
                   colorScheme="gray"
-                  leftElement={<ShareIcon size={16} />}
+                  leftElement={<Icon name="share" size={16} />}
                   radius="pill"
                   size="sm"
                   shadow>
                   <Text content="초대 링크 공유" size="sm" />
-                </ShareButton>
+                </Button>
               </Flex>
               <Title direction="column">
                 <Flex align="center" gap={4}>
-                  <CalendarIcon size={25} />
+                  <Icon name="calendar" size={25} />
                   <Text content={event.title} size="2xl" weight="bold" />
                 </Flex>
                 {participant && (
@@ -178,7 +170,7 @@ function Event({ eventID, participantCID, event }: EventProps) {
                 <Button
                   variant="link"
                   colorScheme="gray"
-                  rightElement={<CaretRightIcon />}
+                  rightElement={<Icon name="caret-right" />}
                   onClick={handleMoveToResultButtonClick}>
                   <Text content="다른 참여자의 시간표가 궁금하신가요?" size="sm" />
                 </Button>
@@ -248,14 +240,6 @@ const Inner = styled(Flex, {
 
   [`.${darkTheme} &`]: {
     color: '$white',
-  },
-});
-
-const ShareButton = styled(Button, {
-  color: '$gray300',
-
-  [`.${darkTheme} &`]: {
-    color: '$gray400',
   },
 });
 

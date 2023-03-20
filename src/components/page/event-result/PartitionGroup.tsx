@@ -1,3 +1,4 @@
+import { Box, Flex, Icon, Text } from '@/components/primitive';
 import { Card, CardInner } from '@/components/primitive/Card';
 import {
   CollapsibleContent,
@@ -7,13 +8,9 @@ import {
 import { darkTheme, styled } from '@/styles/stitches.config';
 import { useMemo, useState } from 'react';
 
-import { Box } from '@/components/primitive/Box';
-import { CaretDownIcon } from '@/components/assets/CaretDownIcon';
 import { Event } from 'common/inerfaces/Event.interface';
-import { Flex } from '@/components/primitive/Flex';
 import { Participant } from 'common/inerfaces/Participant.interface';
 import PartitionItem from '@/components/page/event-result/PartitionItem';
-import { Text } from '@/components/primitive/Text';
 import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
 import { useTheme } from 'next-themes';
 
@@ -109,7 +106,7 @@ function PartitionGroup({
           {partitionGroupCollapseItems.remainItems.length > 0 && (
             <CollapsibleTrigger>
               <CollapsibleTriggerWrapper>
-                <CaretDownIcon size={25} />
+                <Icon name="caret-down" size={25} />
               </CollapsibleTriggerWrapper>
             </CollapsibleTrigger>
           )}

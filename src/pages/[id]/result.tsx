@@ -1,22 +1,14 @@
+import { Button, Flex, Grid, Icon, Page, Paper, Text } from '@/components/primitive';
 import { Card, CardInner } from '@/components/primitive/Card';
 import { getEventAPI, getEventPath } from '@/api/events/read-event';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Badge } from '@/components/primitive/Badge';
-import { Button } from '@/components/primitive/Button';
-import { CalendarIcon } from '@/components/assets/CalendarIcon';
-import { CaretRightIcon } from '@/components/assets/CaretRightIcon';
 import { Event } from 'common/inerfaces/Event.interface';
-import { Flex } from '@/components/primitive/Flex';
 import { GetServerSideProps } from 'next';
-import { Grid } from '@/components/primitive/Grid';
 import { Layout } from '@/components/layout/Layout';
 import LoadingMessage from '@/components/page/LoadingMessage';
-import { Page } from '@/components/primitive/Page';
-import { Paper } from '@/components/primitive/Paper';
 import PartitionGroup from '@/components/page/event-result/PartitionGroup';
-import { RefreshIcon } from '@/components/assets/RefreshIcon';
-import { Text } from '@/components/primitive/Text';
 import Timetable from '@/components/page/Timetable';
 import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
 import { makeToast } from '@/components/primitive/Toast';
@@ -144,7 +136,10 @@ function EventResult({ eventID, event }: EventResultProps) {
       <Page>
         <Paper transparent>
           <ButtonWrapper align="center" justify="end" isFull color="white">
-            <Button rightElement={<CaretRightIcon />} onClick={handleCopyClipBoard} radius="pill">
+            <Button
+              rightElement={<Icon name="caret-right" />}
+              onClick={handleCopyClipBoard}
+              radius="pill">
               <Text content="결과 공유하기" color="white" weight="bold" />
             </Button>
           </ButtonWrapper>
@@ -155,7 +150,7 @@ function EventResult({ eventID, event }: EventResultProps) {
                 <ButtonWrapper align="center" justify="start" isFull gap={2}>
                   <Button
                     onClick={handleReloadButtonClick}
-                    leftElement={<RefreshIcon size={12} />}
+                    leftElement={<Icon name="refresh" size={12} />}
                     size="xs"
                     variant="outline"
                     colorScheme="gray"
@@ -172,7 +167,7 @@ function EventResult({ eventID, event }: EventResultProps) {
                   </Button>
                 </ButtonWrapper>
                 <Flex align="center" gap={3}>
-                  <CalendarIcon size={20} />
+                  <Icon name="calendar" size={20} />
                   <Text content={event?.title ?? ''} size="lg" weight="bold" />
                 </Flex>
                 <Text
@@ -230,7 +225,6 @@ const CustomGrid = styled(Grid, {
   gap: '$8',
   '@bp1': { gridTemplateColumns: 'repeat(1, 1fr)' },
   '@bp2': { gridTemplateColumns: 'repeat(2, 1fr)' },
-  '@bp3': { gridTemplateColumns: 'repeat(2, 1fr)' },
 });
 
 const ButtonWrapper = styled(Flex, {

@@ -4,7 +4,7 @@ import AnimateContainer from '@/components/page/home/AnimateContainer';
 import { Box } from '@/components/primitive/Box';
 import { Button } from '@/components/primitive/Button';
 import Calendar from '@/components/page/home/Calendar';
-import { CalendarIcon } from '@/components/assets/CalendarIcon';
+import { CalendarIcon } from '@/components/icons/CalendarIcon';
 import { CreateEventAPI } from '@/api/events/create-event';
 import { CreateParticipantAPI } from '@/api/participants/create-participant';
 import { Flex } from '@/components/primitive/Flex';
