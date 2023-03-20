@@ -1,14 +1,13 @@
+import { Flex, Text } from '@/components/primitive';
 import { darkTheme, styled } from '@/styles/stitches.config';
 
-import { Flex } from '@/components/primitive/Flex';
-import { Logo } from '@/components/assets/Logo';
-import { Text } from '@/components/primitive/Text';
+import Image from 'next/image';
 
 function Footer() {
   return (
     <FooterWrapper>
       <FooterInner align="center" gap={5}>
-        <Logo width={100} height={32} />
+        <Image src="/logo.svg" alt="logo" width={100} height={30} />
         <Divider />
         <CopyRight>
           <Text content="&copy;" size="xs" />
