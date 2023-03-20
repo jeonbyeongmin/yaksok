@@ -4,12 +4,9 @@ import { getCssText } from '@/styles/stitches.config';
 
 export default function Document() {
   return (
-    <Html lang="ko">
+    <Html>
       <Head>
-        <style
-          id="stitches"
-          dangerouslySetInnerHTML={{ __html: getCssText() }}
-        />
+        <style id="stitches" dangerouslySetInnerHTML={{ __html: getCssText() }} />
       </Head>
       <body>
         <Main />

@@ -1,8 +1,5 @@
+import { Button, Flex, Text } from '@/components/primitive';
 import type { Meta, StoryObj } from '@storybook/react';
-
-import { Button } from '@/components/primitive/Button';
-import { Flex } from '@/components/primitive/Flex';
-import { Text } from '@/components/primitive/Text';
 
 const meta: Meta<typeof Button> = {
   title: 'Primitive / Button',
