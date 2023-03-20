@@ -1,18 +1,13 @@
+import { Box, Button, Flex, Grid, Icon, Text } from '@/components/primitive';
 import { darkTheme, styled } from '@/styles/stitches.config';
 
 import AnimateContainer from '@/components/page/home/AnimateContainer';
-import { Box } from '@/components/primitive/Box';
-import { Button } from '@/components/primitive/Button';
 import Calendar from '@/components/page/home/Calendar';
-import { CalendarIcon } from '@/components/icons/CalendarIcon';
 import { CreateEventAPI } from '@/api/events/create-event';
 import { CreateParticipantAPI } from '@/api/participants/create-participant';
-import { Flex } from '@/components/primitive/Flex';
-import { Grid } from '@/components/primitive/Grid';
 import { Input } from '@/components/primitive/Input';
 import { Layout } from '@/components/layout/Layout';
 import ParticipantNumberSelector from '@/components/page/home/ParticipantNumberSelector';
-import { Text } from '@/components/primitive/Text';
 import TimeSelector from '@/components/page/home/TimeSelector';
 import { logOnBrowser } from 'common/utils/log';
 import { useInputText } from '@/hooks/useInputText';
@@ -93,7 +88,7 @@ export default function Home() {
         <AnimateContainer>
           <TopsideInner justify="center" align="center" direction="column">
             <Input
-              leftElement={<CalendarIcon size={20} />}
+              leftElement={<Icon name="calendar" size={20} />}
               placeholder="약속 제목을 입력해주세요"
               value={title}
               onChange={handleTitleChange}

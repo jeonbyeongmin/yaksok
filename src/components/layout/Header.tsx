@@ -1,8 +1,8 @@
-import { MoonIcon, SunIcon } from '@/components/icons';
 import { darkTheme, styled } from '@/styles/stitches.config';
 import { useEffect, useState } from 'react';
 
 import { Flex } from '@/components/primitive/Flex';
+import { Icon } from '@/components/primitive';
 import Image from 'next/image';
 import Link from 'next/link';
 import Switch from '@/components/primitive/Switch';
@@ -30,7 +30,7 @@ function Header() {
         <Switch
           onSwitch={onSwitch}
           checked={isOn}
-          icon={isOn ? <MoonIcon size={16} /> : <SunIcon size={16} />}
+          icon={isOn ? <Icon name="moon" size={16} /> : <Icon name="sun" size={16} />}
         />
       </HeaderInner>
     </HeaderWrapper>
