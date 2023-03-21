@@ -1,6 +1,6 @@
-import { IconProps } from '@/types/icon-type';
+import type { IconType } from '@/types/icon.type';
 
-export function CaretDownIcon({ size = 20 }: IconProps) {
+export function CaretDownIcon({ size = 20 }: IconType) {
   return (
     <svg
       width={size}

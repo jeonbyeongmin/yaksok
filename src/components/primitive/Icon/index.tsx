@@ -2,6 +2,7 @@ import { CalendarIcon } from '@/components/primitive/Icon/CalendarIcon';
 import { CaretDownIcon } from '@/components/primitive/Icon/CaretDownIcon';
 import { CaretRightIcon } from '@/components/primitive/Icon/CaretRightIcon';
 import { CaretUpIcon } from '@/components/primitive/Icon/CaretUpIcon';
+import type { IconType } from '@/types/icon.type';
 import { MoonIcon } from '@/components/primitive/Icon/MoonIcon';
 import { PersonIcon } from '@/components/primitive/Icon/PersonIcon';
 import { RefreshIcon } from '@/components/primitive/Icon/RefreshIcon';
@@ -23,9 +24,8 @@ const iconMap = {
 
 export type IconName = keyof typeof iconMap;
 
-interface IconProps {
+interface IconProps extends IconType {
   name: IconName;
-  size?: number;
 }
 
 export const Icon = ({ name, size = 20 }: IconProps) => {
