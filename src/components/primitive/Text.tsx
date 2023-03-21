@@ -1,14 +1,29 @@
+import type { BrandColors, FontSizes, FontWeights, GrayscaleColors } from '@/types/theme.type';
 import { CSS, styled } from '@/styles/stitches.config';
 import { ComponentProps, ElementRef, forwardRef } from 'react';
 
 type TextVariants = ComponentProps<typeof CustomText>;
-type TextProps = TextVariants & {
-  css?: CSS;
+type TextSize = FontSizes;
+type TextWeight = FontWeights;
+type TextColor = BrandColors | GrayscaleColors;
+
+interface TextProps extends TextVariants {
+  // controls
+  size?: TextSize;
+  weight?: TextWeight;
+  color?: TextColor;
+  maxLines?: 1 | 2 | 3 | 4;
+  // gradient?: boolean;
+
   content: string;
-};
+
+  // alternative
+  css?: CSS;
+}
 
 const CustomText = styled('span', {
   // Reset
+  all: 'unset',
   margin: 0,
   fontVariantNumeric: 'tabular-nums',
   display: 'block',
@@ -51,38 +66,40 @@ const CustomText = styled('span', {
 
     color: {
       // grayscale
-      white: { color: '#FFFFFF' },
-      gray100: { color: '#F5F5F5' },
-      gray200: { color: '#DBDBDB' },
-      gray300: { color: '#A8A8A8' },
-      gray400: { color: '#8F8F8F' },
-      gray500: { color: '#757575' },
-      gray600: { color: '#5C5C5C' },
-      gray700: { color: '#424242' },
-      gray800: { color: '#292929' },
-      black: { color: '#000000' },
+      white: { color: '$white' },
+      gray100: { color: '$gray100' },
+      gray200: { color: '$gray200' },
+      gray300: { color: '$gray300' },
+      gray400: { color: '$gray400' },
+      gray500: { color: '$gray500' },
+      gray600: { color: '$gray600' },
+      gray700: { color: '$gray700' },
+      gray800: { color: '$gray800' },
+      gray900: { color: '$gray900' },
+      black: { color: '$black' },
 
       // brand
-      primary: { color: '#58B8EE' },
-      lighten100: { color: '#86CCF3' },
-      lighten200: { color: '#B5DFF7' },
-      lighten300: { color: '#E3F3FC' },
-      lighten400: { color: '#F2F9FE' },
-
-      darken100: { color: '#106A9D' },
-      darken200: { color: '#0B4B6F' },
-      darken300: { color: '#072C40' },
-      darken400: { color: '#020C12' },
+      primary100: { color: '$primary100' },
+      primary200: { color: '$primary200' },
+      primary300: { color: '$primary300' },
+      lighten100: { color: '$lighten100' },
+      lighten200: { color: '$lighten200' },
+      lighten300: { color: '$lighten300' },
+      lighten400: { color: '$lighten400' },
+      darken100: { color: '$darken100' },
+      darken200: { color: '$darken200' },
+      darken300: { color: '$darken300' },
+      darken400: { color: '$darken400' },
 
       red: { color: '$red' },
     },
 
-    gradient: {
-      true: {
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-      },
-    },
+    // gradient: {
+    //   true: {
+    //     WebkitBackgroundClip: 'text',
+    //     WebkitTextFillColor: 'transparent',
+    //   },
+    // },
 
     maxLines: {
       1: {

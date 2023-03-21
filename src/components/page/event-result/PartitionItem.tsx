@@ -1,14 +1,11 @@
+import { Flex, IconButton, Text } from '@/components/primitive';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/primitive/Popover';
 import { convertIndexToDate, convertIndexToTime } from 'common/utils/convert';
 import { darkTheme, styled } from '@/styles/stitches.config';
 import { useMemo, useState } from 'react';
 
 import { Event } from 'common/inerfaces/Event.interface';
-import { Flex } from '@/components/primitive/Flex';
-import IconButton from '@/components/primitive/IconButton';
 import { Participant } from 'common/inerfaces/Participant.interface';
-import { PersonIcon } from '@/components/assets';
-import { Text } from '@/components/primitive/Text';
 import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
 import { useHover } from '@/hooks/useHover';
 
@@ -55,7 +52,7 @@ function PartitionItem({
       <Flex gap={5}>
         <Text
           content={`${convertIndexToDate(partition.col, event.startDate, { isShort: true })}`}
-          color="primary"
+          color="primary100"
           weight="bold"
         />
         <Text
@@ -67,7 +64,12 @@ function PartitionItem({
       </Flex>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger onClick={(e) => e.stopPropagation()}>
-          <IconButton icon={<PersonIcon size={20} />} visible={value || open} />
+          <IconButton
+            name="person"
+            variant="embossing"
+            colorScheme="primary"
+            visible={value || open}
+          />
         </PopoverTrigger>
         <PopoverContent align="end" onClick={(e) => e.stopPropagation()}>
           <Flex direction="column" isFull gap={5}>

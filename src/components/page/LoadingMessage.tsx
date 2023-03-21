@@ -1,13 +1,13 @@
 import { darkTheme, styled } from '@/styles/stitches.config';
 
 import { Flex } from '@/components/primitive/Flex';
-import { Loader } from '@/components/primitive/Loader';
+import { Loader } from '@/components/primitive';
 import { Text } from '@/components/primitive/Text';
 
 function LoadingMessage() {
   return (
-    <LoadingMessageWrapper direction="column" align="center" justify="center" isFull gap={5}>
-      <Loader size="lg" />
+    <LoadingMessageWrapper direction="column" align="center" justify="center" isFull gap={10}>
+      <Loader size="2xl" />
       <Text content="정보를 가져오는 중이에요!" size="xl" weight="bold" />
     </LoadingMessageWrapper>
   );

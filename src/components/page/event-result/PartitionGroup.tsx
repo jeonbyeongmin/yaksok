@@ -1,19 +1,16 @@
-import { Card, CardInner } from '@/components/primitive/Card';
+import { Box, Flex, Icon, Text } from '@/components/primitive';
 import {
   CollapsibleContent,
   CollapsibleRoot,
   CollapsibleTrigger,
 } from '@/components/primitive/Collapsisble';
+import { Panel, PanelInner } from '@/components/primitive/Panel';
 import { darkTheme, styled } from '@/styles/stitches.config';
 import { useMemo, useState } from 'react';
 
-import { Box } from '@/components/primitive/Box';
-import { CaretDownIcon } from '@/components/assets/CaretDownIcon';
 import { Event } from 'common/inerfaces/Event.interface';
-import { Flex } from '@/components/primitive/Flex';
 import { Participant } from 'common/inerfaces/Participant.interface';
 import PartitionItem from '@/components/page/event-result/PartitionItem';
-import { Text } from '@/components/primitive/Text';
 import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
 import { useTheme } from 'next-themes';
 
@@ -52,8 +49,8 @@ function PartitionGroup({
   }, [partitionGroup]);
 
   return (
-    <Card key={rank} align="start" direction="column" gap={5}>
-      <CardInner css={{ pb: '$5' }}>
+    <Panel key={rank} align="start" direction="column" gap={5}>
+      <PanelInner css={{ pb: '$5' }}>
         <Flex gap={4} isFull>
           <RankWrapper>
             <Text
@@ -109,13 +106,13 @@ function PartitionGroup({
           {partitionGroupCollapseItems.remainItems.length > 0 && (
             <CollapsibleTrigger>
               <CollapsibleTriggerWrapper>
-                <CaretDownIcon size={25} />
+                <Icon name="caret-down" size={25} />
               </CollapsibleTriggerWrapper>
             </CollapsibleTrigger>
           )}
         </CollapsibleRoot>
-      </CardInner>
-    </Card>
+      </PanelInner>
+    </Panel>
   );
 }
 
@@ -141,8 +138,8 @@ const RankWrapper = styled(Flex, {
   alignItems: 'center',
   w: '$13',
   h: '$13',
-  bgColor: '$primary',
-  borderRadius: '$round',
+  bgColor: '$primary100',
+  borderRadius: '$pill',
   flexShrink: 0,
   '@bp1': { w: '$15', h: '$15' },
 
@@ -151,7 +148,7 @@ const RankWrapper = styled(Flex, {
 
 const UnderLineBox = styled(Box, {
   w: '$full',
-  borderBottom: '1px solid $primary',
+  borderBottom: '1px solid $primary100',
   py: '$3',
   px: '$4',
   mb: '$3',

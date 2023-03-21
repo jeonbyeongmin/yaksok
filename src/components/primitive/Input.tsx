@@ -1,28 +1,24 @@
 import { ComponentProps, ElementRef, ReactNode, forwardRef } from 'react';
-import { VariantProps, darkTheme, styled } from '@/styles/stitches.config';
+import { darkTheme, styled } from '@/styles/stitches.config';
 
-import { Flex } from '@/components/primitive/Flex';
+import type { Radii } from '@/types/theme.type';
 
-// type
-type CustomInputProps = ComponentProps<typeof CustomInput>;
+type InputVariants = ComponentProps<typeof CustomInput>;
+type InputVariant = 'outline' | 'blurred';
+type InputRadius = Radii;
+type InputSize = 'sm' | 'md' | 'lg' | 'xl';
 
-type InputWrapperVariants = VariantProps<typeof InputWrapper>;
-type InputWrapperVariant = Pick<InputWrapperVariants, 'variant'>;
-type InputWrapperRadius = Pick<InputWrapperVariants, 'radius'>;
-type InputWrapperScale = Pick<InputWrapperVariants, 'scale'>;
-
-interface IInput extends CustomInputProps {
-  variant?: InputWrapperVariant['variant'];
-  radius?: InputWrapperRadius['radius'];
-  scale?: InputWrapperScale['scale'];
+interface InputProps extends InputVariants {
+  variant?: InputVariant;
+  radius?: InputRadius;
+  size?: InputSize;
   leftElement?: ReactNode;
   rightElement?: ReactNode;
 }
 
-// style
-const InputWrapper = styled(Flex, {
-  bgColor: '$white',
-  p: '$sm',
+const InputWrapper = styled('div', {
+  display: 'flex',
+  bgColor: '$transparent',
   alignItems: 'center',
   w: '$full',
   color: '$black',
@@ -32,11 +28,7 @@ const InputWrapper = styled(Flex, {
     variant: {
       outline: {
         border: '1px solid $gray200',
-
-        [`.${darkTheme} &`]: {
-          bgColor: '$gray800',
-          border: '1px solid $gray700',
-        },
+        [`.${darkTheme} &`]: { border: '1px solid $gray700' },
       },
 
       blurred: {
@@ -45,45 +37,58 @@ const InputWrapper = styled(Flex, {
         boxShadow: '$1',
       },
     },
+
     radius: {
+      xs: { borderRadius: '$xs' },
       sm: { borderRadius: '$sm' },
       md: { borderRadius: '$md' },
       lg: { borderRadius: '$lg' },
+      xl: { borderRadius: '$xl' },
+      '2xl': { borderRadius: '$2xl' },
+      '3xl': { borderRadius: '$3xl' },
       pill: { borderRadius: '$pill' },
     },
-    scale: {
+
+    size: {
       sm: {
         py: '$3',
         px: '$4',
         gap: '$2',
+        maxW: '$80',
+        '@bp1': { maxW: '$160' },
       },
       md: {
         py: '$4',
         px: '$6',
         gap: '$3',
+        maxW: '$100',
+        '@bp1': { maxW: '$180' },
       },
       lg: {
+        py: '$5',
+        px: '$8',
+        gap: '$3',
+        maxW: '$120',
+        '@bp1': { maxW: '$200' },
+      },
+      xl: {
         py: '$6',
         px: '$10',
         gap: '$4',
         maxW: '$150',
-
-        '@bp1': { maxW: '$200' },
-        '@bp2': { maxW: '$200', py: '$8' },
-        '@bp3': { maxW: '$250', py: '$8' },
+        '@bp1': { maxW: '$250' },
       },
     },
   },
 
   defaultVariants: {
     variant: 'outline',
-    radius: 'sm',
-    scale: 'md',
+    radius: 'md',
+    size: 'md',
   },
 });
 
 const CustomInput = styled('input', {
-  all: 'unset',
   w: '$full',
   bgColor: '$transparent',
   outline: 'none',
@@ -95,9 +100,9 @@ const CustomInput = styled('input', {
   },
 
   variants: {
-    scale: {
+    size: {
       sm: {
-        fs: '$sm',
+        fs: '$xs',
       },
       md: {
         fs: '$sm',
@@ -107,33 +112,33 @@ const CustomInput = styled('input', {
         fs: '$md',
         '@bp1': { fs: '$lg' },
       },
+      xl: {
+        fs: '$lg',
+        '@bp1': { fs: '$xl' },
+      },
     },
   },
 
   defaultVariants: {
-    scale: 'md',
+    size: 'md',
   },
 });
 
-// component
-const Input = forwardRef<ElementRef<typeof CustomInput>, IInput>(
-  ({ variant, width, radius, scale, leftElement, rightElement, ...props }, forwardedRef) => {
-    return (
-      <InputWrapper
-        variant={variant}
-        scale={scale}
-        radius={radius}
-        css={{
-          width,
-        }}>
-        {leftElement}
-        <CustomInput ref={forwardedRef} scale={scale} {...props} />
-        {rightElement}
-      </InputWrapper>
-    );
-  }
-);
+export const Input = forwardRef<ElementRef<typeof CustomInput>, InputProps>((props, ref) => {
+  const { variant, width, radius, size, leftElement, rightElement, ...rest } = props;
+  return (
+    <InputWrapper
+      variant={variant}
+      size={size}
+      radius={radius}
+      css={{
+        width,
+      }}>
+      {leftElement}
+      <CustomInput ref={ref} size={size} {...rest} />
+      {rightElement}
+    </InputWrapper>
+  );
+});
 
 Input.displayName = 'Input';
-
-export { Input };

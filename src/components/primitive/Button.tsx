@@ -1,15 +1,183 @@
 import { CSS, darkTheme, styled } from '@/styles/stitches.config';
-import { ComponentProps, ReactNode, forwardRef } from 'react';
+import { ComponentProps, ReactNode, forwardRef, useMemo } from 'react';
 
 import { Loader } from '@/components/primitive/Loader';
+import type { Radii } from '@/types/theme.type';
 
-type ButtonVariants = ComponentProps<typeof CustomButton>;
+export type ButtonVariants = ComponentProps<typeof CustomButton>;
+export type ButtonVariant = 'solid' | 'outline' | 'ghost' | 'link';
+export type ButtonColorScheme = 'gray' | 'primary';
+export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+export type ButtonRadius = Radii;
+
 interface ButtonProps extends ButtonVariants {
-  css?: CSS;
+  // controls
+  isLoading?: boolean;
+  shadow?: boolean;
+  variant?: ButtonVariant;
+  colorScheme?: ButtonColorScheme;
+  size?: ButtonSize;
+  radius?: ButtonRadius;
+
+  // elements
   leftElement?: ReactNode;
   rightElement?: ReactNode;
-  isLoading?: boolean;
+
+  // alternative
+  css?: CSS;
 }
+
+export const ButtonCompound = [
+  // Solid
+  {
+    variant: 'solid',
+    colorScheme: 'gray',
+    css: {
+      bgColor: '$gray100',
+      '@hover': {
+        '&:hover:not(:disabled)': {
+          bgColor: '$gray200',
+        },
+      },
+      '&:active': { bgColor: '$gray300' },
+      '&:hover:active': { bgColor: '$gray300' },
+
+      [`.${darkTheme} &`]: {
+        bgColor: '$gray600',
+        color: '$white',
+        '@hover': {
+          '&:hover:not(:disabled)': {
+            bgColor: '$gray700',
+          },
+        },
+        '&:active': { bgColor: '$gray800' },
+        '&:hover:active': { bgColor: '$gray800' },
+      },
+    },
+  },
+  {
+    variant: 'solid',
+    colorScheme: 'primary',
+    css: {
+      bgColor: '$primary100',
+      color: '$white',
+      '@hover': {
+        '&:hover:not(:disabled)': {
+          bgColor: '$primary200',
+        },
+      },
+      '&:active': { bgColor: '$primary300' },
+      '&:hover:active': { bgColor: '$primary300' },
+      '&:disabled': { bgColor: '$gray200' },
+
+      [`.${darkTheme} &`]: {
+        bgColor: '$darken100',
+        '@hover': {
+          '&:hover:not(:disabled)': {
+            bgColor: '$darken200',
+          },
+        },
+        '&:active': { bgColor: '$darken300' },
+        '&:hover:active': { bgColor: '$darken300' },
+        '&:disabled': { bgColor: '$gray700' },
+      },
+    },
+  },
+
+  // Outline
+  {
+    variant: 'outline',
+    colorScheme: 'gray',
+    css: {
+      border: '1px solid $gray200',
+      color: '$gray300',
+      '@hover': {
+        '&:hover:not(:disabled)': {
+          bgColor: '$gray100',
+        },
+      },
+      '&:active': { bgColor: '$gray200' },
+      '&:hover:active': { bgColor: '$gray200' },
+
+      [`.${darkTheme} &`]: {
+        border: '1px solid $gray700',
+        color: '$gray600',
+      },
+    },
+  },
+  {
+    variant: 'outline',
+    colorScheme: 'primary',
+    css: {
+      border: '1px solid $primary200',
+      color: '$primary200',
+      '@hover': {
+        '&:hover:not(:disabled)': {
+          bgColor: '$lighten400',
+        },
+      },
+      '&:active': { bgColor: '$lighten300' },
+      '&:hover:active': { bgColor: '$lighten300' },
+
+      [`.${darkTheme} &`]: {
+        border: '1px solid $darken200',
+        color: '$darken100',
+      },
+    },
+  },
+
+  // Ghost
+  {
+    variant: 'ghost',
+    colorScheme: 'gray',
+    css: {
+      color: '$gray300',
+      '@hover': {
+        '&:hover:not(:disabled)': {
+          bgColor: '$gray100',
+        },
+      },
+      '&:active': { bgColor: '$gray200' },
+      '&:hover:active': { bgColor: '$gray200' },
+
+      [`.${darkTheme} &`]: {
+        color: '$gray100',
+        '@hover': {
+          '&:hover:not(:disabled)': {
+            bgColor: '$gray600',
+          },
+        },
+        '&:active': { bgColor: '$gray700' },
+        '&:hover:active': { bgColor: '$gray700' },
+      },
+    },
+  },
+  {
+    variant: 'ghost',
+    colorScheme: 'primary',
+    css: {
+      color: '$primary200',
+      '@hover': {
+        '&:hover:not(:disabled)': {
+          bgColor: '$lighten300',
+        },
+      },
+      '&:active': { bgColor: '$lighten200' },
+      '&:hover:active': { bgColor: '$lighten200' },
+
+      [`.${darkTheme} &`]: {
+        color: '$lighten300',
+        '@hover': {
+          '&:hover:not(:disabled)': {
+            bgColor: '$darken100',
+          },
+        },
+        '&:active': { bgColor: '$darken200' },
+        '&:hover:active': { bgColor: '$darken200' },
+      },
+    },
+  },
+];
 
 const CustomButton = styled('button', {
   // Reset
@@ -30,7 +198,6 @@ const CustomButton = styled('button', {
   '&::before': { boxSizing: 'border-box' },
   '&::after': { boxSizing: 'border-box' },
   '&:disabled': { cursor: 'not-allowed' },
-  border: '1px solid transparent',
 
   transition: '$fast',
 
@@ -71,11 +238,22 @@ const CustomButton = styled('button', {
           height: '$22',
         },
       },
-      lg: {},
+      lg: {
+        px: '$12',
+        gap: '$2',
+        '@bp0': {
+          height: '$22',
+          minW: '$70',
+        },
+        '@bp1': {
+          height: '$24',
+        },
+      },
       xl: {
         px: '$14',
         '@bp0': {
           height: '$24',
+          minW: '$80',
         },
         '@bp1': {
           height: '$26',
@@ -101,46 +279,32 @@ const CustomButton = styled('button', {
       xl: { borderRadius: '$xl' },
       '2xl': { borderRadius: '$2xl' },
       '3xl': { borderRadius: '$3xl' },
-      round: { borderRadius: '$round' },
       pill: { borderRadius: '$pill' },
     },
 
-    variant: {
-      gray: {
-        bgColor: '$gray100',
-        '@hover': {
-          '&:hover:not(:disabled)': {
-            bgColor: '$gray200',
-          },
-        },
-        '&:active': { bgColor: '$gray300' },
-        '&:hover:active': { bgColor: '$gray300' },
-
-        [`.${darkTheme} &`]: {
-          bgColor: '$gray600',
-          '@hover': {
-            '&:hover:not(:disabled)': {
-              bgColor: '$gray700',
-            },
-          },
-          '&:active': { bgColor: '$gray800' },
-          '&:hover:active': { bgColor: '$gray800' },
-        },
+    shadow: {
+      true: {
+        boxShadow: '$1',
       },
+    },
 
+    loading: {
+      true: {
+        opacity: 0.5,
+        pointerEvents: 'none',
+      },
+    },
+
+    colorScheme: {
+      gray: {},
+      primary: {},
+    },
+
+    variant: {
+      solid: {},
       outline: {
         bgColor: '$panel',
-        border: '1px solid $gray200',
-        '@hover': {
-          '&:hover:not(:disabled)': {
-            bgColor: '$gray100',
-          },
-        },
-        '&:active': { bgColor: '$gray200' },
-        '&:hover:active': { bgColor: '$gray200' },
-
         [`.${darkTheme} &`]: {
-          border: '1px solid $gray700',
           '@hover': {
             '&:hover:not(:disabled)': {
               bgColor: '$darken400',
@@ -150,57 +314,93 @@ const CustomButton = styled('button', {
           '&:hover:active': { bgColor: '$black' },
         },
       },
-
-      primary: {
-        bgColor: '$primary100',
+      ghost: { bgColor: 'transparent' },
+      link: {
         '@hover': {
           '&:hover:not(:disabled)': {
-            bgColor: '$primary200',
+            textDecoration: 'underline',
           },
         },
-        '&:active': { bgColor: '$primary300' },
-        '&:hover:active': { bgColor: '$primary300' },
-        '&:disabled': { bgColor: '$gray200' },
-
-        [`.${darkTheme} &`]: {
-          bgColor: '$darken100',
-          '@hover': {
-            '&:hover:not(:disabled)': {
-              bgColor: '$darken200',
-            },
-          },
-          '&:active': { bgColor: '$darken300' },
-          '&:hover:active': { bgColor: '$darken300' },
-          '&:disabled': { bgColor: '$gray700' },
-        },
-      },
-
-      ghost: {
-        bgColor: 'transparent',
-        '&:active': { opacity: 0.8 },
-      },
-    },
-
-    shadow: {
-      true: {
-        boxShadow: '$1',
       },
     },
   },
 
+  compoundVariants: [
+    ...ButtonCompound,
+
+    // Link
+    {
+      variant: 'link',
+      colorScheme: 'gray',
+      css: {
+        color: '$gray300',
+        '&:active': { color: '$gray500' },
+        '&:hover:active': { color: '$gray500' },
+        [`.${darkTheme} &`]: {
+          color: '$gray100',
+          '&:active': { color: '$gray300' },
+          '&:hover:active': { color: '$gray300' },
+        },
+      },
+    },
+    {
+      variant: 'link',
+      colorScheme: 'primary',
+      css: {
+        color: '$primary300',
+        '&:active': { color: '$darken200' },
+        '&:hover:active': { color: '$darken200' },
+        [`.${darkTheme} &`]: {
+          color: '$lighten300',
+          '&:active': { color: '$primary200' },
+          '&:hover:active': { color: '$primary200' },
+        },
+      },
+    },
+  ],
+
   defaultVariants: {
     size: 'md',
+    variant: 'solid',
+    colorScheme: 'primary',
     radius: 'md',
   },
 });
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
-  const { children, leftElement, isLoading, size, rightElement, onClick, ...rest } = props;
+  const {
+    children,
+    leftElement,
+    isLoading,
+    colorScheme,
+    variant,
+    size,
+    rightElement,
+    onClick,
+    ...rest
+  } = props;
+
+  const loaderColor = useMemo(() => {
+    if (!variant || variant === 'solid') return 'white';
+    switch (colorScheme) {
+      case 'primary':
+        return 'primary';
+      case 'gray':
+        return 'gray';
+    }
+  }, [colorScheme, variant]);
 
   return (
-    <CustomButton ref={ref} size={size} onClick={!isLoading ? onClick : undefined} {...rest}>
+    <CustomButton
+      ref={ref}
+      size={size}
+      colorScheme={colorScheme}
+      variant={variant}
+      onClick={!isLoading ? onClick : undefined}
+      loading={isLoading}
+      {...rest}>
       {isLoading ? (
-        <Loader color="white" />
+        <Loader size={size} color={loaderColor} />
       ) : (
         <>
           {leftElement}

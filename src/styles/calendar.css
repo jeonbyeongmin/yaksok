@@ -40,6 +40,7 @@
 
 .react-calendar__tile {
   color: #000;
+  font-size: 12px;
 }
 .dark-theme .react-calendar__tile {
   color: #fff;

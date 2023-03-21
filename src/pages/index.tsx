@@ -1,18 +1,12 @@
+import { Box, Button, Flex, Grid, Icon, Input, Text } from '@/components/primitive';
 import { darkTheme, styled } from '@/styles/stitches.config';
 
 import AnimateContainer from '@/components/page/home/AnimateContainer';
-import { Box } from '@/components/primitive/Box';
-import { Button } from '@/components/primitive/Button';
 import Calendar from '@/components/page/home/Calendar';
-import { CalendarIcon } from '@/components/assets/CalendarIcon';
 import { CreateEventAPI } from '@/api/events/create-event';
 import { CreateParticipantAPI } from '@/api/participants/create-participant';
-import { Flex } from '@/components/primitive/Flex';
-import { Grid } from '@/components/primitive/Grid';
-import { Input } from '@/components/primitive/Input';
 import { Layout } from '@/components/layout/Layout';
 import ParticipantNumberSelector from '@/components/page/home/ParticipantNumberSelector';
-import { Text } from '@/components/primitive/Text';
 import TimeSelector from '@/components/page/home/TimeSelector';
 import { logOnBrowser } from 'common/utils/log';
 import { useInputText } from '@/hooks/useInputText';
@@ -93,12 +87,12 @@ export default function Home() {
         <AnimateContainer>
           <TopsideInner justify="center" align="center" direction="column">
             <Input
-              leftElement={<CalendarIcon size={20} />}
+              leftElement={<Icon name="calendar" size={20} />}
               placeholder="약속 제목을 입력해주세요"
               value={title}
               onChange={handleTitleChange}
               variant="blurred"
-              scale="lg"
+              size="xl"
               radius="pill"
             />
             <Flex direction="column" gap={7}>
@@ -106,6 +100,7 @@ export default function Home() {
                 placeholder="이름을 입력해주세요"
                 onChange={handleNameChange}
                 value={name}
+                size="md"
                 width="24rem"
                 variant="blurred"
               />
@@ -154,12 +149,7 @@ export default function Home() {
         <ErrorWrapper>
           <Text content={error} color="red" size="sm" />
         </ErrorWrapper>
-        <Button
-          size="2xl"
-          onClick={handleCreateEvent}
-          radius="pill"
-          variant="primary"
-          isLoading={isLoading}>
+        <Button size="2xl" onClick={handleCreateEvent} radius="pill" isLoading={isLoading}>
           <Text content="약속 만들기" color="white" size="xl" weight="bold" />
         </Button>
       </ButtonWrapper>

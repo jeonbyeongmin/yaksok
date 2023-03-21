@@ -42,7 +42,7 @@ const UnderLayer = styled(Box, {
 });
 
 const Ball = styled(Box, {
-  borderRadius: '$round',
+  borderRadius: '$pill',
   position: 'absolute',
   zIndex: -1,
 

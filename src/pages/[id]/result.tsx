@@ -1,22 +1,13 @@
-import { Card, CardInner } from '@/components/primitive/Card';
+import { Badge, Button, Flex, Grid, Icon, Page, Paper, Text } from '@/components/primitive';
+import { Panel, PanelInner } from '@/components/primitive/Panel';
 import { getEventAPI, getEventPath } from '@/api/events/read-event';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { Badge } from '@/components/primitive/Badge';
-import { Button } from '@/components/primitive/Button';
-import { CalendarIcon } from '@/components/assets/CalendarIcon';
-import { CaretRightIcon } from '@/components/assets/CaretRightIcon';
 import { Event } from 'common/inerfaces/Event.interface';
-import { Flex } from '@/components/primitive/Flex';
 import { GetServerSideProps } from 'next';
-import { Grid } from '@/components/primitive/Grid';
 import { Layout } from '@/components/layout/Layout';
 import LoadingMessage from '@/components/page/LoadingMessage';
-import { Page } from '@/components/primitive/Page';
-import { Paper } from '@/components/primitive/Paper';
 import PartitionGroup from '@/components/page/event-result/PartitionGroup';
-import { RefreshIcon } from '@/components/assets/RefreshIcon';
-import { Text } from '@/components/primitive/Text';
 import Timetable from '@/components/page/Timetable';
 import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
 import { makeToast } from '@/components/primitive/Toast';
@@ -145,32 +136,37 @@ function EventResult({ eventID, event }: EventResultProps) {
         <Paper transparent>
           <ButtonWrapper align="center" justify="end" isFull color="white">
             <Button
-              rightElement={<CaretRightIcon />}
+              rightElement={<Icon name="caret-right" />}
               onClick={handleCopyClipBoard}
-              radius="pill"
-              variant="primary">
+              radius="pill">
               <Text content="결과 공유하기" color="white" weight="bold" />
             </Button>
           </ButtonWrapper>
 
           <CustomGrid align="start">
-            <Card direction="column">
-              <CardInner align="start" gap={5}>
+            <Panel direction="column">
+              <PanelInner align="start" gap={5}>
                 <ButtonWrapper align="center" justify="start" isFull gap={2}>
                   <Button
                     onClick={handleReloadButtonClick}
-                    leftElement={<RefreshIcon size={12} />}
+                    leftElement={<Icon name="refresh" size={12} />}
                     size="xs"
                     variant="outline"
+                    colorScheme="gray"
                     radius="pill">
                     <Text content="다시 불러오기" size="xs" />
                   </Button>
-                  <Button onClick={handleEditButtonClick} size="xs" variant="outline" radius="pill">
+                  <Button
+                    onClick={handleEditButtonClick}
+                    size="xs"
+                    variant="outline"
+                    colorScheme="gray"
+                    radius="pill">
                     <Text content="내 시간표 수정하기" size="xs" />
                   </Button>
                 </ButtonWrapper>
                 <Flex align="center" gap={3}>
-                  <CalendarIcon size={20} />
+                  <Icon name="calendar" size={20} />
                   <Text content={event?.title ?? ''} size="lg" weight="bold" />
                 </Flex>
                 <Text
@@ -193,6 +189,7 @@ function EventResult({ eventID, event }: EventResultProps) {
                     {participants?.map((participant) => (
                       <Badge
                         key={participant._id}
+                        size="sm"
                         active={isSelected(participant._id)}
                         onClick={() => handleParticipantSelect(participant._id)}
                         content={participant.name}
@@ -200,8 +197,8 @@ function EventResult({ eventID, event }: EventResultProps) {
                     ))}
                   </Flex>
                 </Flex>
-              </CardInner>
-            </Card>
+              </PanelInner>
+            </Panel>
 
             <Flex direction="column" gap={6}>
               {event &&
@@ -228,7 +225,6 @@ const CustomGrid = styled(Grid, {
   gap: '$8',
   '@bp1': { gridTemplateColumns: 'repeat(1, 1fr)' },
   '@bp2': { gridTemplateColumns: 'repeat(2, 1fr)' },
-  '@bp3': { gridTemplateColumns: 'repeat(2, 1fr)' },
 });
 
 const ButtonWrapper = styled(Flex, {
