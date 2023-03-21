@@ -60,7 +60,7 @@ interface SwitchProps {
   onSwitch?: () => void;
 }
 
-function Switch({ icon, checked, onSwitch }: SwitchProps) {
+export function Switch({ icon, checked, onSwitch }: SwitchProps) {
   return (
     <SwitchRoot onClick={onSwitch} checked={checked}>
       <SwitchThumb
@@ -72,5 +72,3 @@ function Switch({ icon, checked, onSwitch }: SwitchProps) {
     </SwitchRoot>
   );
 }
-
-export default Switch;

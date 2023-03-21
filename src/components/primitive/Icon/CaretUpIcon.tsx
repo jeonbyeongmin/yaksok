@@ -1,6 +1,6 @@
-import { IconProps } from '@/components/assets/common/iconTypes';
+import type { IconType } from '@/types/icon.type';
 
-export function CaretUpIcon({ size = 20 }: IconProps) {
+export function CaretUpIcon({ size = 20 }: IconType) {
   return (
     <svg
       width={size}

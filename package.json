@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "chromatic": "npx chromatic --project-token=03af3d7d44a9"
   },
   "dependencies": {
     "@next/font": "13.1.6",
@@ -53,7 +54,9 @@
     "@storybook/testing-library": "^0.0.14-next.1",
     "@types/react-calendar": "^3.9.0",
     "babel-loader": "^8.3.0",
+    "chromatic": "^6.17.2",
     "eslint-plugin-storybook": "^0.6.11",
     "storybook": "^7.0.0-rc.3"
-  }
+  },
+  "_id": "yaksok@0.1.0"
 }

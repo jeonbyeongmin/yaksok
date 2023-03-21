@@ -1,11 +1,9 @@
-import { MoonIcon, SunIcon } from '@/components/assets';
+import { Flex, Icon, Switch } from '@/components/primitive';
 import { darkTheme, styled } from '@/styles/stitches.config';
 import { useEffect, useState } from 'react';
 
-import { Flex } from '@/components/primitive/Flex';
+import Image from 'next/image';
 import Link from 'next/link';
-import { Logo } from '@/components/assets/Logo';
-import Switch from '@/components/primitive/Switch';
 import { useTheme } from 'next-themes';
 
 function Header() {
@@ -25,12 +23,12 @@ function Header() {
     <HeaderWrapper>
       <HeaderInner justify="between" align="center">
         <Link href="/">
-          <Logo width={100} height={32} />
+          <Image src="/logo.svg" alt="logo" width={100} height={30} />
         </Link>
         <Switch
           onSwitch={onSwitch}
           checked={isOn}
-          icon={isOn ? <MoonIcon size={16} /> : <SunIcon size={16} />}
+          icon={isOn ? <Icon name="moon" size={16} /> : <Icon name="sun" size={16} />}
         />
       </HeaderInner>
     </HeaderWrapper>

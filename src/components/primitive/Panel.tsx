@@ -1,9 +1,25 @@
-import { css, styled } from '@/styles/stitches.config';
+import { darkTheme, styled } from '@/styles/stitches.config';
 
-export const panelStyles = css({
-  bgColor: '$white',
-  br: '$md',
-  boxShadow: 1,
+import { Flex } from '@/components/primitive/Flex';
+
+export const Panel = styled(Flex, {
+  w: '$full',
+  boxShadow: '$1',
+  borderRadius: '$lg',
+  bg: '$glass',
 });
 
-export const Panel = styled('div', panelStyles);
+export const PanelInner = styled(Flex, {
+  position: 'relative',
+  flexDirection: 'column',
+  w: '$full',
+  p: '$10',
+  pt: '$10',
+  color: '$gray800',
+
+  '@bp1': { p: '$15' },
+
+  [`.${darkTheme} &`]: {
+    color: '$white',
+  },
+});

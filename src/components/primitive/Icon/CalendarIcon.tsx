@@ -1,11 +1,11 @@
-import { IconProps } from '@/components/assets/common/iconTypes';
+import type { IconType } from '@/types/icon.type';
 
-export function CalendarIcon({ size = 20, color }: IconProps) {
+export function CalendarIcon({ size = 20 }: IconType) {
   return (
     <svg
       width={size}
       height={size}
-      viewBox="0 0 34 34"
+      viewBox="0 0 30 34"
       fill="none"
       xmlns="http://www.w3.org/2000/svg">
       <path

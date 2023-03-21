@@ -13,7 +13,6 @@ import { ComponentProps, ElementRef, forwardRef } from 'react';
 
 import { Cross1Icon } from '@radix-ui/react-icons';
 import { overlayStyles } from '@/components/primitive/Overlay';
-import { panelStyles } from '@/components/primitive/Panel';
 
 const fadeIn = `@keyframes fadeIn {
   from {
@@ -41,7 +40,8 @@ const CustomOverlay = styled(Overlay, overlayStyles, {
   left: 0,
 });
 
-const CustomContent = styled(Content, panelStyles, {
+const CustomContent = styled(Content, {
+  bgColor: '$panel',
   position: 'fixed',
   top: '50%',
   left: '50%',
@@ -61,11 +61,9 @@ const CustomContent = styled(Content, panelStyles, {
     outline: 'none',
   },
 
-  bgColor: '$white',
   color: '$gray800',
 
   [`.${darkTheme} &`]: {
-    bgColor: '$gray800',
     color: '$white',
   },
 });
