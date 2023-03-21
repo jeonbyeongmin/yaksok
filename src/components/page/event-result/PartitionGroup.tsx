@@ -138,7 +138,7 @@ const RankWrapper = styled(Flex, {
   alignItems: 'center',
   w: '$13',
   h: '$13',
-  bgColor: '$primary',
+  bgColor: '$primary100',
   borderRadius: '$round',
   flexShrink: 0,
   '@bp1': { w: '$15', h: '$15' },
@@ -148,7 +148,7 @@ const RankWrapper = styled(Flex, {
 
 const UnderLineBox = styled(Box, {
   w: '$full',
-  borderBottom: '1px solid $primary',
+  borderBottom: '1px solid $primary100',
   py: '$3',
   px: '$4',
   mb: '$3',

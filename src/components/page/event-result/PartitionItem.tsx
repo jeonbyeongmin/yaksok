@@ -52,7 +52,7 @@ function PartitionItem({
       <Flex gap={5}>
         <Text
           content={`${convertIndexToDate(partition.col, event.startDate, { isShort: true })}`}
-          color="primary"
+          color="primary100"
           weight="bold"
         />
         <Text

@@ -23,7 +23,7 @@ export const WithColor: Story = {
       <Flex gap={5}>
         <Loader {...args} color="primary" />
         <Loader {...args} color="gray" />
-        <Flex css={{ bgColor: '$primary' }}>
+        <Flex css={{ bgColor: '$primary300' }}>
           <Loader {...args} color="white" />
         </Flex>
       </Flex>

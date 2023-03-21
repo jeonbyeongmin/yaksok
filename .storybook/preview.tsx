@@ -39,6 +39,7 @@ const StoryWrapper = styled(Flex, {
 
   [`.${darkTheme} &`]: {
     backgroundColor: '#1E1F21',
+    color: '#ffffff',
   },
 });
 

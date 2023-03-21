@@ -60,7 +60,7 @@ const FooterInner = styled(Flex, {
   '@bp3': { flexDirection: 'row' },
 
   [`.${darkTheme} &`]: {
-    color: '$primary',
+    color: '$primary300',
   },
 });
 
@@ -79,7 +79,7 @@ const Divider = styled(Flex, {
   '@bp3': { display: 'block' },
 
   [`.${darkTheme} &`]: {
-    bgColor: '$primary',
+    bgColor: '$primary300',
   },
 });
 
@@ -93,7 +93,7 @@ const MadeBy = styled(Flex, {
     },
 
     [`.${darkTheme} &`]: {
-      color: '$primary',
+      color: '$primary300',
     },
   },
 

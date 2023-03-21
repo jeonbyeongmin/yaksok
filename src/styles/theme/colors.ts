@@ -13,7 +13,6 @@ export const grayscaleColors = {
 };
 
 export const brandColors = {
-  primary: '#58B8EE',
   primary100: '#58B8EE',
   primary200: '#4D9EDB',
   primary300: '#3F85C8',
