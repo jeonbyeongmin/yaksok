@@ -6,7 +6,6 @@ export const radii = {
   xl: '1.0rem',
   '2xl': '1.2rem',
   '3xl': '1.4rem',
-  round: '50%',
   pill: '9999px',
 };
 

@@ -1,12 +1,9 @@
+import { Button, Flex, Input, Text } from '@/components/primitive';
 import { Dialog, DialogContent, DialogTitle } from '@/components/primitive/Dialog';
 import { darkTheme, styled } from '@/styles/stitches.config';
 import { useEffect, useState } from 'react';
 
-import { Button } from '@/components/primitive/Button';
 import { CreateParticipantAPI } from '@/api/participants/create-participant';
-import { Flex } from '@/components/primitive/Flex';
-import { Input } from '@/components/primitive/Input';
-import { Text } from '@/components/primitive/Text';
 import { logOnBrowser } from 'common/utils/log';
 import { useRouter } from 'next/router';
 
@@ -87,7 +84,7 @@ function ParticipationModal({
               onChange={handleNameChange}
               placeholder="이름을 입력해주세요"
               radius="md"
-              scale="md"
+              size="md"
               variant="outline"
             />
           </InputWrapper>

@@ -341,7 +341,7 @@ export const WithMaxLines: Story = {
           />
         </Flex>
         <Flex direction="column" gap={2}>
-          <Text {...args} size="3xl" content="41 lines" weight="bold" />
+          <Text {...args} size="3xl" content="4 lines" weight="bold" />
           <Text
             {...args}
             size="3xl"

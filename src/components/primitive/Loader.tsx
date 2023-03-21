@@ -51,7 +51,7 @@ const Circle = styled(motion.div, {
   display: 'block',
   width: '25%',
   height: '25%',
-  borderRadius: '$round',
+  borderRadius: '$pill',
 
   variants: {
     color: {

@@ -1,11 +1,10 @@
-import { Box, Button, Flex, Grid, Icon, Text } from '@/components/primitive';
+import { Box, Button, Flex, Grid, Icon, Input, Text } from '@/components/primitive';
 import { darkTheme, styled } from '@/styles/stitches.config';
 
 import AnimateContainer from '@/components/page/home/AnimateContainer';
 import Calendar from '@/components/page/home/Calendar';
 import { CreateEventAPI } from '@/api/events/create-event';
 import { CreateParticipantAPI } from '@/api/participants/create-participant';
-import { Input } from '@/components/primitive/Input';
 import { Layout } from '@/components/layout/Layout';
 import ParticipantNumberSelector from '@/components/page/home/ParticipantNumberSelector';
 import TimeSelector from '@/components/page/home/TimeSelector';
@@ -93,7 +92,7 @@ export default function Home() {
               value={title}
               onChange={handleTitleChange}
               variant="blurred"
-              scale="lg"
+              size="xl"
               radius="pill"
             />
             <Flex direction="column" gap={7}>
@@ -101,6 +100,7 @@ export default function Home() {
                 placeholder="이름을 입력해주세요"
                 onChange={handleNameChange}
                 value={name}
+                size="md"
                 width="24rem"
                 variant="blurred"
               />

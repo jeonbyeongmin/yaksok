@@ -2,12 +2,13 @@ import { CSS, darkTheme, styled } from '@/styles/stitches.config';
 import { ComponentProps, ReactNode, forwardRef, useMemo } from 'react';
 
 import { Loader } from '@/components/primitive/Loader';
+import type { Radii } from '@/types/theme.type';
 
 export type ButtonVariants = ComponentProps<typeof CustomButton>;
 export type ButtonVariant = 'solid' | 'outline' | 'ghost' | 'link';
 export type ButtonColorScheme = 'gray' | 'primary';
 export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
-export type ButtonRadius = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'pill';
+export type ButtonRadius = Radii;
 
 interface ButtonProps extends ButtonVariants {
   // controls

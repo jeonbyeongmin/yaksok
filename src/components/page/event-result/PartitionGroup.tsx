@@ -139,7 +139,7 @@ const RankWrapper = styled(Flex, {
   w: '$13',
   h: '$13',
   bgColor: '$primary100',
-  borderRadius: '$round',
+  borderRadius: '$pill',
   flexShrink: 0,
   '@bp1': { w: '$15', h: '$15' },
 

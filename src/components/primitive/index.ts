@@ -5,6 +5,7 @@ import { Flex } from '@/components/primitive/Flex';
 import { Grid } from '@/components/primitive/Grid';
 import { Icon } from '@/components/primitive/Icon';
 import { IconButton } from '@/components/primitive/IconButton';
+import { Input } from '@/components/primitive/Input';
 import { Loader } from '@/components/primitive/Loader';
 import { Overlay } from '@/components/primitive/Overlay';
 import { Page } from '@/components/primitive/Page';
@@ -20,6 +21,7 @@ export {
   Grid,
   Icon,
   IconButton,
+  Input,
   Loader,
   Overlay,
   Page,
