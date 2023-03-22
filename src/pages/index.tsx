@@ -12,9 +12,13 @@ import { logOnBrowser } from 'common/utils/log';
 import { useInputText } from '@/hooks/useInputText';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetServerSideProps } from 'next';
 
 export default function Home() {
   const router = useRouter();
+  const { t } = useTranslation(['common', 'home-page']);
 
   const [title, handleTitleChange] = useInputText();
   const [name, handleNameChange] = useInputText();
@@ -26,12 +30,12 @@ export default function Home() {
   const [error, setError] = useState<string>('');
 
   const validate = () => {
-    if (!title) throw new Error('제목을 입력해주세요');
-    if (!name) throw new Error('이름을 입력해주세요');
-    if (!participantsNumber) throw new Error('참여 인원을 선택해주세요');
-    if (!date) throw new Error('날짜를 선택해주세요');
-    if (!startTime) throw new Error('시작 시간을 선택해주세요');
-    if (!endTime) throw new Error('종료 시간을 선택해주세요');
+    if (!title) throw new Error(t('home-page:form.event-title.error'));
+    if (!name) throw new Error(t('home-page:form.name.error'));
+    if (!participantsNumber) throw new Error(t('home-page:form.number.error'));
+    if (!date) throw new Error(t('home-page:form.event-date.error'));
+    if (!startTime) throw new Error(t('home-page:form.event-time.start.error'));
+    if (!endTime) throw new Error(t('home-page:form.event-time.end.error'));
   };
 
   const createEvent = async () => {
@@ -49,7 +53,7 @@ export default function Home() {
 
   const createParticipant = async (eventID: string) => {
     const { success } = await CreateParticipantAPI({ name, eventID, availableIndexes: [] });
-    if (!success) throw new Error('참여자 생성에 실패하였습니다.');
+    if (!success) throw new Error(t('common:api-error.create-participant'));
   };
 
   const handleStartTime = (value: string) => {
@@ -88,20 +92,19 @@ export default function Home() {
           <TopsideInner justify="center" align="center" direction="column">
             <Input
               leftElement={<Icon name="calendar" size={20} />}
-              placeholder="약속 제목을 입력해주세요"
+              placeholder={t('home-page:form.event-title.placeholder')}
               value={title}
               onChange={handleTitleChange}
               variant="blurred"
               size="xl"
               radius="pill"
             />
-            <Flex direction="column" gap={7}>
+            <Flex direction="column" align="center" gap={7}>
               <Input
-                placeholder="이름을 입력해주세요"
+                placeholder={t('home-page:form.name.placeholder')}
                 onChange={handleNameChange}
                 value={name}
                 size="md"
-                width="24rem"
                 variant="blurred"
               />
               <ParticipantNumberSelector
@@ -115,30 +118,44 @@ export default function Home() {
       <BottomsideWrapper>
         <BottomsideInnerWrapper>
           <CustomGrid align="start" justify="center">
-            <SelectorWrapper direction="column" gap={2}>
+            <SelectorWrapper direction="column" gap={3}>
               <Divider />
-              <Text content="시작 날짜 / 종료 날짜를 선택해주세요" size="lg" weight="bold" />
-              <Text content="최대 7일까지 선택 가능합니다" size="xs" color="gray400" />
+              <Text content={t('home-page:form.event-date.title')} size="lg" weight="bold" />
+              <Text
+                content={t('home-page:form.event-date.description')}
+                size="xs"
+                color="gray400"
+              />
               <Calendar date={date} setDate={setDate} />
             </SelectorWrapper>
-            <SelectorWrapper direction="column" gap={2}>
+            <SelectorWrapper direction="column" gap={3}>
               <Divider />
-              <Text content="시간을 선택해주세요" size="lg" weight="bold" />
+              <Text content={t('home-page:form.event-time.title')} size="lg" weight="bold" />
               <TimeSelectorWrapper align="center">
+                <Text
+                  content={t('home-page:form.event-time.start.label')}
+                  weight="bold"
+                  color="gray500"
+                  css={{ minW: '$23' }}
+                />
                 <TimeSelector
                   handleValue={handleStartTime}
                   value={startTime}
                   enableTime={[0, 23]}
                 />
-                <Text content="부터" weight="bold" color="gray500" />
               </TimeSelectorWrapper>
               <TimeSelectorWrapper align="center">
+                <Text
+                  content={t('home-page:form.event-time.end.label')}
+                  weight="bold"
+                  color="gray500"
+                  css={{ minW: '$23' }}
+                />
                 <TimeSelector
                   handleValue={handleEndTime}
                   value={endTime}
                   enableTime={[Number(startTime) + 1, 24]}
                 />
-                <Text content="까지" weight="bold" color="gray500" />
               </TimeSelectorWrapper>
             </SelectorWrapper>
           </CustomGrid>
@@ -150,12 +167,18 @@ export default function Home() {
           <Text content={error} color="red" size="sm" />
         </ErrorWrapper>
         <Button size="2xl" onClick={handleCreateEvent} radius="pill" isLoading={isLoading}>
-          <Text content="약속 만들기" color="white" size="xl" weight="bold" />
+          <Text content={t('home-page:button.submit')} color="white" size="xl" weight="bold" />
         </Button>
       </ButtonWrapper>
     </Layout>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? 'en', ['common', 'home-page'])),
+  },
+});
 
 const CustomGrid = styled(Grid, {
   '@bp1': { gridTemplateColumns: 'repeat(1, 1fr)' },
@@ -206,7 +229,6 @@ const SelectorWrapper = styled(Flex, {
 const TimeSelectorWrapper = styled(Flex, {
   borderRadius: '$md',
   w: '$full',
-  gap: '$6',
   mt: '$4',
 });
 

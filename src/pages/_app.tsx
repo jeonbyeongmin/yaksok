@@ -11,6 +11,7 @@ import { Noto_Sans_KR } from '@next/font/google';
 import { SWRConfig } from 'swr';
 import { ThemeProvider } from 'next-themes';
 import { ToastContainer } from 'react-toastify';
+import { appWithTranslation } from 'next-i18next';
 import { darkTheme } from '@/styles/stitches.config';
 import { logOnBrowser } from 'common/utils/log';
 
@@ -19,7 +20,7 @@ const notoSans = Noto_Sans_KR({
   subsets: ['latin'],
 });
 
-export default function App({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
   return (
     <div className={notoSans.className}>
       <NextNProgress options={{ showSpinner: false }} />
@@ -56,3 +57,5 @@ export default function App({ Component, pageProps }: AppProps) {
     </div>
   );
 }
+
+export default appWithTranslation(App);
