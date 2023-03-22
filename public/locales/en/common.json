@@ -1,0 +1,18 @@
+{
+  "author": {
+    "developer": {
+      "name": "Byeongmin Jeon",
+      "email": "qudals7613@gmail.com"
+    },
+    "designer": {
+      "name": "Hyejin An ",
+      "email": "kowahj@naver.com"
+    }
+  },
+  "error": {
+    "create-participant": {
+      "code": 400,
+      "message": "Invalid participant data"
+    }
+  }
+}

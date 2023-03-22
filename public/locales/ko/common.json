@@ -1,0 +1,17 @@
+{
+  "author": {
+    "developer": {
+      "name": "전병민",
+      "email": "qudals7613@gmail.com"
+    },
+    "designer": {
+      "name": "안혜진",
+      "email": "kowahj@naver.com"
+    }
+  },
+  "error": {
+    "create-participant": {
+      "message": "참여자 생성에 실패하였습니다"
+    }
+  }
+}
