@@ -1,0 +1,39 @@
+{
+  "form": {
+    "event-title": {
+      "placeholder": "약속 제목을 입력해주세요",
+      "error": "약속 제목을 입력해주세요"
+    },
+    "name": {
+      "placeholder": "이름을 입력해주세요",
+      "error": "이름을 입력해주세요"
+    },
+    "number": {
+      "placeholder": "인원 수를 선택해주세요",
+      "error": "인원 수를 선택해주세요"
+    },
+    "event-date": {
+      "title": "시작 날짜 / 종료 날짜를 선택해주세요",
+      "description": "최대 7일까지 선택할 수 있습니다.",
+      "error": "시작 날짜 / 종료 날짜를 선택해주세요"
+    },
+    "event-time": {
+      "title": "시간을 선택해주세요",
+      "am": "오전",
+      "pm": "오후",
+
+      "start": {
+        "label": "시작",
+        "error": "시작 시간을 선택해주세요"
+      },
+      "end": {
+        "label": "종료",
+        "error": "종료 시간을 선택해주세요"
+      }
+    }
+  },
+
+  "button": {
+    "submit": "약속 만들기"
+  }
+}

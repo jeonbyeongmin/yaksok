@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useMemo } from 'react';
 
 import dayjs from 'dayjs';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 
 const ReactCalendar = dynamic(() => import('react-calendar'), { ssr: false });
 
@@ -11,6 +12,8 @@ interface CalendarProps {
 }
 
 function Calendar({ date, setDate }: CalendarProps) {
+  const router = useRouter();
+
   const minDate = useMemo(() => {
     if (!date) return undefined;
     const [min, max] = date as [Date | null, Date | null];
@@ -37,6 +40,7 @@ function Calendar({ date, setDate }: CalendarProps) {
       minDate={minDate}
       maxDate={maxDate}
       showNeighboringMonth={false}
+      locale={router.locale}
     />
   );
 }

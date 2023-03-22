@@ -8,7 +8,7 @@ interface AnimateContainerProps {
 
 function AnimateContainer({ children }: AnimateContainerProps) {
   return (
-    <Container justify="center">
+    <Container justify="center" align="center">
       <UnderLayer />
       <Wrapper>
         {/* <Ball variant={3} />
@@ -31,6 +31,8 @@ const Container = styled(Flex, {
 const Wrapper = styled(Flex, {
   w: '$container',
   h: '$full',
+  alignItems: 'center',
+  justifyContent: 'center',
 });
 
 const UnderLayer = styled(Box, {

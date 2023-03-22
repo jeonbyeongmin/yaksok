@@ -1,0 +1,11 @@
+{
+  "timetable": {
+    "owner": "님의 시간표",
+    "description": "30분 단위로 약속 시간을 선택해주세요"
+  },
+  "button": {
+    "invite": "초대 링크 공유",
+    "submit": "제출하기",
+    "move-to-result": "다른 참여자의 시간표가 궁금하신가요?"
+  }
+}

@@ -1,21 +1,25 @@
-import { darkTheme, styled } from '@/styles/stitches.config';
-import { getEventAPI, getEventPath } from '@/api/events/read-event';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { GetServerSideProps } from 'next';
-import { Layout } from '@/components/layout/Layout';
+import nookies from 'nookies';
 import LoadingMessage from '@/components/page/LoadingMessage';
 import ParticipationModal from '@/components/page/event/ParticipationModal';
 import Timetable from '@/components/page/Timetable';
+
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Button, Flex, Icon, Page, Paper, Text } from '@/components/primitive';
+import { getEventAPI, getEventPath } from '@/api/events/read-event';
+import { darkTheme, styled } from '@/styles/stitches.config';
+
+import { GetServerSideProps } from 'next';
+import { Layout } from '@/components/layout/Layout';
 import { logOnBrowser } from 'common/utils/log';
 import { makeToast } from '@/components/primitive/Toast';
-import nookies from 'nookies';
 import { updateParticipant } from '@/api/participants/update-participant';
 import { useParticipantSWR } from '@/hooks/useParticipantSWR';
 import { useParticipantsSWR } from '@/hooks/useParticipantsSWR';
 import { useRouter } from 'next/router';
 import { useTimetable } from '@/hooks/useTimetable';
 import { Event } from 'common/inerfaces/Event.interface';
-import { Button, Flex, Icon, Page, Paper, Text } from '@/components/primitive';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 interface EventProps {
   eventID: string;
@@ -25,6 +29,7 @@ interface EventProps {
 
 function Event({ eventID, participantCID, event }: EventProps) {
   const router = useRouter();
+  const { t } = useTranslation(['common', 'event-page']);
 
   const [participantID, setParticipantID] = useState(participantCID ?? '');
   const [isLoading, setIsLoading] = useState(false);
@@ -62,13 +67,13 @@ function Event({ eventID, participantCID, event }: EventProps) {
       await navigator.clipboard.writeText(window.location.href);
       makeToast({
         type: 'success',
-        title: '초대 링크를 클립보드에 복사했어요',
-        message: '친구들에게 공유해보세요!',
+        title: t('common:toast.copy-invite-link.title'),
+        message: t('common:toast.copy-invite-link.message'),
       });
     } catch (error) {
       logOnBrowser(error);
     }
-  }, []);
+  }, [t]);
 
   const handleMoveToResultButtonClick = useCallback(() => {
     router.push(`/${eventID}/result`);
@@ -139,7 +144,7 @@ function Event({ eventID, participantCID, event }: EventProps) {
                   radius="pill"
                   size="sm"
                   shadow>
-                  <Text content="초대 링크 공유" size="sm" />
+                  <Text content={t('event-page:button.invite')} size="sm" />
                 </Button>
               </Flex>
               <Title direction="column">
@@ -150,10 +155,10 @@ function Event({ eventID, participantCID, event }: EventProps) {
                 {participant && (
                   <Flex gap={2}>
                     <Text content={participant.name} weight="bold" size="sm" />
-                    <Text content="님의 시간표" size="sm" />
+                    <Text content={t('event-page:timetable.owner')} size="sm" />
                   </Flex>
                 )}
-                <Text content="30분 단위로 약속 시간을 선택해주세요" size="sm" />
+                <Text content={t('event-page:timetable.description')} size="sm" />
               </Title>
             </Flex>
             <Timetable
@@ -172,7 +177,7 @@ function Event({ eventID, participantCID, event }: EventProps) {
                   colorScheme="gray"
                   rightElement={<Icon name="caret-right" />}
                   onClick={handleMoveToResultButtonClick}>
-                  <Text content="다른 참여자의 시간표가 궁금하신가요?" size="sm" />
+                  <Text content={t('event-page:button.move-to-result')} size="sm" />
                 </Button>
               </ButtonWrapper>
               <ButtonWrapper justify="center" isFull>
@@ -181,7 +186,12 @@ function Event({ eventID, participantCID, event }: EventProps) {
                   size="2xl"
                   onClick={handleSubmitButtonClick}
                   isLoading={isLoading}>
-                  <Text content="제출하기" color="white" size="xl" weight="bold" />
+                  <Text
+                    content={t('event-page:button.submit')}
+                    color="white"
+                    size="xl"
+                    weight="bold"
+                  />
                 </Button>
               </ButtonWrapper>
             </Flex>
@@ -212,6 +222,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       event,
       eventID: id,
       participantCID,
+      ...(await serverSideTranslations(ctx.locale ?? 'en', ['common', 'event-page'])),
     },
   };
 };

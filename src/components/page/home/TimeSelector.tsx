@@ -1,3 +1,4 @@
+import { Box } from '@/components/primitive';
 import {
   Select,
   SelectGroup,
@@ -6,8 +7,8 @@ import {
   SelectSeparator,
 } from '@/components/primitive/Select';
 
-import { Box } from '@/components/primitive/Box';
 import { styled } from '@/styles/stitches.config';
+import { useTranslation } from 'next-i18next';
 
 interface TimeSelectorProps {
   handleValue: (value: string) => void;
@@ -19,11 +20,12 @@ const am = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];
 const pm = ['12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'];
 
 function TimeSelector({ handleValue, value, enableTime }: TimeSelectorProps) {
+  const { t } = useTranslation(['common', 'home-page']);
   return (
     <Select onValueChange={handleValue} value={value}>
       <SelectGroup>
         <LabelWrapper>
-          <SelectLabel>오전</SelectLabel>
+          <SelectLabel>{t('home-page:form.event-time.am')}</SelectLabel>
         </LabelWrapper>
         <SelectSeparator />
         {am.map((time) => (
@@ -33,14 +35,14 @@ function TimeSelector({ handleValue, value, enableTime }: TimeSelectorProps) {
               enableTime ? Number(time) < enableTime[0] || Number(time) > enableTime[1] : false
             }
             key={time}>
-            {time}시
+            {time}
           </SelectItem>
         ))}
       </SelectGroup>
       <SelectSeparator size="lg" />
       <SelectGroup>
         <LabelWrapper>
-          <SelectLabel>오후</SelectLabel>
+          <SelectLabel>{t('home-page:form.event-time.pm')}</SelectLabel>
         </LabelWrapper>
         <SelectSeparator />
         {pm.map((time) => (
@@ -50,7 +52,7 @@ function TimeSelector({ handleValue, value, enableTime }: TimeSelectorProps) {
               enableTime ? Number(time) < enableTime[0] || Number(time) > enableTime[1] : false
             }
             key={time}>
-            {time}시
+            {time}
           </SelectItem>
         ))}
       </SelectGroup>

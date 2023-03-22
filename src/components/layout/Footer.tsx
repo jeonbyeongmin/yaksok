@@ -1,9 +1,11 @@
-import { Flex, Text } from '@/components/primitive';
+import { Flex, Grid, Text } from '@/components/primitive';
 import { darkTheme, styled } from '@/styles/stitches.config';
 
 import Image from 'next/image';
+import { useTranslation } from 'next-i18next';
 
 function Footer() {
+  const { t } = useTranslation('common');
   return (
     <FooterWrapper>
       <FooterInner align="center" gap={5}>
@@ -14,21 +16,23 @@ function Footer() {
           <Text content={`${new Date().getFullYear()} YAKSOK. All right reserved.`} size="xs" />
         </CopyRight>
         <Divider />
-        <MadeBy direction="column" gap={2}>
-          <Person gap={5}>
-            <Text content="Developer" size="xs" css={{ w: '$28' }} />
-            <Text content="전병민" size="xs" css={{ w: '$17' }} />
+        <MadeBy gap={4}>
+          <Flex direction="column" gap={2}>
+            <Text content="Developer" size="xs" />
+            <Text content="Designer" size="xs" />
+          </Flex>
+          <Flex direction="column" gap={2}>
+            <Text content={t('author.developer.name')} size="xs" />
+            <Text content={t('author.designer.name')} size="xs" />
+          </Flex>
+          <Flex direction="column" gap={2}>
             <a href="mailto:qudals7613@gmail.com">
               <Text content="qudals7613@gmail.com" size="xs" />
             </a>
-          </Person>
-          <Person gap={5}>
-            <Text content="Designer" size="xs" css={{ w: '$28' }} />
-            <Text content="안혜진" size="xs" css={{ w: '$17' }} />
             <a href="mailto:kowahj@naver.com">
               <Text content="kowahj@naver.com" size="xs" />
             </a>
-          </Person>
+          </Flex>
         </MadeBy>
       </FooterInner>
     </FooterWrapper>
@@ -85,6 +89,8 @@ const Divider = styled(Flex, {
 
 const MadeBy = styled(Flex, {
   fontSize: '$xs',
+  display: 'none',
+
   a: {
     color: '$darken100',
     textDecoration: 'none',
@@ -97,12 +103,7 @@ const MadeBy = styled(Flex, {
     },
   },
 
-  display: 'none',
-  '@bp1': { display: 'none' },
-  '@bp2': { display: 'none' },
-  '@bp3': { display: 'block' },
+  '@bp1': { display: 'flex' },
 });
-
-const Person = styled(Flex, {});
 
 export default Footer;
