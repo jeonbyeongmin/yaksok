@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://yaksok.swygbro.com/">
+  <a href="https://yaksok.vercel.app/">
     <img src="https://github.com/jeonbyeongmin/yaksok/blob/dev/public/icon.png" height="120">
     <h3 align="center">YAKSOK</h3>
   </a>
@@ -26,7 +26,7 @@ YAKSOK은 많은 인원이 약속을 정하는 것이 어렵다는 문제를 해
 
 YAKSOK의 가장 대표적인 기능은 지정된 기간 중 어떤 시간이 제일 적합한지 찾아주는 기능입니다. 이 기능은 특정 시간에 몇 명이 참여하고 있는지를 기준으로 시간을 나누는 것이 아니라, 특정 시간에 누가 참여하고 있는지를 고려하여 구현되었습니다. YAKSOK는 약속을 정하는 데 있어 불편함을 덜어주는 서비스로, 많은 사용자들의 약속 정하기에 도움이 될 것입니다.
 
-[YAKSOK](https://yaksok.swygbro.com/)에서 당신의 첫번째 약속을 만들어보세요.
+[YAKSOK](https://yaksok.vercel.app/)에서 당신의 첫번째 약속을 만들어보세요.
 
 <br/>
 
