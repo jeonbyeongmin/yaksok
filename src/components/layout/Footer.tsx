@@ -89,6 +89,7 @@ const Divider = styled(Flex, {
 
 const MadeBy = styled(Flex, {
   fontSize: '$xs',
+  display: 'none',
 
   a: {
     color: '$darken100',
@@ -101,6 +102,8 @@ const MadeBy = styled(Flex, {
       color: '$primary300',
     },
   },
+
+  '@bp1': { display: 'flex' },
 });
 
 export default Footer;

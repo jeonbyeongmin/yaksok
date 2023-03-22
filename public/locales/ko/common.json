@@ -9,6 +9,13 @@
       "email": "kowahj@naver.com"
     }
   },
+  "days": "일,월,화,수,목,금,토",
+  "toast": {
+    "copy-invite-link": {
+      "title": "초대 링크를 클립보드에 복사했어요",
+      "message": "참여자들에게 공유해보세요!"
+    }
+  },
   "error": {
     "create-participant": {
       "message": "참여자 생성에 실패하였습니다"

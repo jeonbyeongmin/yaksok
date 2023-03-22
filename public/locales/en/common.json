@@ -9,6 +9,13 @@
       "email": "kowahj@naver.com"
     }
   },
+  "days": "SUN,MON,TUE,WED,THU,FRI,SAT",
+  "toast": {
+    "copy-invite-link": {
+      "title": "Copied invite link to clipboard",
+      "message": "Share it with your participants!"
+    }
+  },
   "error": {
     "create-participant": {
       "code": 400,
