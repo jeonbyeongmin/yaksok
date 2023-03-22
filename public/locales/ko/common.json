@@ -14,6 +14,22 @@
     "copy-invite-link": {
       "title": "초대 링크를 클립보드에 복사했어요",
       "message": "참여자들에게 공유해보세요!"
+    },
+    "copy-result-link": {
+      "title": "약속 결과 링크를 클립보드에 복사했어요",
+      "message": "결과를 공유해보세요!"
+    },
+    "copy-result-link-fail": {
+      "title": "약속 결과 링크를 복사하지 못했어요",
+      "message": "약속 결과 링크를 다시 확인해주세요"
+    },
+    "reload-event": {
+      "title": "약속을 다시 불러왔어요",
+      "message": "약속이 변경되었을 수 있어요"
+    },
+    "reload-event-fail": {
+      "title": "약속을 다시 불러오지 못했어요",
+      "message": "약속을 다시 확인해주세요"
     }
   },
   "error": {

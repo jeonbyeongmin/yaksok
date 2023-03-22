@@ -1,21 +1,23 @@
-import { darkTheme, styled } from '@/styles/stitches.config';
-import { getEventAPI, getEventPath } from '@/api/events/read-event';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { GetServerSideProps } from 'next';
-import { Layout } from '@/components/layout/Layout';
+import nookies from 'nookies';
 import LoadingMessage from '@/components/page/LoadingMessage';
 import ParticipationModal from '@/components/page/event/ParticipationModal';
 import Timetable from '@/components/page/Timetable';
+
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Button, Flex, Icon, Page, Paper, Text } from '@/components/primitive';
+import { getEventAPI, getEventPath } from '@/api/events/read-event';
+import { darkTheme, styled } from '@/styles/stitches.config';
+
+import { GetServerSideProps } from 'next';
+import { Layout } from '@/components/layout/Layout';
 import { logOnBrowser } from 'common/utils/log';
 import { makeToast } from '@/components/primitive/Toast';
-import nookies from 'nookies';
 import { updateParticipant } from '@/api/participants/update-participant';
 import { useParticipantSWR } from '@/hooks/useParticipantSWR';
 import { useParticipantsSWR } from '@/hooks/useParticipantsSWR';
 import { useRouter } from 'next/router';
 import { useTimetable } from '@/hooks/useTimetable';
 import { Event } from 'common/inerfaces/Event.interface';
-import { Button, Flex, Icon, Page, Paper, Text } from '@/components/primitive';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
