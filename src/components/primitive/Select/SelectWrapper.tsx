@@ -26,6 +26,7 @@ interface ISelect extends RootProps {
   scale?: CustomTriggerScale['scale'];
   children: ReactNode;
   placeholder?: string;
+  width?: string;
 }
 
 const CustomContent = styled(Content, {
@@ -158,12 +159,17 @@ const Overlay = ({ open }: { open?: boolean }) => {
 };
 
 export const SelectWrapper = forwardRef<ElementRef<typeof CustomTrigger>, ISelect>(
-  ({ children, variant, radius, scale, placeholder, ...props }, forwardedRef) => {
+  ({ children, variant, width, radius, scale, placeholder, ...props }, forwardedRef) => {
     const [open, setOpen] = useState(false);
 
     return (
       <Root {...props} onOpenChange={setOpen} open={open}>
-        <CustomTrigger variant={variant} radius={radius} scale={scale} ref={forwardedRef}>
+        <CustomTrigger
+          variant={variant}
+          radius={radius}
+          scale={scale}
+          ref={forwardedRef}
+          css={{ width }}>
           <Value placeholder={placeholder} />
           <Icon>
             <ChevronDownIcon />

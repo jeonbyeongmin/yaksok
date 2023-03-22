@@ -1,13 +1,14 @@
+import dayjs from 'dayjs';
+
 import { VariantProps, darkTheme, styled } from '@/styles/stitches.config';
 import { useCallback, useMemo, useRef } from 'react';
+import { Flex, Text } from '@/components/primitive';
 
-import { Flex } from '@/components/primitive/Flex';
-import { Text } from '@/components/primitive/Text';
 import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
-import dayjs from 'dayjs';
 import { deepCopy2DArray } from 'common/utils/copy';
 import { isMobile } from 'common/utils/detect';
 import { useTheme } from 'next-themes';
+import { useTranslation } from 'next-i18next';
 
 type CellType = VariantProps<typeof Cell>;
 
@@ -45,6 +46,7 @@ function Timetable({
   handleTimetableChange,
 }: TimetableProps) {
   const { resolvedTheme } = useTheme();
+  const { t } = useTranslation('common');
 
   const startRow = useRef<number>(0);
   const startCol = useRef<number>(0);
@@ -206,6 +208,13 @@ function Timetable({
     [participantsNumber, resolvedTheme, selectedTimetablePartition]
   );
 
+  const getDay = useCallback(
+    (date: dayjs.Dayjs) => {
+      return t('days').split(',')[date.get('day')];
+    },
+    [t]
+  );
+
   return (
     <TimetableWrapper direction="column" isFull>
       {!isSimple ? (
@@ -215,12 +224,7 @@ function Timetable({
             {dates.map((date, index) => (
               <DateCell key={index} align="center" justify="center" direction="column">
                 <Text size="sm" color="gray400" content={date.format('MM/DD')} />
-                <Text
-                  size="sm"
-                  color="gray400"
-                  content={'일월화수목금토'.charAt(date.get('day'))}
-                  weight="bold"
-                />
+                <Text size="sm" color="gray400" content={getDay(date)} weight="bold" />
               </DateCell>
             ))}
           </Flex>
@@ -232,7 +236,7 @@ function Timetable({
           {!isSimple ? (
             <BlankCell align="start" justify="end">
               {rowIndex % 2 === 0 && (
-                <Text color="gray400" size="sm" content={`${times[rowIndex / 2]}시`} />
+                <Text color="gray400" size="sm" content={`${times[rowIndex / 2]}`} />
               )}
             </BlankCell>
           ) : null}

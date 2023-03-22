@@ -1,0 +1,15 @@
+{
+  "button": {
+    "share": "Share Results",
+    "reload": "Reload",
+    "edit": "Edit My Schedule"
+  },
+
+  "timetable": {
+    "participate": "Participate"
+  },
+
+  "result": {
+    "title": "participants have committed"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "button": {
+    "share": "결과 공유하기",
+    "reload": "다시 불러오기",
+    "edit": "내 시간표 수정하기"
+  },
+
+  "timetable": {
+    "participate": "참여"
+  },
+
+  "result": {
+    "title": "명의 참여자가 약속했어요"
+  }
+}

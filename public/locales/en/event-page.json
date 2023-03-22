@@ -1,0 +1,11 @@
+{
+  "timetable": {
+    "owner": "'s Time Table",
+    "description": "Select the time you are available and click the submit button"
+  },
+  "button": {
+    "invite": "Invite",
+    "submit": "Submit",
+    "move-to-result": "Are you curious about the schedule of other participants?"
+  }
+}

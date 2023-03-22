@@ -1,3 +1,7 @@
+import PartitionGroup from '@/components/page/event-result/PartitionGroup';
+import LoadingMessage from '@/components/page/LoadingMessage';
+import Timetable from '@/components/page/Timetable';
+
 import { Badge, Button, Flex, Grid, Icon, Page, Paper, Text } from '@/components/primitive';
 import { Panel, PanelInner } from '@/components/primitive/Panel';
 import { getEventAPI, getEventPath } from '@/api/events/read-event';
@@ -6,15 +10,14 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Event } from 'common/inerfaces/Event.interface';
 import { GetServerSideProps } from 'next';
 import { Layout } from '@/components/layout/Layout';
-import LoadingMessage from '@/components/page/LoadingMessage';
-import PartitionGroup from '@/components/page/event-result/PartitionGroup';
-import Timetable from '@/components/page/Timetable';
 import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
 import { makeToast } from '@/components/primitive/Toast';
 import { styled } from '@/styles/stitches.config';
 import { useParticipantsSWR } from '@/hooks/useParticipantsSWR';
 import { useRouter } from 'next/router';
 import { useTimetable } from '@/hooks/useTimetable';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
 interface EventResultProps {
   eventID: string;
@@ -23,6 +26,7 @@ interface EventResultProps {
 
 function EventResult({ eventID, event }: EventResultProps) {
   const router = useRouter();
+  const { t } = useTranslation(['common', 'result-page']);
 
   const currentRef = useRef<HTMLDivElement>(null);
   const { participants, reload } = useParticipantsSWR({ eventID });
@@ -87,12 +91,14 @@ function EventResult({ eventID, event }: EventResultProps) {
 
       makeToast({
         type: 'success',
-        message: '약속 결과 링크를 클립보드에 복사했어요!',
+        title: t('common:toast.copy-result-link.title'),
+        message: t('common:toast.copy-result-link.message'),
       });
     } catch (error) {
       makeToast({
         type: 'error',
-        message: '약속 결과 링크를 복사를 실패했어요',
+        title: t('common:toast.copy-result-link-fail.title'),
+        message: t('common:toast.copy-result-link-fail.message'),
       });
     }
   };
@@ -103,9 +109,16 @@ function EventResult({ eventID, event }: EventResultProps) {
 
       makeToast({
         type: 'success',
-        message: '참여자가 저장한 데이터를 다시 불러왔어요!',
+        title: t('common:toast.reload-event.title'),
+        message: t('common:toast.reload-event.message'),
       });
-    } catch (error) {}
+    } catch (error) {
+      makeToast({
+        type: 'error',
+        title: t('common:toast.reload-event-fail.title'),
+        message: t('common:toast.reload-event-fail.message'),
+      });
+    }
   };
 
   const handleEditButtonClick = () => {
@@ -139,7 +152,7 @@ function EventResult({ eventID, event }: EventResultProps) {
               rightElement={<Icon name="caret-right" />}
               onClick={handleCopyClipBoard}
               radius="pill">
-              <Text content="결과 공유하기" color="white" weight="bold" />
+              <Text content={t('result-page:button.share')} color="white" weight="bold" />
             </Button>
           </ButtonWrapper>
 
@@ -154,7 +167,7 @@ function EventResult({ eventID, event }: EventResultProps) {
                     variant="outline"
                     colorScheme="gray"
                     radius="pill">
-                    <Text content="다시 불러오기" size="xs" />
+                    <Text content={t('result-page:button.reload')} size="xs" />
                   </Button>
                   <Button
                     onClick={handleEditButtonClick}
@@ -162,7 +175,7 @@ function EventResult({ eventID, event }: EventResultProps) {
                     variant="outline"
                     colorScheme="gray"
                     radius="pill">
-                    <Text content="내 시간표 수정하기" size="xs" />
+                    <Text content={t('result-page:button.edit')} size="xs" />
                   </Button>
                 </ButtonWrapper>
                 <Flex align="center" gap={3}>
@@ -170,7 +183,9 @@ function EventResult({ eventID, event }: EventResultProps) {
                   <Text content={event?.title ?? ''} size="lg" weight="bold" />
                 </Flex>
                 <Text
-                  content={`${participants?.length}/${event?.participantsNumber} 참여`}
+                  content={`${participants?.length}/${event?.participantsNumber} ${t(
+                    'result-page:timetable.participate'
+                  )}`}
                   size="xs"
                 />
                 <Flex isFull gap={7}>
@@ -252,6 +267,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     props: {
       eventID: id,
       event,
+      ...(await serverSideTranslations(ctx.locale ?? 'en', ['common', 'result-page'])),
     },
   };
 };

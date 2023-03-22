@@ -1,0 +1,40 @@
+{
+  "author": {
+    "developer": {
+      "name": "Byungmin Jeon",
+      "email": "qudals7613@gmail.com"
+    },
+    "designer": {
+      "name": "Hyejin Ahn",
+      "email": "kowahj@naver.com"
+    }
+  },
+  "days": "Sun, Mon, Tue, Wed, Thu, Fri, Sat",
+  "toast": {
+    "copy-invite-link": {
+      "title": "Copied the invitation link to the clipboard",
+      "message": "Share it with participants!"
+    },
+    "copy-result-link": {
+      "title": "Copied the event result link to the clipboard",
+      "message": "Share the result!"
+    },
+    "copy-result-link-fail": {
+      "title": "Failed to copy the event result link",
+      "message": "Please check the event result link again"
+    },
+    "reload-event": {
+      "title": "Reloaded the event",
+      "message": "The event may have been changed"
+    },
+    "reload-event-fail": {
+      "title": "Failed to reload the event",
+      "message": "Please check the event again"
+    }
+  },
+  "error": {
+    "create-participant": {
+      "message": "Failed to create a participant"
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "form": {
+    "event-title": {
+      "placeholder": "Enter a title for the event",
+      "error": "Enter a title for the event"
+    },
+    "name": {
+      "placeholder": "Enter your name",
+      "error": "Enter your name"
+    },
+    "number": {
+      "placeholder": "Select the number of people",
+      "error": "Select the number of people"
+    },
+    "event-date": {
+      "title": "Select a start date and end date",
+      "description": "You can select up to 7 days.",
+      "error": "Select a start date and end date"
+    },
+    "event-time": {
+      "title": "Select a time",
+      "am": "AM",
+      "pm": "PM",
+
+      "start": {
+        "label": "From",
+        "error": "Select a start time"
+      },
+      "end": {
+        "label": "To",
+        "error": "Select an end time"
+      }
+    }
+  },
+
+  "button": {
+    "submit": "Create Event"
+  }
+}

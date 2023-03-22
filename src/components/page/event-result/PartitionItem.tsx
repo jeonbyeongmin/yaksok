@@ -59,7 +59,7 @@ function PartitionItem({
           content={`${convertIndexToTime(
             partition.startRow,
             event.startTime ?? 0
-          )} 부터 ${convertIndexToTime(partition.endRow + 1, event.startTime)} 까지`}
+          )} ~ ${convertIndexToTime(partition.endRow + 1, event.startTime)}`}
         />
       </Flex>
       <Popover open={open} onOpenChange={setOpen}>

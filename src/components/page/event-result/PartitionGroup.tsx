@@ -13,6 +13,7 @@ import { Participant } from 'common/inerfaces/Participant.interface';
 import PartitionItem from '@/components/page/event-result/PartitionItem';
 import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
 import { useTheme } from 'next-themes';
+import { useTranslation } from 'next-i18next';
 
 interface PartitionGroupProps {
   rank: number;
@@ -31,6 +32,7 @@ function PartitionGroup({
   handleTimetablePartitionSelect,
   participants,
 }: PartitionGroupProps) {
+  const { t } = useTranslation('result-page');
   const { resolvedTheme } = useTheme();
   const [open, setOpen] = useState<boolean>(false);
 
@@ -66,11 +68,7 @@ function PartitionGroup({
           </RankWrapper>
           <UnderLineBox>
             <Text
-              content={
-                partitionGroup[0].participantIDs.length === event.participantsNumber
-                  ? '모든 참여자가 약속했어요'
-                  : `${partitionGroup[0].participantIDs.length}명의 참여자가 약속했어요`
-              }
+              content={`${partitionGroup[0].participantIDs.length} ${t('result.title')}`}
               size="sm"
               color={resolvedTheme === 'dark' ? 'white' : 'darken200'}
               weight="bold"
