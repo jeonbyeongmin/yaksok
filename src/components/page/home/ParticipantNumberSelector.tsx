@@ -16,8 +16,7 @@ function ParticipantNumberSelector({ handleValue, value }: TimeSelectorProps) {
       placeholder={t('home-page:form.number.placeholder')}
       variant="blurred"
       onValueChange={handleValue}
-      value={value}
-      width="25rem">
+      value={value}>
       {participantNumbers.map((number) => (
         <SelectItem key={number} value={number}>
           {number}

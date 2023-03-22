@@ -99,7 +99,7 @@ export default function Home() {
               size="xl"
               radius="pill"
             />
-            <Flex direction="column" align="center" gap={7}>
+            <TopsideSubInner direction="column" align="center" gap={7}>
               <Input
                 placeholder={t('home-page:form.name.placeholder')}
                 onChange={handleNameChange}
@@ -111,7 +111,7 @@ export default function Home() {
                 handleValue={setParticipantsNumber}
                 value={participantsNumber}
               />
-            </Flex>
+            </TopsideSubInner>
           </TopsideInner>
         </AnimateContainer>
       </TopsideWrapper>
@@ -198,6 +198,14 @@ const TopsideInner = styled(Flex, {
   w: '$full',
   h: '$full',
   pt: '$30',
+  px: '$10',
+  gap: '$20',
+  '@bp1': { w: '$250' },
+});
+
+const TopsideSubInner = styled(Flex, {
+  w: '$150',
+  px: '$10',
   gap: '$20',
 });
 
