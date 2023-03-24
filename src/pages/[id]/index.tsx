@@ -5,7 +5,6 @@ import Timetable from '@/components/page/Timetable';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Button, Flex, Icon, Page, Paper, Text } from '@/components/primitive';
-import { getEventAPI, getEventPath } from '@/api/events/read-event';
 import { darkTheme, styled } from '@/styles/stitches.config';
 
 import { GetServerSideProps } from 'next';
@@ -20,6 +19,7 @@ import { useTimetable } from '@/hooks/useTimetable';
 import { Event } from 'common/inerfaces/Event.interface';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { getEventById } from '@/pages/api/events/[id]';
 
 interface EventProps {
   eventID: string;
@@ -212,9 +212,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     participantCID = cookies[`${id}-participantID`];
   }
 
-  const baseurl = process.env.NEXT_PUBLIC_BASEURL;
-  const { event } = await getEventAPI({ path: baseurl + getEventPath({ eventID: id }) });
-
+  const event = await getEventById(id);
   if (!event) return { notFound: true };
 
   return {

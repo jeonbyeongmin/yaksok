@@ -3,10 +3,13 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import Event from 'server/models/Event.model';
 import dbConnect from 'server/lib/mongoose/dbConnect';
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export const getEventById = async (id: string) => {
+  await dbConnect();
+  const event = await Event.findById(id);
+  return JSON.parse(JSON.stringify(event));
+};
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
     query: { id },
     method,
@@ -17,7 +20,7 @@ export default async function handler(
   switch (method) {
     case 'GET':
       try {
-        const event = await Event.findById(id);
+        const event = await getEventById(id as string);
         if (!event) {
           return res.status(400).json({ success: false });
         }

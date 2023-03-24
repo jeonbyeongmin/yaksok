@@ -6,13 +6,15 @@ declare global {
   var mongoose: any;
 }
 
+// This is the cached database connection
 let cached = global.mongoose;
 
+// If no cached connection, create a new connection
 if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }
 
-async function dbConnect() {
+function getMongoose() {
   if (!MONGODB_URI) {
     throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
   }
@@ -31,8 +33,12 @@ async function dbConnect() {
     });
   }
 
+  return cached.promise;
+}
+
+async function dbConnect() {
   try {
-    cached.conn = await cached.promise;
+    cached.conn = await getMongoose();
   } catch (e) {
     cached.promise = null;
     throw e;
