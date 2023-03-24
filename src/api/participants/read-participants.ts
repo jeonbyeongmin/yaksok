@@ -1,21 +1,21 @@
 import { Participant } from 'common/inerfaces/Participant.interface';
 
-export interface ReadParticipantsParams {
+export interface GetParticipantsParams {
   eventID?: string;
 }
 
-export interface ReadParticipantsReturn {
+export interface GetParticipantsReturn {
   success: boolean;
   participants: Participant[];
 }
 
-export const ReadParticipantsPath = ({ eventID }: ReadParticipantsParams) => {
+export const getParticipantsPath = ({ eventID }: GetParticipantsParams) => {
   return `/api/participants/?eventID=${eventID ?? ''}`;
 };
 
-export const ReadParticipantsAPI = async ({
+export const getParticipantsAPI = async ({
   eventID,
-}: ReadParticipantsParams): Promise<ReadParticipantsReturn> => {
-  const response = await fetch(ReadParticipantsPath({ eventID }));
+}: GetParticipantsParams): Promise<GetParticipantsReturn> => {
+  const response = await fetch(getParticipantsPath({ eventID }));
   return response.json();
 };
