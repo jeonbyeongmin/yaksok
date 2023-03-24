@@ -47,7 +47,7 @@ function PartitionItem({
     <ListItem
       ref={ref}
       justify="between"
-      selected={selectedTimetablePartition?.id === partition.id ? true : false}
+      selected={selectedTimetablePartition?.id === partition.id}
       onClick={handleClick}>
       <Flex gap={5}>
         <Text
@@ -63,7 +63,7 @@ function PartitionItem({
         />
       </Flex>
       <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger onClick={(e) => e.stopPropagation()}>
+        <PopoverTrigger asChild onClick={(e) => e.stopPropagation()}>
           <IconButton
             name="person"
             variant="embossing"
@@ -87,7 +87,7 @@ const ListItem = styled(Flex, {
   alignItems: 'center',
   ml: '$18',
   px: '$5',
-  py: '$3',
+  py: '$8',
   mb: '$1',
   borderRadius: '$lg',
   cursor: 'pointer',
@@ -97,10 +97,6 @@ const ListItem = styled(Flex, {
 
   [`.${darkTheme} &`]: {
     color: '$white',
-  },
-
-  '@bp1': {
-    py: '$5',
   },
 
   '@hover': {
