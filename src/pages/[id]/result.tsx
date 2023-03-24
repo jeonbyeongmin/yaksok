@@ -4,7 +4,6 @@ import Timetable from '@/components/page/Timetable';
 
 import { Badge, Button, Flex, Grid, Icon, Page, Paper, Text } from '@/components/primitive';
 import { Panel, PanelInner } from '@/components/primitive/Panel';
-import { getEventAPI, getEventPath } from '@/api/events/read-event';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Event } from 'common/inerfaces/Event.interface';
@@ -18,6 +17,7 @@ import { useRouter } from 'next/router';
 import { useTimetable } from '@/hooks/useTimetable';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
+import { getEventById } from '@/pages/api/events/[id]';
 
 interface EventResultProps {
   eventID: string;
@@ -258,9 +258,7 @@ const ButtonWrapper = styled(Flex, {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.params as { id: string };
 
-  const baseurl = process.env.NEXT_PUBLIC_BASEURL;
-  const { event } = await getEventAPI({ path: baseurl + getEventPath({ eventID: id }) });
-
+  const event = await getEventById(id);
   if (!event) return { notFound: true };
 
   return {
