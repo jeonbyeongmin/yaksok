@@ -2,6 +2,19 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import Participant from 'server/models/Participant.model';
 import dbConnect from 'server/lib/mongoose/dbConnect';
+import type { Participant as ParticipantType } from 'common/inerfaces/Participant.interface';
+
+export const getParticipants = async (eventID: string) => {
+  await dbConnect();
+  const participants = await Participant.find({ eventID });
+  return JSON.parse(JSON.stringify(participants));
+};
+
+export const createParticipant = async (participant: ParticipantType) => {
+  await dbConnect();
+  const newParticipant = await Participant.create(participant);
+  return JSON.parse(JSON.stringify(newParticipant));
+};
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
@@ -9,12 +22,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     method,
   } = req;
 
-  await dbConnect();
-
   switch (method) {
     case 'GET':
       try {
-        const participants = await Participant.find({ eventID });
+        const participants = await getParticipants(eventID as string);
         res.status(200).json({ success: true, participants });
       } catch (error) {
         res.status(400).json({ success: false });
@@ -23,7 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     case 'POST':
       try {
-        const participant = await Participant.create(req.body);
+        const participant = await createParticipant(req.body);
 
         res.setHeader(
           'set-cookie',

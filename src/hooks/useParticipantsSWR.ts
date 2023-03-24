@@ -1,16 +1,16 @@
 import {
-  ReadParticipantsParams,
-  ReadParticipantsPath,
-  ReadParticipantsReturn,
+  GetParticipantsParams,
+  getParticipantsPath,
+  GetParticipantsReturn,
 } from '@/api/participants/read-participants';
 
 import useSWR from 'swr';
 
-type UseParticipantParams = ReadParticipantsParams & {};
+type UseParticipantParams = GetParticipantsParams & {};
 
 export function useParticipantsSWR({ eventID }: UseParticipantParams) {
-  const { data, mutate, isValidating } = useSWR<ReadParticipantsReturn>(
-    ReadParticipantsPath({ eventID })
+  const { data, mutate, isValidating } = useSWR<GetParticipantsReturn>(
+    getParticipantsPath({ eventID })
   );
 
   const reload = () => mutate();
