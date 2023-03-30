@@ -19,7 +19,7 @@ interface TimeSelectorProps {
 const am = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];
 const pm = ['12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'];
 
-function TimeSelector({ handleValue, value, enableTime }: TimeSelectorProps) {
+export function TimeSelector({ handleValue, value, enableTime }: TimeSelectorProps) {
   const { t } = useTranslation(['common', 'home-page']);
   return (
     <Select onValueChange={handleValue} value={value}>
@@ -64,5 +64,3 @@ const LabelWrapper = styled(Box, {
   p: '$4 $7',
   color: '$gray500',
 });
-
-export default TimeSelector;
