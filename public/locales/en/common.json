@@ -33,8 +33,11 @@
     }
   },
   "error": {
-    "create-participant": {
-      "message": "Failed to create a participant"
-    }
+    "change-event-title": "Enter a title",
+    "change-event-name": "Enter your name",
+    "change-event-number": "Enter participants number",
+    "change-event-date": "Enter a date",
+    "change-event-start-time": "Enter a start time",
+    "change-event-end-time": "Enter an end time"
   }
 }
