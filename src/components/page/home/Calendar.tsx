@@ -1,17 +1,18 @@
-import { Dispatch, SetStateAction, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import dayjs from 'dayjs';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
+import { OnChangeDateCallback, OnChangeDateRangeCallback } from 'react-calendar';
 
 const ReactCalendar = dynamic(() => import('react-calendar'), { ssr: false });
 
 interface CalendarProps {
   date: Date | [Date | null, Date | null] | null | undefined;
-  setDate: Dispatch<SetStateAction<Date | [Date | null, Date | null] | null | undefined>>;
+  onChange: OnChangeDateCallback | OnChangeDateRangeCallback | undefined;
 }
 
-function Calendar({ date, setDate }: CalendarProps) {
+function Calendar({ date, onChange }: CalendarProps) {
   const router = useRouter();
 
   const minDate = useMemo(() => {
@@ -31,7 +32,7 @@ function Calendar({ date, setDate }: CalendarProps) {
   return (
     <ReactCalendar
       minDetail="month"
-      onChange={setDate}
+      onChange={onChange}
       formatDay={(_, date) => dayjs(date).format('D')}
       value={date}
       selectRange={true}
