@@ -1,128 +1,84 @@
 import { Box, Button, Flex, Grid, Icon, Input, Text } from '@/components/primitive';
 import { darkTheme, styled } from '@/styles/stitches.config';
 
-import AnimateContainer from '@/components/page/home/AnimateContainer';
-import Calendar from '@/components/page/home/Calendar';
+import { AnimateContainer } from '@/components/page/home/AnimateContainer';
+import { Calendar, DateType } from '@/components/page/home/Calendar';
 import { CreateEventAPI } from '@/api/events/create-event';
 import { CreateParticipantAPI } from '@/api/participants/create-participant';
 import { Layout } from '@/components/layout/Layout';
-import ParticipantNumberSelector from '@/components/page/home/ParticipantNumberSelector';
-import TimeSelector from '@/components/page/home/TimeSelector';
+import { ParticipantNumberSelector } from '@/components/page/home/ParticipantNumberSelector';
+import { TimeSelector } from '@/components/page/home/TimeSelector';
 import { logOnBrowser } from 'common/utils/log';
 import { useRouter } from 'next/router';
-import { ChangeEvent, MouseEvent, useState } from 'react';
+import { ChangeEvent, useCallback, useReducer, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetServerSideProps } from 'next';
-
-type DateType = Date | [Date | null, Date | null] | null | undefined;
-type EventFormType = {
-  title: string;
-  name: string;
-  participantsNumber: string | undefined;
-  date: DateType;
-  startTime: string;
-  endTime: string;
-};
+import { eventFormInitialState, eventFormReducer } from '@/reducers/event-form.reducer';
+import { eventFormActions } from '@/actions/event-form.action';
 
 export default function Home() {
   const router = useRouter();
   const { t } = useTranslation(['common', 'home-page']);
 
-  const [eventForm, setEventForm] = useState<EventFormType>({
-    title: '',
-    name: '',
-    participantsNumber: undefined,
-    date: null,
-    startTime: '0',
-    endTime: '1',
-  });
+  const [eventForm, dispatch] = useReducer(eventFormReducer, eventFormInitialState);
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setEventForm({ ...eventForm, [name]: value });
-  };
+  const handleTitleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    dispatch(eventFormActions.changeTitle(e.target.value));
+  }, []);
 
-  const handleParticipantsNumberChange = (participantsNumber: string) => {
-    setEventForm({
-      ...eventForm,
-      participantsNumber,
-    });
-  };
+  const handleNameChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    dispatch(eventFormActions.changeName(e.target.value));
+  }, []);
 
-  const handleDateChange = (
-    date: DateType,
-    event: MouseEvent<HTMLButtonElement> | ChangeEvent<HTMLInputElement>
-  ) => {
-    setEventForm({
-      ...eventForm,
-      date,
-    });
-  };
+  const handleParticipantsNumberChange = useCallback((participantsNumber: string) => {
+    dispatch(eventFormActions.changeParticipantsNumber(participantsNumber));
+  }, []);
 
-  const handleStartTime = (startTime: string) => {
-    let endTime = eventForm.endTime;
+  const handleDateChange = useCallback((date: DateType) => {
+    dispatch(eventFormActions.changeDate(date));
+  }, []);
 
-    if (Number(startTime) >= Number(endTime)) {
-      endTime = String(Number(startTime) + 1);
-    }
+  const handleStartTime = useCallback((startTime: string) => {
+    dispatch(eventFormActions.changeStartTime(startTime));
+  }, []);
 
-    setEventForm({
-      ...eventForm,
-      startTime,
-      endTime,
-    });
-  };
-
-  const handleEndTime = (endTime: string) => {
-    setEventForm({
-      ...eventForm,
-      endTime,
-    });
-  };
+  const handleEndTime = useCallback((endTime: string) => {
+    dispatch(eventFormActions.changeEndTime(endTime));
+  }, []);
 
   const validate = () => {
-    if (!eventForm.title) throw new Error(t('home-page:form.event-title.error'));
-    if (!eventForm.name) throw new Error(t('home-page:form.name.error'));
-    if (!eventForm.participantsNumber) throw new Error(t('home-page:form.number.error'));
-    if (!eventForm.date) throw new Error(t('home-page:form.event-date.error'));
-    if (!eventForm.startTime) throw new Error(t('home-page:form.event-time.start.error'));
-    if (!eventForm.endTime) throw new Error(t('home-page:form.event-time.end.error'));
+    const { title, name, participantsNumber, date, startTime, endTime } = eventForm;
+    if (!title) throw new Error(t('home-page:form.event-title.error'));
+    if (!name) throw new Error(t('home-page:form.name.error'));
+    if (!participantsNumber) throw new Error(t('home-page:form.number.error'));
+    if (!date) throw new Error(t('home-page:form.event-date.error'));
+    if (!startTime) throw new Error(t('home-page:form.event-time.start.error'));
+    if (!endTime) throw new Error(t('home-page:form.event-time.end.error'));
   };
 
   const createEvent = async () => {
-    let eventID = '';
     const { title, participantsNumber, date, startTime, endTime } = eventForm;
     const [startDate, endDate] = date as [Date, Date];
 
-    try {
-      const event = await CreateEventAPI({
-        title,
-        startDate,
-        endDate,
-        participantsNumber: Number(participantsNumber),
-        startTime: Number(startTime),
-        endTime: Number(endTime) - 1,
-      });
-      eventID = event.data._id;
-    } catch (error) {
-      logOnBrowser(error);
-    }
-
-    return eventID;
+    const event = await CreateEventAPI({
+      title,
+      startDate,
+      endDate,
+      participantsNumber: Number(participantsNumber),
+      startTime: Number(startTime),
+      endTime: Number(endTime) - 1,
+    });
+    return event.data._id;
   };
 
   const createParticipant = async (eventID: string) => {
     const { name } = eventForm;
-    try {
-      const { success } = await CreateParticipantAPI({ name, eventID, availableIndexes: [] });
-      if (!success) throw new Error(t('common:api-error.create-participant'));
-    } catch (error) {
-      setError(t('common:api-error.create-participant'));
-    }
+    const { success } = await CreateParticipantAPI({ name, eventID, availableIndexes: [] });
+    if (!success) throw new Error(t('common:api-error.create-participant'));
   };
 
   const handleCreateEvent = async () => {
@@ -153,7 +109,7 @@ export default function Home() {
               leftElement={<Icon name="calendar" size={20} />}
               placeholder={t('home-page:form.event-title.placeholder')}
               value={eventForm.title}
-              onChange={handleChange}
+              onChange={handleTitleChange}
               variant="blurred"
               size="xl"
               radius="pill"
@@ -162,7 +118,7 @@ export default function Home() {
               <Input
                 name="name"
                 placeholder={t('home-page:form.name.placeholder')}
-                onChange={handleChange}
+                onChange={handleNameChange}
                 value={eventForm.name}
                 size="md"
                 variant="blurred"

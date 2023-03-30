@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-
 import dayjs from 'dayjs';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
@@ -7,12 +6,14 @@ import { OnChangeDateCallback, OnChangeDateRangeCallback } from 'react-calendar'
 
 const ReactCalendar = dynamic(() => import('react-calendar'), { ssr: false });
 
+export type DateType = Date | [Date | null, Date | null] | null | undefined;
+
 interface CalendarProps {
-  date: Date | [Date | null, Date | null] | null | undefined;
+  date: DateType;
   onChange: OnChangeDateCallback | OnChangeDateRangeCallback | undefined;
 }
 
-function Calendar({ date, onChange }: CalendarProps) {
+export function Calendar({ date, onChange }: CalendarProps) {
   const router = useRouter();
 
   const minDate = useMemo(() => {
@@ -45,5 +46,3 @@ function Calendar({ date, onChange }: CalendarProps) {
     />
   );
 }
-
-export default Calendar;

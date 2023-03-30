@@ -6,7 +6,7 @@ interface AnimateContainerProps {
   children: React.ReactNode;
 }
 
-function AnimateContainer({ children }: AnimateContainerProps) {
+export function AnimateContainer({ children }: AnimateContainerProps) {
   return (
     <Container justify="center" align="center">
       <UnderLayer />
@@ -94,5 +94,3 @@ const Ball = styled(Box, {
     },
   },
 });
-
-export default AnimateContainer;

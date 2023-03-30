@@ -8,7 +8,7 @@ interface TimeSelectorProps {
 
 const participantNumbers = ['2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
-function ParticipantNumberSelector({ handleValue, value }: TimeSelectorProps) {
+export function ParticipantNumberSelector({ handleValue, value }: TimeSelectorProps) {
   const { t } = useTranslation(['common', 'home-page']);
 
   return (
@@ -25,5 +25,3 @@ function ParticipantNumberSelector({ handleValue, value }: TimeSelectorProps) {
     </Select>
   );
 }
-
-export default ParticipantNumberSelector;
