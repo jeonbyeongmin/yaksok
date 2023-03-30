@@ -1,4 +1,4 @@
-import { ComponentProps, ElementRef, ReactNode, forwardRef } from 'react';
+import { ComponentProps, ElementRef, ReactNode, forwardRef, Dispatch, SetStateAction } from 'react';
 import { darkTheme, styled } from '@/styles/stitches.config';
 
 import type { Radii } from '@/types/theme.type';

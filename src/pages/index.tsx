@@ -9,62 +9,120 @@ import { Layout } from '@/components/layout/Layout';
 import ParticipantNumberSelector from '@/components/page/home/ParticipantNumberSelector';
 import TimeSelector from '@/components/page/home/TimeSelector';
 import { logOnBrowser } from 'common/utils/log';
-import { useInputText } from '@/hooks/useInputText';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { ChangeEvent, MouseEvent, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetServerSideProps } from 'next';
+
+type DateType = Date | [Date | null, Date | null] | null | undefined;
+type EventFormType = {
+  title: string;
+  name: string;
+  participantsNumber: string | undefined;
+  date: DateType;
+  startTime: string;
+  endTime: string;
+};
 
 export default function Home() {
   const router = useRouter();
   const { t } = useTranslation(['common', 'home-page']);
 
-  const [title, handleTitleChange] = useInputText();
-  const [name, handleNameChange] = useInputText();
-  const [participantsNumber, setParticipantsNumber] = useState<string>();
-  const [date, setDate] = useState<Date | [Date | null, Date | null] | null | undefined>();
-  const [startTime, setStartTime] = useState<string>('0');
-  const [endTime, setEndTime] = useState<string>('1');
+  const [eventForm, setEventForm] = useState<EventFormType>({
+    title: '',
+    name: '',
+    participantsNumber: undefined,
+    date: null,
+    startTime: '0',
+    endTime: '1',
+  });
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>('');
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setEventForm({ ...eventForm, [name]: value });
+  };
+
+  const handleParticipantsNumberChange = (participantsNumber: string) => {
+    setEventForm({
+      ...eventForm,
+      participantsNumber,
+    });
+  };
+
+  const handleDateChange = (
+    date: DateType,
+    event: MouseEvent<HTMLButtonElement> | ChangeEvent<HTMLInputElement>
+  ) => {
+    setEventForm({
+      ...eventForm,
+      date,
+    });
+  };
+
+  const handleStartTime = (startTime: string) => {
+    let endTime = eventForm.endTime;
+
+    if (Number(startTime) >= Number(endTime)) {
+      endTime = String(Number(startTime) + 1);
+    }
+
+    setEventForm({
+      ...eventForm,
+      startTime,
+      endTime,
+    });
+  };
+
+  const handleEndTime = (endTime: string) => {
+    setEventForm({
+      ...eventForm,
+      endTime,
+    });
+  };
+
   const validate = () => {
-    if (!title) throw new Error(t('home-page:form.event-title.error'));
-    if (!name) throw new Error(t('home-page:form.name.error'));
-    if (!participantsNumber) throw new Error(t('home-page:form.number.error'));
-    if (!date) throw new Error(t('home-page:form.event-date.error'));
-    if (!startTime) throw new Error(t('home-page:form.event-time.start.error'));
-    if (!endTime) throw new Error(t('home-page:form.event-time.end.error'));
+    if (!eventForm.title) throw new Error(t('home-page:form.event-title.error'));
+    if (!eventForm.name) throw new Error(t('home-page:form.name.error'));
+    if (!eventForm.participantsNumber) throw new Error(t('home-page:form.number.error'));
+    if (!eventForm.date) throw new Error(t('home-page:form.event-date.error'));
+    if (!eventForm.startTime) throw new Error(t('home-page:form.event-time.start.error'));
+    if (!eventForm.endTime) throw new Error(t('home-page:form.event-time.end.error'));
   };
 
   const createEvent = async () => {
+    let eventID = '';
+    const { title, participantsNumber, date, startTime, endTime } = eventForm;
     const [startDate, endDate] = date as [Date, Date];
-    const event = await CreateEventAPI({
-      title,
-      startDate,
-      endDate,
-      participantsNumber: Number(participantsNumber),
-      startTime: Number(startTime),
-      endTime: Number(endTime) - 1,
-    });
-    return event.data._id;
+
+    try {
+      const event = await CreateEventAPI({
+        title,
+        startDate,
+        endDate,
+        participantsNumber: Number(participantsNumber),
+        startTime: Number(startTime),
+        endTime: Number(endTime) - 1,
+      });
+      eventID = event.data._id;
+    } catch (error) {
+      logOnBrowser(error);
+    }
+
+    return eventID;
   };
 
   const createParticipant = async (eventID: string) => {
-    const { success } = await CreateParticipantAPI({ name, eventID, availableIndexes: [] });
-    if (!success) throw new Error(t('common:api-error.create-participant'));
-  };
-
-  const handleStartTime = (value: string) => {
-    setStartTime(value);
-    if (Number(value) >= Number(endTime)) {
-      setEndTime(String(Number(value) + 1));
+    const { name } = eventForm;
+    try {
+      const { success } = await CreateParticipantAPI({ name, eventID, availableIndexes: [] });
+      if (!success) throw new Error(t('common:api-error.create-participant'));
+    } catch (error) {
+      setError(t('common:api-error.create-participant'));
     }
-  };
-
-  const handleEndTime = (value: string) => {
-    setEndTime(value);
   };
 
   const handleCreateEvent = async () => {
@@ -91,25 +149,27 @@ export default function Home() {
         <AnimateContainer>
           <TopsideInner justify="center" align="center" direction="column">
             <Input
+              name="title"
               leftElement={<Icon name="calendar" size={20} />}
               placeholder={t('home-page:form.event-title.placeholder')}
-              value={title}
-              onChange={handleTitleChange}
+              value={eventForm.title}
+              onChange={handleChange}
               variant="blurred"
               size="xl"
               radius="pill"
             />
             <TopsideSubInner direction="column" align="center" gap={7}>
               <Input
+                name="name"
                 placeholder={t('home-page:form.name.placeholder')}
-                onChange={handleNameChange}
-                value={name}
+                onChange={handleChange}
+                value={eventForm.name}
                 size="md"
                 variant="blurred"
               />
               <ParticipantNumberSelector
-                handleValue={setParticipantsNumber}
-                value={participantsNumber}
+                handleValue={handleParticipantsNumberChange}
+                value={eventForm.participantsNumber}
               />
             </TopsideSubInner>
           </TopsideInner>
@@ -126,7 +186,7 @@ export default function Home() {
                 size="xs"
                 color="gray400"
               />
-              <Calendar date={date} setDate={setDate} />
+              <Calendar date={eventForm.date} onChange={handleDateChange} />
             </SelectorWrapper>
             <SelectorWrapper direction="column" gap={3}>
               <Divider />
@@ -140,7 +200,7 @@ export default function Home() {
                 />
                 <TimeSelector
                   handleValue={handleStartTime}
-                  value={startTime}
+                  value={eventForm.startTime}
                   enableTime={[0, 23]}
                 />
               </TimeSelectorWrapper>
@@ -153,8 +213,8 @@ export default function Home() {
                 />
                 <TimeSelector
                   handleValue={handleEndTime}
-                  value={endTime}
-                  enableTime={[Number(startTime) + 1, 24]}
+                  value={eventForm.endTime}
+                  enableTime={[Number(eventForm.startTime) + 1, 24]}
                 />
               </TimeSelectorWrapper>
             </SelectorWrapper>
