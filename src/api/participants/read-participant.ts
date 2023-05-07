@@ -15,7 +15,7 @@ export interface ReadParticipantReturn {
   participant: Participant;
 }
 
-export const ReadParticipantAPI = async ({
+export const readParticipantAPI = async ({
   participantId,
   queries,
 }: ReadParticipantParams): Promise<ReadParticipantReturn> => {

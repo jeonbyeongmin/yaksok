@@ -15,7 +15,7 @@ export interface ReadParticipantsReturn {
   participants: Participant[];
 }
 
-export const ReadParticipantsAPI = async ({
+export const readParticipantsAPI = async ({
   queries,
 }: ReadParticipantsParams): Promise<ReadParticipantsReturn> => {
   return await fetcher(generateParticipantsPath({ queries }));

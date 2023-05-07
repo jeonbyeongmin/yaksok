@@ -12,7 +12,7 @@ interface CreateParticipantReturn {
   participant: Participant;
 }
 
-export const CreateParticipantAPI = async (
+export const createParticipantAPI = async (
   { queries }: CreateParticipantParams,
   data: CreateParticipantBody,
 ): Promise<CreateParticipantReturn> => {

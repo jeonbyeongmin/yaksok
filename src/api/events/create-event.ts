@@ -1,8 +1,7 @@
-import type { EventQueries } from '@/api/events/events-path';
 import type { Event } from 'common/inerfaces/Event.interface';
-
-import { generateEventsPath } from '@/api/events/events-path';
+import type { EventQueries } from '@/api/events/events-path';
 import { fetcher } from '@/utils/fetcher';
+import { generateEventsPath } from '@/api/events/events-path';
 
 type CreateEventParams = {
   queries?: EventQueries;
@@ -14,7 +13,7 @@ interface CreateEventsReturn {
   event: Event;
 }
 
-export const CreateEventAPI = async (
+export const createEventAPI = async (
   { queries }: CreateEventParams,
   data: CreateEventBody,
 ): Promise<CreateEventsReturn> => {
