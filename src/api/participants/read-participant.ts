@@ -2,10 +2,10 @@ import type {
   ParticipantQueries,
   ParticipantResources,
 } from '@/api/participants/participants-path';
+import type { Participant } from 'common/inerfaces/Participant.interface';
 
-import { Participant } from 'common/inerfaces/Participant.interface';
-import { fetcher } from '@/utils/fetcher';
 import { generateParticipantsPath } from '@/api/participants/participants-path';
+import { fetcher } from '@/utils/fetcher';
 
 export type ReadParticipantParams = ParticipantResources & {
   queries?: ParticipantQueries;
