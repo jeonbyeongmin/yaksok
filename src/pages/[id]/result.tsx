@@ -1,38 +1,57 @@
-import PartitionGroup from '@/components/page/event-result/PartitionGroup';
-import LoadingMessage from '@/components/page/LoadingMessage';
-import Timetable from '@/components/page/Timetable';
-
-import { Badge, Button, Flex, Grid, Icon, Page, Paper, Text } from '@/components/primitive';
+import {
+  Badge,
+  Button,
+  Flex,
+  Grid,
+  Icon,
+  Page,
+  Paper,
+  Text,
+} from '@/components/primitive';
 import { Panel, PanelInner } from '@/components/primitive/Panel';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Event } from 'common/inerfaces/Event.interface';
 import { GetServerSideProps } from 'next';
 import { Layout } from '@/components/layout/Layout';
+import LoadingMessage from '@/components/page/LoadingMessage';
+import PartitionGroup from '@/components/page/event-result/PartitionGroup';
+import Timetable from '@/components/page/Timetable';
 import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
+import { getEventById } from '@/pages/api/events/[id]';
 import { makeToast } from '@/components/primitive/Toast';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { styled } from '@/styles/stitches.config';
 import { useParticipantsSWR } from '@/hooks/useParticipantsSWR';
 import { useRouter } from 'next/router';
 import { useTimetable } from '@/hooks/useTimetable';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
-import { getEventById } from '@/pages/api/events/[id]';
 
 interface EventResultProps {
-  eventID: string;
+  eventId: string;
   event: Event;
 }
 
-function EventResult({ eventID, event }: EventResultProps) {
+function EventResult({ eventId, event }: EventResultProps) {
   const router = useRouter();
   const { t } = useTranslation(['common', 'result-page']);
 
   const currentRef = useRef<HTMLDivElement>(null);
-  const { participants, reload } = useParticipantsSWR({ eventID });
+  const { participants, reload } = useParticipantsSWR({
+    queries: { eventId },
+  });
+  console.log(
+    '🚀 ~ file: result.tsx:43 ~ EventResult ~ participants:',
+    participants,
+  );
 
-  const { timetable, completeTimetable, partitionGroups, handleTimetableChange, paintTimetable } =
-    useTimetable(event, participants);
+  const {
+    timetable,
+    completeTimetable,
+    partitionGroups,
+    handleTimetableChange,
+    paintTimetable,
+  } = useTimetable(event, participants);
 
   const [selectedParticipant, setSelectedParticipant] = useState<string[]>([]);
   const [selectedTimetablePartition, setSelectedTimetablePartition] =
@@ -42,7 +61,7 @@ function EventResult({ eventID, event }: EventResultProps) {
     (participantID: string) => {
       return selectedParticipant.includes(participantID);
     },
-    [selectedParticipant]
+    [selectedParticipant],
   );
 
   const handleParticipantSelect = useCallback(
@@ -54,14 +73,14 @@ function EventResult({ eventID, event }: EventResultProps) {
         : [...selectedParticipant, participantID];
 
       const newSelectedParticipants = participants.filter((participant) =>
-        newSelectedParticipant.includes(participant._id)
+        newSelectedParticipant.includes(participant._id),
       );
       const newTimetable = paintTimetable(newSelectedParticipants);
       handleTimetableChange(newTimetable);
 
       setSelectedParticipant(newSelectedParticipant);
     },
-    [handleTimetableChange, paintTimetable, participants, selectedParticipant]
+    [handleTimetableChange, paintTimetable, participants, selectedParticipant],
   );
 
   const scrollToTop = useCallback(() => {
@@ -82,7 +101,7 @@ function EventResult({ eventID, event }: EventResultProps) {
         setSelectedTimetablePartition(partition);
       }
     },
-    [scrollToTop, selectedTimetablePartition]
+    [scrollToTop, selectedTimetablePartition],
   );
 
   const handleCopyClipBoard = async () => {
@@ -122,11 +141,13 @@ function EventResult({ eventID, event }: EventResultProps) {
   };
 
   const handleEditButtonClick = () => {
-    router.push(`/${eventID}`);
+    router.push(`/${eventId}`);
   };
 
   useEffect(() => {
-    setSelectedParticipant(participants?.map((participant) => participant._id) ?? []);
+    setSelectedParticipant(
+      participants?.map((participant) => participant._id) ?? [],
+    );
   }, [participants]);
 
   useEffect(() => {
@@ -147,46 +168,53 @@ function EventResult({ eventID, event }: EventResultProps) {
     <Layout ref={currentRef}>
       <Page>
         <Paper transparent>
-          <ButtonWrapper align="center" justify="end" isFull color="white">
+          <ButtonWrapper align='center' justify='end' isFull color='white'>
             <Button
-              rightElement={<Icon name="caret-right" />}
+              rightElement={<Icon name='caret-right' />}
               onClick={handleCopyClipBoard}
-              radius="pill">
-              <Text content={t('result-page:button.share')} color="white" weight="bold" />
+              radius='pill'
+            >
+              <Text
+                content={t('result-page:button.share')}
+                color='white'
+                weight='bold'
+              />
             </Button>
           </ButtonWrapper>
 
-          <CustomGrid align="start">
-            <Panel direction="column">
-              <PanelInner align="start" gap={5}>
-                <ButtonWrapper align="center" justify="start" isFull gap={2}>
+          <CustomGrid align='start'>
+            <Panel direction='column'>
+              <PanelInner align='start' gap={5}>
+                <ButtonWrapper align='center' justify='start' isFull gap={2}>
                   <Button
                     onClick={handleReloadButtonClick}
-                    leftElement={<Icon name="refresh" size={12} />}
-                    size="xs"
-                    variant="outline"
-                    colorScheme="gray"
-                    radius="pill">
-                    <Text content={t('result-page:button.reload')} size="xs" />
+                    leftElement={<Icon name='refresh' size={12} />}
+                    size='xs'
+                    variant='outline'
+                    colorScheme='gray'
+                    radius='pill'
+                  >
+                    <Text content={t('result-page:button.reload')} size='xs' />
                   </Button>
                   <Button
                     onClick={handleEditButtonClick}
-                    size="xs"
-                    variant="outline"
-                    colorScheme="gray"
-                    radius="pill">
-                    <Text content={t('result-page:button.edit')} size="xs" />
+                    size='xs'
+                    variant='outline'
+                    colorScheme='gray'
+                    radius='pill'
+                  >
+                    <Text content={t('result-page:button.edit')} size='xs' />
                   </Button>
                 </ButtonWrapper>
-                <Flex align="center" gap={3}>
-                  <Icon name="calendar" size={20} />
-                  <Text content={event?.title ?? ''} size="lg" weight="bold" />
+                <Flex align='center' gap={3}>
+                  <Icon name='calendar' size={20} />
+                  <Text content={event?.title ?? ''} size='lg' weight='bold' />
                 </Flex>
                 <Text
-                  content={`${participants?.length}/${event?.participantsNumber} ${t(
-                    'result-page:timetable.participate'
-                  )}`}
-                  size="xs"
+                  content={`${participants?.length}/${
+                    event?.participantsNumber
+                  } ${t('result-page:timetable.participate')}`}
+                  size='xs'
                 />
                 <Flex isFull gap={7}>
                   <Timetable
@@ -196,15 +224,15 @@ function EventResult({ eventID, event }: EventResultProps) {
                     endTime={event.endTime}
                     timetable={timetable}
                     participantsNumber={participants.length}
-                    cellHeight="sm"
+                    cellHeight='sm'
                     selectedTimetablePartition={selectedTimetablePartition}
                     isSimple
                   />
-                  <Flex direction="column" gap={5}>
+                  <Flex direction='column' gap={5}>
                     {participants?.map((participant) => (
                       <Badge
                         key={participant._id}
-                        size="sm"
+                        size='sm'
                         active={isSelected(participant._id)}
                         onClick={() => handleParticipantSelect(participant._id)}
                         content={participant.name}
@@ -215,7 +243,7 @@ function EventResult({ eventID, event }: EventResultProps) {
               </PanelInner>
             </Panel>
 
-            <Flex direction="column" gap={6}>
+            <Flex direction='column' gap={6}>
               {event &&
                 partitionGroups.map((partitionGroup, rank) => (
                   <PartitionGroup
@@ -225,7 +253,9 @@ function EventResult({ eventID, event }: EventResultProps) {
                     partitionGroup={partitionGroup}
                     participants={participants}
                     selectedTimetablePartition={selectedTimetablePartition}
-                    handleTimetablePartitionSelect={handleTimetablePartitionSelect}
+                    handleTimetablePartitionSelect={
+                      handleTimetablePartitionSelect
+                    }
                   />
                 ))}
             </Flex>
@@ -237,16 +267,16 @@ function EventResult({ eventID, event }: EventResultProps) {
 }
 
 const CustomGrid = styled(Grid, {
-  gap: '$8',
+  'gap': '$8',
   '@bp1': { gridTemplateColumns: 'repeat(1, 1fr)' },
   '@bp2': { gridTemplateColumns: 'repeat(2, 1fr)' },
 });
 
 const ButtonWrapper = styled(Flex, {
-  mb: '$5',
+  'mb': '$5',
   '@bp1': { mb: '$10' },
 
-  variants: {
+  'variants': {
     color: {
       white: {
         color: '$white',
@@ -263,9 +293,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   return {
     props: {
-      eventID: id,
+      eventId: id,
       event,
-      ...(await serverSideTranslations(ctx.locale ?? 'en', ['common', 'result-page'])),
+      ...(await serverSideTranslations(ctx.locale ?? 'en', [
+        'common',
+        'result-page',
+      ])),
     },
   };
 };

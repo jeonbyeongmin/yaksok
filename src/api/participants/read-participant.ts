@@ -1,26 +1,25 @@
-import { Participant } from 'common/inerfaces/Participant.interface';
+import type {
+  ParticipantQueries,
+  ParticipantResources,
+} from '@/api/participants/participants-path';
 
-export interface ReadParticipantParams {
-  participantID: string;
-}
+import { Participant } from 'common/inerfaces/Participant.interface';
+import { fetcher } from '@/utils/fetcher';
+import { generateParticipantsPath } from '@/api/participants/participants-path';
+
+export type ReadParticipantParams = ParticipantResources & {
+  queries?: ParticipantQueries;
+};
 
 export interface ReadParticipantReturn {
-  success: boolean;
   participant: Participant;
 }
 
-export const ReadParticipantPath = ({ participantID }: ReadParticipantParams) => {
-  return `/api/participants/${participantID}`;
-};
-
 export const ReadParticipantAPI = async ({
-  participantID,
+  participantId,
+  queries,
 }: ReadParticipantParams): Promise<ReadParticipantReturn> => {
-  const response = await fetch(ReadParticipantPath({ participantID }), {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  return response.json();
+  return await fetcher(
+    generateParticipantsPath({ resources: { participantId }, queries }),
+  );
 };

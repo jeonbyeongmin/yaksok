@@ -4,16 +4,17 @@ import '@/styles/calendar.css';
 import 'react-toastify/dist/ReactToastify.css';
 import '@/styles/toast.css';
 
-import type { AppProps } from 'next/app';
-import NextNProgress from 'nextjs-progressbar';
-import { Noto_Sans_KR } from '@next/font/google';
-import { SWRConfig } from 'swr';
-import { ThemeProvider } from 'next-themes';
-import { ToastContainer } from 'react-toastify';
 import { appWithTranslation } from 'next-i18next';
-import { darkTheme } from '@/styles/stitches.config';
-import { logOnBrowser } from 'common/utils/log';
+import { ThemeProvider } from 'next-themes';
+import NextNProgress from 'nextjs-progressbar';
+import { ToastContainer } from 'react-toastify';
+import { SWRConfig } from 'swr';
 
+import { darkTheme } from '@/styles/stitches.config';
+import { fetcher } from '@/utils/fetcher';
+import { Noto_Sans_KR } from '@next/font/google';
+
+import type { AppProps } from 'next/app';
 const notoSans = Noto_Sans_KR({
   weight: ['300', '400', '700'],
   subsets: ['latin'],
@@ -26,28 +27,27 @@ function App({ Component, pageProps }: AppProps) {
       <SWRConfig
         value={{
           revalidateOnFocus: false,
-          fetcher: (resource, init) => {
-            logOnBrowser(`fetching ${resource}`);
-            return fetch(resource, init).then((res) => res.json());
-          },
-        }}>
+          fetcher,
+        }}
+      >
         <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
+          attribute='class'
+          defaultTheme='system'
           enableColorScheme={false}
           value={{
             light: 'light',
             dark: darkTheme.className,
-          }}>
+          }}
+        >
           <ToastContainer
-            position="top-right"
+            position='top-right'
             newestOnTop
             closeOnClick
             rtl={false}
             closeButton={false}
             pauseOnFocusLoss
             draggable
-            theme="light"
+            theme='light'
           />
           <Component {...pageProps} />
         </ThemeProvider>

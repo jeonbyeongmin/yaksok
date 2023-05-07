@@ -1,15 +1,21 @@
 import { ChangeEvent, useReducer, useState } from 'react';
+import {
+  eventFormInitialState,
+  eventFormReducer,
+} from '@/reducers/event-form.reducer';
+
 import { CreateEventAPI } from '@/api/events/create-event';
 import { CreateParticipantAPI } from '@/api/participants/create-participant';
-import { eventFormActions } from '@/actions/event-form.action';
-import { eventFormInitialState, eventFormReducer } from '@/reducers/event-form.reducer';
-import { logOnBrowser } from 'common/utils/log';
-
 import type { DateType } from '@/components/page/home/Calendar';
 import type { TFunction } from 'next-i18next';
+import { eventFormActions } from '@/actions/event-form.action';
+import { logOnBrowser } from 'common/utils/log';
 
 export const useEventForm = ({ t }: { t: TFunction }) => {
-  const [eventForm, dispatch] = useReducer(eventFormReducer, eventFormInitialState);
+  const [eventForm, dispatch] = useReducer(
+    eventFormReducer,
+    eventFormInitialState,
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>('');
 
@@ -33,33 +39,37 @@ export const useEventForm = ({ t }: { t: TFunction }) => {
   };
 
   const validate = () => {
-    const { title, name, participantsNumber, date, startTime, endTime } = eventForm;
+    const { title, name, participantsNumber, date, startTime, endTime } =
+      eventForm;
     if (!title) throw new Error(t('common:error.change-event-title'));
     if (!name) throw new Error(t('common:error.change-event-name'));
-    if (!participantsNumber) throw new Error(t('common:error.change-event-number'));
+    if (!participantsNumber)
+      throw new Error(t('common:error.change-event-number'));
     if (!date) throw new Error(t('common:error.change-event-date'));
     if (!startTime) throw new Error(t('common:error.change-event-start-time'));
     if (!endTime) throw new Error(t('common:error.change-event-end-time'));
   };
 
   const createEvent = async () => {
-    const { title, participantsNumber, date, startTime, endTime } = eventForm;
-    const [startDate, endDate] = date as [Date, Date];
-
-    const event = await CreateEventAPI({
-      title,
+    const params = {};
+    const [startDate, endDate] = eventForm.date as [Date, Date];
+    const body = {
       startDate,
       endDate,
-      participantsNumber: Number(participantsNumber),
-      startTime: Number(startTime),
-      endTime: Number(endTime) - 1,
-    });
-    return event.data._id;
+      title: eventForm.title,
+      participantsNumber: Number(eventForm.participantsNumber),
+      startTime: Number(eventForm.startTime),
+      endTime: Number(eventForm.endTime) - 1,
+    };
+
+    const { event } = await CreateEventAPI(params, body);
+
+    return event._id;
   };
 
-  const createParticipant = async (eventID: string) => {
+  const createParticipant = async (eventId: string) => {
     const { name } = eventForm;
-    await CreateParticipantAPI({ name, eventID, availableIndexes: [] });
+    await CreateParticipantAPI({}, { name, eventId, availableIndexes: [] });
   };
 
   const handleEventCreate = async () => {
@@ -67,10 +77,10 @@ export const useEventForm = ({ t }: { t: TFunction }) => {
       validate();
       setIsLoading(true);
 
-      const eventID = await createEvent();
-      await createParticipant(eventID);
+      const eventId = await createEvent();
+      await createParticipant(eventId);
 
-      return eventID;
+      return eventId;
     } catch (error) {
       const err = error as Error;
       setError(err.message);

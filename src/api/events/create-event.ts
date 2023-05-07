@@ -1,24 +1,25 @@
-import { Event } from 'common/inerfaces/Event.interface';
+import type { EventQueries } from '@/api/events/events-path';
+import type { Event } from 'common/inerfaces/Event.interface';
 
-type CreateEventParams = Omit<Event, '_id'>;
+import { generateEventsPath } from '@/api/events/events-path';
+import { fetcher } from '@/utils/fetcher';
+
+type CreateEventParams = {
+  queries?: EventQueries;
+};
+
+type CreateEventBody = Omit<Event, '_id'>;
 
 interface CreateEventsReturn {
-  success: boolean;
-  data: Event;
+  event: Event;
 }
 
-export const CreateEventPath = () => '/api/events';
-
 export const CreateEventAPI = async (
-  event: CreateEventParams
+  { queries }: CreateEventParams,
+  data: CreateEventBody,
 ): Promise<CreateEventsReturn> => {
-  const response = await fetch(CreateEventPath(), {
+  return await fetcher(generateEventsPath({ queries }), {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(event),
+    data,
   });
-
-  return response.json();
 };

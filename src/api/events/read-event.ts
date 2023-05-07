@@ -1,22 +1,19 @@
 import { Event } from 'common/inerfaces/Event.interface';
 
-interface GetEventParams {
-  path: string;
-}
+import { generateEventsPath } from '@/api/events/events-path';
+import { fetcher } from '@/utils/fetcher';
 
-export interface GetEventReturn {
-  success: boolean;
-  event: Event;
-}
+import type { EventQueries, EventResources } from '@/api/events/events-path';
 
-export const getEventPath = ({ eventID }: { eventID: string }) => `/api/events/${eventID}`;
+type ReadEventParams = EventResources & {
+  queries?: EventQueries;
+};
 
-export const getEventAPI = async ({ path }: GetEventParams): Promise<GetEventReturn> => {
-  const response = await fetch(path, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  return response.json();
+export const readEventAPI = async ({
+  eventId,
+  queries,
+}: ReadEventParams): Promise<Event> => {
+  const path = generateEventsPath({ resources: { eventId }, queries });
+
+  return await fetcher(path);
 };

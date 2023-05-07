@@ -4,12 +4,16 @@ import mongoose from 'mongoose';
 const ParticipantScheme = new mongoose.Schema<Participant>(
   {
     name: String,
-    eventID: String,
+    eventId: String,
     availableIndexes: [String],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-ParticipantScheme.index({ createdAt: 1 }, { expireAfterSeconds: 60 * 60 * 24 * 7 });
+ParticipantScheme.index(
+  { createdAt: 1 },
+  { expireAfterSeconds: 60 * 60 * 24 * 7 },
+);
 
-export default mongoose.models.Participant || mongoose.model('Participant', ParticipantScheme);
+export default mongoose.models.Participant ||
+  mongoose.model('Participant', ParticipantScheme);

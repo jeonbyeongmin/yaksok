@@ -1,24 +1,23 @@
-import { Participant } from 'common/inerfaces/Participant.interface';
+import type { Participant } from 'common/inerfaces/Participant.interface';
+import type { ParticipantQueries } from '@/api/participants/participants-path';
+import { fetcher } from '@/utils/fetcher';
+import { generateParticipantsPath } from '@/api/participants/participants-path';
 
-type CreateParticipantParams = Omit<Participant, '_id'>;
+type CreateParticipantParams = {
+  queries?: ParticipantQueries;
+};
+type CreateParticipantBody = Omit<Participant, '_id'>;
 
 interface CreateParticipantReturn {
-  success: boolean;
   participant: Participant;
 }
 
-export const CreateParticipantPath = () => '/api/participants';
-
 export const CreateParticipantAPI = async (
-  participant: CreateParticipantParams
+  { queries }: CreateParticipantParams,
+  data: CreateParticipantBody,
 ): Promise<CreateParticipantReturn> => {
-  const response = await fetch(CreateParticipantPath(), {
+  return await fetcher(generateParticipantsPath({ queries }), {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(participant),
+    data,
   });
-
-  return response.json();
 };

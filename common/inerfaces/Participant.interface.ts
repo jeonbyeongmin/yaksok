@@ -1,6 +1,6 @@
 export interface Participant {
   _id: string;
   name: string;
-  eventID: string;
+  eventId: string;
   availableIndexes: string[];
 }
