@@ -1,4 +1,4 @@
-import { Event } from 'common/inerfaces/Event.interface';
+import type { Event } from 'common/inerfaces/Event.interface';
 
 import { generateEventsPath } from '@/api/events/events-path';
 import { fetcher } from '@/utils/fetcher';

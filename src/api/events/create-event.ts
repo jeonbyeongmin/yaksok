@@ -1,7 +1,8 @@
 import type { Event } from 'common/inerfaces/Event.interface';
 import type { EventQueries } from '@/api/events/events-path';
-import { fetcher } from '@/utils/fetcher';
+
 import { generateEventsPath } from '@/api/events/events-path';
+import { fetcher } from '@/utils/fetcher';
 
 type CreateEventParams = {
   queries?: EventQueries;

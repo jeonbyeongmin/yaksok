@@ -1,7 +1,8 @@
 import type { Participant } from 'common/inerfaces/Participant.interface';
 import type { ParticipantQueries } from '@/api/participants/participants-path';
-import { fetcher } from '@/utils/fetcher';
+
 import { generateParticipantsPath } from '@/api/participants/participants-path';
+import { fetcher } from '@/utils/fetcher';
 
 type CreateParticipantParams = {
   queries?: ParticipantQueries;
