@@ -1,12 +1,12 @@
-import { Flex, Icon, Switch } from '@/components/primitive';
-import { darkTheme, styled } from '@/styles/stitches.config';
-import { useEffect, useState } from 'react';
-
+import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
 
-function Header() {
+import { Flex, Icon, Switch } from '@/components/primitive';
+import { darkTheme, styled } from '@/styles/stitches.config';
+
+export function Header() {
   const { resolvedTheme, setTheme } = useTheme();
   const [isOn, setIsOn] = useState<boolean>(false);
 
@@ -21,14 +21,20 @@ function Header() {
 
   return (
     <HeaderWrapper>
-      <HeaderInner justify="between" align="center">
-        <Link href="/">
-          <Image src="/logo.svg" alt="logo" width={100} height={30} />
+      <HeaderInner justify='between' align='center'>
+        <Link href='/'>
+          <Image src='/logo.svg' alt='logo' width={100} height={30} />
         </Link>
         <Switch
           onSwitch={onSwitch}
           checked={isOn}
-          icon={isOn ? <Icon name="moon" size={16} /> : <Icon name="sun" size={16} />}
+          icon={
+            isOn ? (
+              <Icon name='moon' size={16} />
+            ) : (
+              <Icon name='sun' size={16} />
+            )
+          }
         />
       </HeaderInner>
     </HeaderWrapper>
@@ -56,5 +62,3 @@ const HeaderWrapper = styled('header', {
 const HeaderInner = styled(Flex, {
   w: '$500',
 });
-
-export default Header;
