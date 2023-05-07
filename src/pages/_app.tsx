@@ -10,7 +10,7 @@ import NextNProgress from 'nextjs-progressbar';
 import { ToastContainer } from 'react-toastify';
 import { SWRConfig } from 'swr';
 
-import { Layout } from '@/components/layout/Layout';
+import { Layout } from '@/components/layout';
 import { darkTheme } from '@/styles/stitches.config';
 import { fetcher } from '@/utils/fetcher';
 import { Noto_Sans_KR } from '@next/font/google';
