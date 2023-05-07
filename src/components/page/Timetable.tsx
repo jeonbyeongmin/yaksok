@@ -261,7 +261,6 @@ function Timetable({
                   borderBottom={getTimetableBorders(rowIndex, colIndex).borderBottom}
                   css={{
                     bgColor: getTimetableBackground(rowIndex, colIndex, col),
-                    transition: 'all 0.1s ease',
                   }}
                 />
               </Flex>
