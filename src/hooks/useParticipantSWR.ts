@@ -1,16 +1,17 @@
-import {
+import useSWR from 'swr';
+
+import { generateParticipantsPath } from '@/api/participants/participants-path';
+
+import type {
   ReadParticipantParams,
-  ReadParticipantPath,
   ReadParticipantReturn,
 } from '@/api/participants/read-participant';
 
-import useSWR from 'swr';
-
-type UseParticipantParams = ReadParticipantParams & {};
-
-export function useParticipantSWR({ participantID }: UseParticipantParams) {
+export function useParticipantSWR({ participantId }: ReadParticipantParams) {
   const { data, isValidating } = useSWR<ReadParticipantReturn>(
-    participantID ? ReadParticipantPath({ participantID }) : null
+    participantId
+      ? generateParticipantsPath({ resources: { participantId } })
+      : null,
   );
 
   return {

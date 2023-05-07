@@ -1,26 +1,34 @@
-import { Participant } from 'common/inerfaces/Participant.interface';
+import {
+  ParticipantQueries,
+  ParticipantResources,
+  generateParticipantsPath,
+} from '@/api/participants/participants-path';
 
-interface UpdateParticipantParams {
-  participantID: string;
+import type { Participant } from 'common/inerfaces/Participant.interface';
+import { fetcher } from '@/utils/fetcher';
+
+type UpdateParticipantParams = ParticipantResources & {
+  queries?: ParticipantQueries;
+};
+
+type UpdateParticipantBody = {
   availableIndexes: string[];
-}
+};
 
 interface UpdateParticipantReturn {
   success: boolean;
   participant: Participant;
 }
 
-export const updateParticipant = async ({
-  participantID,
-  availableIndexes,
-}: UpdateParticipantParams): Promise<UpdateParticipantReturn> => {
-  const response = await fetch(`/api/participants/${participantID}`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
+export const updateParticipantAPI = async (
+  { participantId, queries }: UpdateParticipantParams,
+  data: UpdateParticipantBody,
+): Promise<UpdateParticipantReturn> => {
+  return await fetcher(
+    generateParticipantsPath({ resources: { participantId }, queries }),
+    {
+      method: 'PATCH',
+      data,
     },
-    body: JSON.stringify({ availableIndexes }),
-  });
-
-  return response.json();
+  );
 };

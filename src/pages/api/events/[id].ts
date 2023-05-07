@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-
-import Event from 'server/models/Event.model';
 import dbConnect from 'server/lib/mongoose/dbConnect';
+import Event from 'server/models/Event.model';
 
 export const getEventById = async (id: string) => {
   await dbConnect();
@@ -9,7 +8,10 @@ export const getEventById = async (id: string) => {
   return JSON.parse(JSON.stringify(event));
 };
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   const {
     query: { id },
     method,
@@ -20,16 +22,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       try {
         const event = await getEventById(id as string);
         if (!event) {
-          return res.status(400).json({ success: false });
+          return res.status(400).json({});
         }
-        res.status(200).json({ success: true, event });
+        res.status(200).json({ event });
       } catch (error) {
-        res.status(400).json({ success: false });
+        res.status(400).json({});
       }
       break;
 
     default:
-      res.status(400).json({ success: false });
+      res.status(400).json({});
       break;
   }
 }

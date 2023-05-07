@@ -1,21 +1,22 @@
-import { Participant } from 'common/inerfaces/Participant.interface';
+import type {
+  ParticipantQueries,
+  ParticipantResources,
+} from '@/api/participants/participants-path';
 
-export interface GetParticipantsParams {
-  eventID?: string;
-}
+import type { Participant } from 'common/inerfaces/Participant.interface';
+import { fetcher } from '@/utils/fetcher';
+import { generateParticipantsPath } from '@/api/participants/participants-path';
 
-export interface GetParticipantsReturn {
-  success: boolean;
+export type ReadParticipantsParams = ParticipantResources & {
+  queries?: ParticipantQueries;
+};
+
+export interface ReadParticipantsReturn {
   participants: Participant[];
 }
 
-export const getParticipantsPath = ({ eventID }: GetParticipantsParams) => {
-  return `/api/participants/?eventID=${eventID ?? ''}`;
-};
-
-export const getParticipantsAPI = async ({
-  eventID,
-}: GetParticipantsParams): Promise<GetParticipantsReturn> => {
-  const response = await fetch(getParticipantsPath({ eventID }));
-  return response.json();
+export const ReadParticipantsAPI = async ({
+  queries,
+}: ReadParticipantsParams): Promise<ReadParticipantsReturn> => {
+  return await fetcher(generateParticipantsPath({ queries }));
 };

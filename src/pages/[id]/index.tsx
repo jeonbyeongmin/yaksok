@@ -1,45 +1,49 @@
-import nookies from 'nookies';
+import { Button, Flex, Icon, Page, Paper, Text } from '@/components/primitive';
+import { darkTheme, styled } from '@/styles/stitches.config';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
+import { Event } from 'common/inerfaces/Event.interface';
+import { GetServerSideProps } from 'next';
+import { Layout } from '@/components/layout/Layout';
 import LoadingMessage from '@/components/page/LoadingMessage';
 import ParticipationModal from '@/components/page/event/ParticipationModal';
 import Timetable from '@/components/page/Timetable';
-
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Button, Flex, Icon, Page, Paper, Text } from '@/components/primitive';
-import { darkTheme, styled } from '@/styles/stitches.config';
-
-import { GetServerSideProps } from 'next';
-import { Layout } from '@/components/layout/Layout';
+import { getEventById } from '@/pages/api/events/[id]';
 import { logOnBrowser } from 'common/utils/log';
 import { makeToast } from '@/components/primitive/Toast';
-import { updateParticipant } from '@/api/participants/update-participant';
+import nookies from 'nookies';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { updateParticipantAPI } from '@/api/participants/update-participant';
 import { useParticipantSWR } from '@/hooks/useParticipantSWR';
 import { useParticipantsSWR } from '@/hooks/useParticipantsSWR';
 import { useRouter } from 'next/router';
 import { useTimetable } from '@/hooks/useTimetable';
-import { Event } from 'common/inerfaces/Event.interface';
 import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { getEventById } from '@/pages/api/events/[id]';
 
 interface EventProps {
-  eventID: string;
+  eventId: string;
   participantCID: string;
   event: Event;
 }
 
-export default function EventPage({ eventID, participantCID, event }: EventProps) {
+export default function EventPage({
+  eventId,
+  participantCID,
+  event,
+}: EventProps) {
   const router = useRouter();
   const { t } = useTranslation(['common', 'event-page']);
 
-  const [participantID, setParticipantID] = useState(participantCID ?? '');
+  const [participantId, setParticipantId] = useState(participantCID ?? '');
   const [isLoading, setIsLoading] = useState(false);
 
-  const { participant } = useParticipantSWR({
-    participantID: participantID ?? '',
-  });
+  const { participant } = useParticipantSWR({ participantId });
+  const { participants } = useParticipantsSWR({ queries: { eventId } });
 
-  const { participants } = useParticipantsSWR({ eventID });
-  const { timetable, completeTimetable, handleTimetableChange } = useTimetable(event, participant);
+  const { timetable, completeTimetable, handleTimetableChange } = useTimetable(
+    event,
+    participant,
+  );
 
   const isPossibleCreateParticipant = useMemo(() => {
     if (!participants) return false;
@@ -47,7 +51,7 @@ export default function EventPage({ eventID, participantCID, event }: EventProps
   }, [event, participants]);
 
   const handleParticipantIDChange = (participantID: string) => {
-    setParticipantID(participantID);
+    setParticipantId(participantID);
   };
 
   const getAvailableIndexes = useCallback(() => {
@@ -77,31 +81,26 @@ export default function EventPage({ eventID, participantCID, event }: EventProps
   }, [t]);
 
   const handleMoveToResultButtonClick = useCallback(() => {
-    router.push(`/${eventID}/result`);
-  }, [eventID, router]);
+    router.push(`/${eventId}/result`);
+  }, [eventId, router]);
 
   const handleSubmitButtonClick = useCallback(async () => {
     try {
       setIsLoading(true);
       const availableIndexes = getAvailableIndexes();
 
-      const { success } = await updateParticipant({
-        participantID,
-        availableIndexes,
-      });
+      await updateParticipantAPI({ participantId }, { availableIndexes });
 
-      if (success) {
-        handleMoveToResultButtonClick();
-      }
+      handleMoveToResultButtonClick();
     } catch (error) {
       logOnBrowser(error);
     } finally {
       setIsLoading(false);
     }
-  }, [getAvailableIndexes, handleMoveToResultButtonClick, participantID]);
+  }, [getAvailableIndexes, handleMoveToResultButtonClick, participantId]);
 
   useEffect(() => {
-    if (participantCID) setParticipantID(participantCID);
+    if (participantCID) setParticipantId(participantCID);
   }, [participantCID]);
 
   useEffect(() => {
@@ -119,9 +118,9 @@ export default function EventPage({ eventID, participantCID, event }: EventProps
 
         {event && (
           <ParticipationModal
-            eventID={eventID}
+            eventId={eventId}
             eventTitle={event.title}
-            participantID={participantID}
+            participantID={participantId}
             handleParticipantIDChange={handleParticipantIDChange}
             isPossibleCreateParticipant={isPossibleCreateParticipant}
           />
@@ -134,32 +133,36 @@ export default function EventPage({ eventID, participantCID, event }: EventProps
     <Layout>
       <Page>
         <Paper>
-          <Inner direction="column">
-            <Flex direction="column" isFull gap={3}>
-              <Flex align="center" justify="end" isFull>
+          <Inner direction='column'>
+            <Flex direction='column' isFull gap={3}>
+              <Flex align='center' justify='end' isFull>
                 <Button
                   onClick={handleShareButtonClick}
-                  variant="outline"
-                  colorScheme="gray"
-                  leftElement={<Icon name="share" size={16} />}
-                  radius="pill"
-                  size="sm"
-                  shadow>
-                  <Text content={t('event-page:button.invite')} size="sm" />
+                  variant='outline'
+                  colorScheme='gray'
+                  leftElement={<Icon name='share' size={16} />}
+                  radius='pill'
+                  size='sm'
+                  shadow
+                >
+                  <Text content={t('event-page:button.invite')} size='sm' />
                 </Button>
               </Flex>
-              <Title direction="column">
-                <Flex align="center" gap={4}>
-                  <Icon name="calendar" size={25} />
-                  <Text content={event.title} size="2xl" weight="bold" />
+              <Title direction='column'>
+                <Flex align='center' gap={4}>
+                  <Icon name='calendar' size={25} />
+                  <Text content={event.title} size='2xl' weight='bold' />
                 </Flex>
                 {participant && (
                   <Flex gap={2}>
-                    <Text content={participant.name} weight="bold" size="sm" />
-                    <Text content={t('event-page:timetable.owner')} size="sm" />
+                    <Text content={participant.name} weight='bold' size='sm' />
+                    <Text content={t('event-page:timetable.owner')} size='sm' />
                   </Flex>
                 )}
-                <Text content={t('event-page:timetable.description')} size="sm" />
+                <Text
+                  content={t('event-page:timetable.description')}
+                  size='sm'
+                />
               </Title>
             </Flex>
             <Timetable
@@ -171,27 +174,32 @@ export default function EventPage({ eventID, participantCID, event }: EventProps
               handleTimetableChange={handleTimetableChange}
             />
 
-            <Flex direction="column" isFull gap={5}>
-              <ButtonWrapper justify="center" isFull>
+            <Flex direction='column' isFull gap={5}>
+              <ButtonWrapper justify='center' isFull>
                 <Button
-                  variant="link"
-                  colorScheme="gray"
-                  rightElement={<Icon name="caret-right" />}
-                  onClick={handleMoveToResultButtonClick}>
-                  <Text content={t('event-page:button.move-to-result')} size="sm" />
+                  variant='link'
+                  colorScheme='gray'
+                  rightElement={<Icon name='caret-right' />}
+                  onClick={handleMoveToResultButtonClick}
+                >
+                  <Text
+                    content={t('event-page:button.move-to-result')}
+                    size='sm'
+                  />
                 </Button>
               </ButtonWrapper>
-              <ButtonWrapper justify="center" isFull>
+              <ButtonWrapper justify='center' isFull>
                 <Button
-                  radius="pill"
-                  size="2xl"
+                  radius='pill'
+                  size='2xl'
                   onClick={handleSubmitButtonClick}
-                  isLoading={isLoading}>
+                  isLoading={isLoading}
+                >
                   <Text
                     content={t('event-page:button.submit')}
-                    color="white"
-                    size="xl"
-                    weight="bold"
+                    color='white'
+                    size='xl'
+                    weight='bold'
                   />
                 </Button>
               </ButtonWrapper>
@@ -205,9 +213,17 @@ export default function EventPage({ eventID, participantCID, event }: EventProps
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.params as { id: string };
+  console.log(
+    '🚀 ~ file: index.tsx:216 ~ constgetServerSideProps:GetServerSideProps= ~ id:',
+    id,
+  );
   let participantCID = null;
 
   const cookies = nookies.get(ctx);
+  console.log(
+    '🚀 ~ file: index.tsx:219 ~ constgetServerSideProps:GetServerSideProps= ~ cookies:',
+    cookies,
+  );
 
   if (cookies[`${id}-participantID`]) {
     participantCID = cookies[`${id}-participantID`];
@@ -215,28 +231,35 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const event = await getEventById(id);
   if (!event) return { notFound: true };
+  console.log(
+    '🚀 ~ file: index.tsx:217 ~ constgetServerSideProps:GetServerSideProps= ~ participantCID:',
+    participantCID,
+  );
 
   return {
     props: {
       event,
-      eventID: id,
+      eventId: id,
       participantCID,
-      ...(await serverSideTranslations(ctx.locale ?? 'en', ['common', 'event-page'])),
+      ...(await serverSideTranslations(ctx.locale ?? 'en', [
+        'common',
+        'event-page',
+      ])),
     },
   };
 };
 
 const Title = styled(Flex, {
-  gap: '$2',
+  'gap': '$2',
   '@bp3': { gap: '$3' },
 });
 
 const Inner = styled(Flex, {
-  color: '$gray800',
+  'color': '$gray800',
 
-  w: '$full',
-  px: '$5',
-  gap: '$12',
+  'w': '$full',
+  'px': '$5',
+  'gap': '$12',
 
   '@bp2': {
     minW: '$300',
