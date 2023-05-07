@@ -1,16 +1,24 @@
 import { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useEventForm } from '@/hooks/useEventForm';
-import { styled } from '@/styles/stitches.config';
+import { useRouter } from 'next/router';
+
 import { AnimateContainer } from '@/components/page/home/AnimateContainer';
 import { Calendar } from '@/components/page/home/Calendar';
-import { Layout } from '@/components/layout/Layout';
 import { ParticipantNumberSelector } from '@/components/page/home/ParticipantNumberSelector';
-import { TimeSelector } from '@/components/page/home/TimeSelector';
 import { SelectorCard } from '@/components/page/home/SelectorCard';
-import { Box, Button, Flex, Grid, Icon, Input, Text } from '@/components/primitive';
+import { TimeSelector } from '@/components/page/home/TimeSelector';
+import {
+  Box,
+  Button,
+  Flex,
+  Grid,
+  Icon,
+  Input,
+  Text,
+} from '@/components/primitive';
+import { useEventForm } from '@/hooks/useEventForm';
+import { styled } from '@/styles/stitches.config';
 
 export default function Home() {
   const router = useRouter();
@@ -37,28 +45,28 @@ export default function Home() {
   };
 
   return (
-    <Layout>
-      <TopsideWrapper justify="center" align="center">
+    <>
+      <TopsideWrapper justify='center' align='center'>
         <AnimateContainer>
-          <TopsideInner justify="center" align="center" direction="column">
+          <TopsideInner justify='center' align='center' direction='column'>
             <Input
-              name="title"
-              leftElement={<Icon name="calendar" size={20} />}
+              name='title'
+              leftElement={<Icon name='calendar' size={20} />}
               placeholder={t('home-page:form.event-title.placeholder')}
               value={eventForm.title}
               onChange={handleTitleChange}
-              variant="blurred"
-              size="xl"
-              radius="pill"
+              variant='blurred'
+              size='xl'
+              radius='pill'
             />
-            <TopsideSubInner direction="column" align="center" gap={7}>
+            <TopsideSubInner direction='column' align='center' gap={7}>
               <Input
-                name="name"
+                name='name'
                 placeholder={t('home-page:form.name.placeholder')}
                 onChange={handleNameChange}
                 value={eventForm.name}
-                size="md"
-                variant="blurred"
+                size='md'
+                variant='blurred'
               />
               <ParticipantNumberSelector
                 handleValue={handleParticipantsNumberChange}
@@ -70,10 +78,11 @@ export default function Home() {
       </TopsideWrapper>
       <BottomsideWrapper>
         <BottomsideInnerWrapper>
-          <CustomGrid align="start" justify="center">
+          <CustomGrid align='start' justify='center'>
             <SelectorCard
               title={t('home-page:form.event-date.title')}
-              description={t('home-page:form.event-date.description')}>
+              description={t('home-page:form.event-date.description')}
+            >
               <Calendar date={eventForm.date} onChange={handleDateChange} />
             </SelectorCard>
             <SelectorCard title={t('home-page:form.event-time.title')}>
@@ -93,15 +102,25 @@ export default function Home() {
           </CustomGrid>
         </BottomsideInnerWrapper>
       </BottomsideWrapper>
-      <ButtonWrapper justify="center" align="center" direction="column">
+      <ButtonWrapper justify='center' align='center' direction='column'>
         <ErrorWrapper>
-          <Text content={error} color="red" size="sm" />
+          <Text content={error} color='red' size='sm' />
         </ErrorWrapper>
-        <Button size="2xl" onClick={handleSubmit} radius="pill" isLoading={isLoading}>
-          <Text content={t('home-page:button.submit')} color="white" size="xl" weight="bold" />
+        <Button
+          size='2xl'
+          onClick={handleSubmit}
+          radius='pill'
+          isLoading={isLoading}
+        >
+          <Text
+            content={t('home-page:button.submit')}
+            color='white'
+            size='xl'
+            weight='bold'
+          />
         </Button>
       </ButtonWrapper>
-    </Layout>
+    </>
   );
 }
 
@@ -115,22 +134,22 @@ const CustomGrid = styled(Grid, {
   '@bp1': { gridTemplateColumns: 'repeat(1, 1fr)' },
   '@bp2': { gridTemplateColumns: 'repeat(2, 1fr)' },
   '@bp3': { gridTemplateColumns: 'repeat(2, 1fr)' },
-  rowGap: '$20',
+  'rowGap': '$20',
 });
 
 const TopsideWrapper = styled(Flex, {
-  h: '$160',
+  'h': '$160',
   '@bp1': { h: '$180' },
   '@bp2': { h: '$200' },
   '@bp3': { h: '$200' },
 });
 
 const TopsideInner = styled(Flex, {
-  w: '$full',
-  h: '$full',
-  pt: '$30',
-  px: '$10',
-  gap: '$20',
+  'w': '$full',
+  'h': '$full',
+  'pt': '$30',
+  'px': '$10',
+  'gap': '$20',
   '@bp1': { w: '$250' },
 });
 

@@ -1,9 +1,9 @@
-import { ElementRef, ReactNode, forwardRef } from 'react';
-
-import { Box } from '@/components/primitive/Box';
-import Footer from '@/components/layout/Footer';
 import Head from 'next/head';
-import Header from '@/components/layout/Header';
+import { ElementRef, forwardRef, ReactNode } from 'react';
+
+import { Footer } from '@/components/layout/footer';
+import { Header } from '@/components/layout/header';
+import { Box } from '@/components/primitive/Box';
 import { styled } from '@/styles/stitches.config';
 
 interface LayoutProps {
@@ -26,26 +26,32 @@ const Content = styled('main', {
 });
 
 export const Layout = forwardRef<ElementRef<typeof Container>, LayoutProps>(
-  ({ children, title = 'YAKSOK - 모두 가능한 시간을 한번에' }, forwardedRef) => {
+  (
+    { children, title = 'YAKSOK - 모두 가능한 시간을 한번에' },
+    forwardedRef,
+  ) => {
     return (
       <>
         <Head>
-          <link rel="icon" href="/favicon.ico" />
-          <link rel="apple-touch-icon" href="/icon.png" />
-          <link rel="shortcut icon" href="/icon.png" />
+          <link rel='icon' href='/favicon.ico' />
+          <link rel='apple-touch-icon' href='/icon.png' />
+          <link rel='shortcut icon' href='/icon.png' />
 
-          <meta name="description" content="약속 잡기 캘린더 - YAKSOK" />
+          <meta name='description' content='약속 잡기 캘린더 - YAKSOK' />
           <meta
-            name="viewport"
-            content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width"
+            name='viewport'
+            content='initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width'
           />
-          <meta name="keywords" content="약속잡기,약속,캘린더" />
-          <meta name="og:site_name" content="YAKSOK" />
-          <meta name="og:title" content={title} />
-          <meta name="og:description" content="모두 가능한 약속 시간을 알아보세요" />
-          <meta name="og:type" content="website" />
-          <meta name="og:url" content="https://yaksok.swygbro.com" />
-          <meta property="og:image" content="/og.png" />
+          <meta name='keywords' content='약속잡기,약속,캘린더' />
+          <meta name='og:site_name' content='YAKSOK' />
+          <meta name='og:title' content={title} />
+          <meta
+            name='og:description'
+            content='모두 가능한 약속 시간을 알아보세요'
+          />
+          <meta name='og:type' content='website' />
+          <meta name='og:url' content='https://yaksok.swygbro.com' />
+          <meta property='og:image' content='/og.png' />
 
           <title>{title}</title>
         </Head>
@@ -56,7 +62,7 @@ export const Layout = forwardRef<ElementRef<typeof Container>, LayoutProps>(
         </Container>
       </>
     );
-  }
+  },
 );
 
 Layout.displayName = 'Layout';

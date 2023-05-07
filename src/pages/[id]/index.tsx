@@ -1,24 +1,23 @@
-import { Button, Flex, Icon, Page, Paper, Text } from '@/components/primitive';
-import { darkTheme, styled } from '@/styles/stitches.config';
+import { Event } from 'common/inerfaces/Event.interface';
+import { logOnBrowser } from 'common/utils/log';
+import { GetServerSideProps } from 'next';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useRouter } from 'next/router';
+import nookies from 'nookies';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { Event } from 'common/inerfaces/Event.interface';
-import { GetServerSideProps } from 'next';
-import { Layout } from '@/components/layout/Layout';
-import LoadingMessage from '@/components/page/LoadingMessage';
-import ParticipationModal from '@/components/page/event/ParticipationModal';
-import Timetable from '@/components/page/Timetable';
-import { getEventById } from '@/pages/api/events/[id]';
-import { logOnBrowser } from 'common/utils/log';
-import { makeToast } from '@/components/primitive/Toast';
-import nookies from 'nookies';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { updateParticipantAPI } from '@/api/participants/update-participant';
-import { useParticipantSWR } from '@/hooks/useParticipantSWR';
+import ParticipationModal from '@/components/page/event/ParticipationModal';
+import LoadingMessage from '@/components/page/LoadingMessage';
+import Timetable from '@/components/page/Timetable';
+import { Button, Flex, Icon, Page, Paper, Text } from '@/components/primitive';
+import { makeToast } from '@/components/primitive/Toast';
 import { useParticipantsSWR } from '@/hooks/useParticipantsSWR';
-import { useRouter } from 'next/router';
+import { useParticipantSWR } from '@/hooks/useParticipantSWR';
 import { useTimetable } from '@/hooks/useTimetable';
-import { useTranslation } from 'next-i18next';
+import { getEventById } from '@/pages/api/events/[id]';
+import { darkTheme, styled } from '@/styles/stitches.config';
 
 interface EventProps {
   eventId: string;
@@ -109,13 +108,10 @@ export default function EventPage({
 
   if (!participant) {
     return (
-      <Layout>
-        <Page>
-          <Paper>
-            <LoadingMessage />
-          </Paper>
-        </Page>
-
+      <Page>
+        <Paper>
+          <LoadingMessage />
+        </Paper>
         {event && (
           <ParticipationModal
             eventId={eventId}
@@ -125,105 +121,93 @@ export default function EventPage({
             isPossibleCreateParticipant={isPossibleCreateParticipant}
           />
         )}
-      </Layout>
+      </Page>
     );
   }
 
   return (
-    <Layout>
-      <Page>
-        <Paper>
-          <Inner direction='column'>
-            <Flex direction='column' isFull gap={3}>
-              <Flex align='center' justify='end' isFull>
-                <Button
-                  onClick={handleShareButtonClick}
-                  variant='outline'
-                  colorScheme='gray'
-                  leftElement={<Icon name='share' size={16} />}
-                  radius='pill'
-                  size='sm'
-                  shadow
-                >
-                  <Text content={t('event-page:button.invite')} size='sm' />
-                </Button>
+    <Page>
+      <Paper>
+        <Inner direction='column'>
+          <Flex direction='column' isFull gap={3}>
+            <Flex align='center' justify='end' isFull>
+              <Button
+                onClick={handleShareButtonClick}
+                variant='outline'
+                colorScheme='gray'
+                leftElement={<Icon name='share' size={16} />}
+                radius='pill'
+                size='sm'
+                shadow
+              >
+                <Text content={t('event-page:button.invite')} size='sm' />
+              </Button>
+            </Flex>
+            <Title direction='column'>
+              <Flex align='center' gap={4}>
+                <Icon name='calendar' size={25} />
+                <Text content={event.title} size='2xl' weight='bold' />
               </Flex>
-              <Title direction='column'>
-                <Flex align='center' gap={4}>
-                  <Icon name='calendar' size={25} />
-                  <Text content={event.title} size='2xl' weight='bold' />
+              {participant && (
+                <Flex gap={2}>
+                  <Text content={participant.name} weight='bold' size='sm' />
+                  <Text content={t('event-page:timetable.owner')} size='sm' />
                 </Flex>
-                {participant && (
-                  <Flex gap={2}>
-                    <Text content={participant.name} weight='bold' size='sm' />
-                    <Text content={t('event-page:timetable.owner')} size='sm' />
-                  </Flex>
-                )}
+              )}
+              <Text content={t('event-page:timetable.description')} size='sm' />
+            </Title>
+          </Flex>
+          <Timetable
+            startDate={event.startDate}
+            endDate={event.endDate}
+            startTime={event.startTime}
+            endTime={event.endTime}
+            timetable={timetable}
+            handleTimetableChange={handleTimetableChange}
+          />
+
+          <Flex direction='column' isFull gap={5}>
+            <ButtonWrapper justify='center' isFull>
+              <Button
+                variant='link'
+                colorScheme='gray'
+                rightElement={<Icon name='caret-right' />}
+                onClick={handleMoveToResultButtonClick}
+              >
                 <Text
-                  content={t('event-page:timetable.description')}
+                  content={t('event-page:button.move-to-result')}
                   size='sm'
                 />
-              </Title>
-            </Flex>
-            <Timetable
-              startDate={event.startDate}
-              endDate={event.endDate}
-              startTime={event.startTime}
-              endTime={event.endTime}
-              timetable={timetable}
-              handleTimetableChange={handleTimetableChange}
-            />
-
-            <Flex direction='column' isFull gap={5}>
-              <ButtonWrapper justify='center' isFull>
-                <Button
-                  variant='link'
-                  colorScheme='gray'
-                  rightElement={<Icon name='caret-right' />}
-                  onClick={handleMoveToResultButtonClick}
-                >
-                  <Text
-                    content={t('event-page:button.move-to-result')}
-                    size='sm'
-                  />
-                </Button>
-              </ButtonWrapper>
-              <ButtonWrapper justify='center' isFull>
-                <Button
-                  radius='pill'
-                  size='2xl'
-                  onClick={handleSubmitButtonClick}
-                  isLoading={isLoading}
-                >
-                  <Text
-                    content={t('event-page:button.submit')}
-                    color='white'
-                    size='xl'
-                    weight='bold'
-                  />
-                </Button>
-              </ButtonWrapper>
-            </Flex>
-          </Inner>
-        </Paper>
-      </Page>
-    </Layout>
+              </Button>
+            </ButtonWrapper>
+            <ButtonWrapper justify='center' isFull>
+              <Button
+                radius='pill'
+                size='2xl'
+                onClick={handleSubmitButtonClick}
+                isLoading={isLoading}
+              >
+                <Text
+                  content={t('event-page:button.submit')}
+                  color='white'
+                  size='xl'
+                  weight='bold'
+                />
+              </Button>
+            </ButtonWrapper>
+          </Flex>
+        </Inner>
+      </Paper>
+    </Page>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.params as { id: string };
-  console.log(
-    '🚀 ~ file: index.tsx:216 ~ constgetServerSideProps:GetServerSideProps= ~ id:',
-    id,
-  );
+
   let participantCID = null;
 
   const cookies = nookies.get(ctx);
-  console.log(
-    '🚀 ~ file: index.tsx:219 ~ constgetServerSideProps:GetServerSideProps= ~ cookies:',
-    cookies,
-  );
 
   if (cookies[`${id}-participantID`]) {
     participantCID = cookies[`${id}-participantID`];
@@ -231,10 +215,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const event = await getEventById(id);
   if (!event) return { notFound: true };
-  console.log(
-    '🚀 ~ file: index.tsx:217 ~ constgetServerSideProps:GetServerSideProps= ~ participantCID:',
-    participantCID,
-  );
 
   return {
     props: {

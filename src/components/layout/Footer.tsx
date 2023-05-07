@@ -1,36 +1,39 @@
-import { Flex, Grid, Text } from '@/components/primitive';
+import { useTranslation } from 'next-i18next';
+import Image from 'next/image';
+
+import { Flex, Text } from '@/components/primitive';
 import { darkTheme, styled } from '@/styles/stitches.config';
 
-import Image from 'next/image';
-import { useTranslation } from 'next-i18next';
-
-function Footer() {
+export function Footer() {
   const { t } = useTranslation('common');
   return (
     <FooterWrapper>
-      <FooterInner align="center" gap={5}>
-        <Image src="/logo.svg" alt="logo" width={100} height={30} />
+      <FooterInner align='center' gap={5}>
+        <Image src='/logo.svg' alt='logo' width={100} height={30} />
         <Divider />
         <CopyRight>
-          <Text content="&copy;" size="xs" />
-          <Text content={`${new Date().getFullYear()} YAKSOK. All right reserved.`} size="xs" />
+          <Text content='&copy;' size='xs' />
+          <Text
+            content={`${new Date().getFullYear()} YAKSOK. All right reserved.`}
+            size='xs'
+          />
         </CopyRight>
         <Divider />
         <MadeBy gap={4}>
-          <Flex direction="column" gap={2}>
-            <Text content="Developer" size="xs" />
-            <Text content="Designer" size="xs" />
+          <Flex direction='column' gap={2}>
+            <Text content='Developer' size='xs' />
+            <Text content='Designer' size='xs' />
           </Flex>
-          <Flex direction="column" gap={2}>
-            <Text content={t('author.developer.name')} size="xs" />
-            <Text content={t('author.designer.name')} size="xs" />
+          <Flex direction='column' gap={2}>
+            <Text content={t('author.developer.name')} size='xs' />
+            <Text content={t('author.designer.name')} size='xs' />
           </Flex>
-          <Flex direction="column" gap={2}>
-            <a href="mailto:qudals7613@gmail.com">
-              <Text content="qudals7613@gmail.com" size="xs" />
+          <Flex direction='column' gap={2}>
+            <a href='mailto:qudals7613@gmail.com'>
+              <Text content='qudals7613@gmail.com' size='xs' />
             </a>
-            <a href="mailto:kowahj@naver.com">
-              <Text content="kowahj@naver.com" size="xs" />
+            <a href='mailto:kowahj@naver.com'>
+              <Text content='kowahj@naver.com' size='xs' />
             </a>
           </Flex>
         </MadeBy>
@@ -56,8 +59,8 @@ const FooterWrapper = styled('footer', {
 });
 
 const FooterInner = styled(Flex, {
-  color: '$darken100',
-  flexDirection: 'column',
+  'color': '$darken100',
+  'flexDirection': 'column',
 
   '@bp1': { flexDirection: 'column' },
   '@bp2': { flexDirection: 'column' },
@@ -73,11 +76,11 @@ const CopyRight = styled(Flex, {
 });
 
 const Divider = styled(Flex, {
-  w: '1px',
-  h: '1rem',
-  bgColor: '$darken100',
-  mx: '$5',
-  display: 'none',
+  'w': '1px',
+  'h': '1rem',
+  'bgColor': '$darken100',
+  'mx': '$5',
+  'display': 'none',
   '@bp1': { display: 'none' },
   '@bp2': { display: 'none' },
   '@bp3': { display: 'block' },
@@ -88,12 +91,12 @@ const Divider = styled(Flex, {
 });
 
 const MadeBy = styled(Flex, {
-  fontSize: '$xs',
-  display: 'none',
+  'fontSize': '$xs',
+  'display': 'none',
 
-  a: {
-    color: '$darken100',
-    textDecoration: 'none',
+  'a': {
+    'color': '$darken100',
+    'textDecoration': 'none',
     '&:hover': {
       textDecoration: 'underline',
     },
@@ -105,5 +108,3 @@ const MadeBy = styled(Flex, {
 
   '@bp1': { display: 'flex' },
 });
-
-export default Footer;

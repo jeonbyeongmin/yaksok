@@ -1,3 +1,14 @@
+import { Event } from 'common/inerfaces/Event.interface';
+import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
+import { GetServerSideProps } from 'next';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useRef, useState } from 'react';
+
+import PartitionGroup from '@/components/page/event-result/PartitionGroup';
+import LoadingMessage from '@/components/page/LoadingMessage';
+import Timetable from '@/components/page/Timetable';
 import {
   Badge,
   Button,
@@ -9,23 +20,11 @@ import {
   Text,
 } from '@/components/primitive';
 import { Panel, PanelInner } from '@/components/primitive/Panel';
-import { useCallback, useEffect, useRef, useState } from 'react';
-
-import { Event } from 'common/inerfaces/Event.interface';
-import { GetServerSideProps } from 'next';
-import { Layout } from '@/components/layout/Layout';
-import LoadingMessage from '@/components/page/LoadingMessage';
-import PartitionGroup from '@/components/page/event-result/PartitionGroup';
-import Timetable from '@/components/page/Timetable';
-import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
-import { getEventById } from '@/pages/api/events/[id]';
 import { makeToast } from '@/components/primitive/Toast';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { styled } from '@/styles/stitches.config';
 import { useParticipantsSWR } from '@/hooks/useParticipantsSWR';
-import { useRouter } from 'next/router';
 import { useTimetable } from '@/hooks/useTimetable';
-import { useTranslation } from 'next-i18next';
+import { getEventById } from '@/pages/api/events/[id]';
+import { styled } from '@/styles/stitches.config';
 
 interface EventResultProps {
   eventId: string;
@@ -156,113 +155,109 @@ function EventResult({ eventId, event }: EventResultProps) {
 
   if (!event || !participants) {
     return (
-      <Layout>
-        <Page>
-          <LoadingMessage />
-        </Page>
-      </Layout>
+      <Page>
+        <LoadingMessage />
+      </Page>
     );
   }
 
   return (
-    <Layout ref={currentRef}>
-      <Page>
-        <Paper transparent>
-          <ButtonWrapper align='center' justify='end' isFull color='white'>
-            <Button
-              rightElement={<Icon name='caret-right' />}
-              onClick={handleCopyClipBoard}
-              radius='pill'
-            >
-              <Text
-                content={t('result-page:button.share')}
-                color='white'
-                weight='bold'
-              />
-            </Button>
-          </ButtonWrapper>
+    <Page ref={currentRef}>
+      <Paper transparent>
+        <ButtonWrapper align='center' justify='end' isFull color='white'>
+          <Button
+            rightElement={<Icon name='caret-right' />}
+            onClick={handleCopyClipBoard}
+            radius='pill'
+          >
+            <Text
+              content={t('result-page:button.share')}
+              color='white'
+              weight='bold'
+            />
+          </Button>
+        </ButtonWrapper>
 
-          <CustomGrid align='start'>
-            <Panel direction='column'>
-              <PanelInner align='start' gap={5}>
-                <ButtonWrapper align='center' justify='start' isFull gap={2}>
-                  <Button
-                    onClick={handleReloadButtonClick}
-                    leftElement={<Icon name='refresh' size={12} />}
-                    size='xs'
-                    variant='outline'
-                    colorScheme='gray'
-                    radius='pill'
-                  >
-                    <Text content={t('result-page:button.reload')} size='xs' />
-                  </Button>
-                  <Button
-                    onClick={handleEditButtonClick}
-                    size='xs'
-                    variant='outline'
-                    colorScheme='gray'
-                    radius='pill'
-                  >
-                    <Text content={t('result-page:button.edit')} size='xs' />
-                  </Button>
-                </ButtonWrapper>
-                <Flex align='center' gap={3}>
-                  <Icon name='calendar' size={20} />
-                  <Text content={event?.title ?? ''} size='lg' weight='bold' />
-                </Flex>
-                <Text
-                  content={`${participants?.length}/${
-                    event?.participantsNumber
-                  } ${t('result-page:timetable.participate')}`}
+        <CustomGrid align='start'>
+          <Panel direction='column'>
+            <PanelInner align='start' gap={5}>
+              <ButtonWrapper align='center' justify='start' isFull gap={2}>
+                <Button
+                  onClick={handleReloadButtonClick}
+                  leftElement={<Icon name='refresh' size={12} />}
                   size='xs'
+                  variant='outline'
+                  colorScheme='gray'
+                  radius='pill'
+                >
+                  <Text content={t('result-page:button.reload')} size='xs' />
+                </Button>
+                <Button
+                  onClick={handleEditButtonClick}
+                  size='xs'
+                  variant='outline'
+                  colorScheme='gray'
+                  radius='pill'
+                >
+                  <Text content={t('result-page:button.edit')} size='xs' />
+                </Button>
+              </ButtonWrapper>
+              <Flex align='center' gap={3}>
+                <Icon name='calendar' size={20} />
+                <Text content={event?.title ?? ''} size='lg' weight='bold' />
+              </Flex>
+              <Text
+                content={`${participants?.length}/${
+                  event?.participantsNumber
+                } ${t('result-page:timetable.participate')}`}
+                size='xs'
+              />
+              <Flex isFull gap={7}>
+                <Timetable
+                  startDate={event.startDate}
+                  endDate={event.endDate}
+                  startTime={event.startTime}
+                  endTime={event.endTime}
+                  timetable={timetable}
+                  participantsNumber={participants.length}
+                  cellHeight='sm'
+                  selectedTimetablePartition={selectedTimetablePartition}
+                  isSimple
                 />
-                <Flex isFull gap={7}>
-                  <Timetable
-                    startDate={event.startDate}
-                    endDate={event.endDate}
-                    startTime={event.startTime}
-                    endTime={event.endTime}
-                    timetable={timetable}
-                    participantsNumber={participants.length}
-                    cellHeight='sm'
-                    selectedTimetablePartition={selectedTimetablePartition}
-                    isSimple
-                  />
-                  <Flex direction='column' gap={5}>
-                    {participants?.map((participant) => (
-                      <Badge
-                        key={participant._id}
-                        size='sm'
-                        active={isSelected(participant._id)}
-                        onClick={() => handleParticipantSelect(participant._id)}
-                        content={participant.name}
-                      />
-                    ))}
-                  </Flex>
+                <Flex direction='column' gap={5}>
+                  {participants?.map((participant) => (
+                    <Badge
+                      key={participant._id}
+                      size='sm'
+                      active={isSelected(participant._id)}
+                      onClick={() => handleParticipantSelect(participant._id)}
+                      content={participant.name}
+                    />
+                  ))}
                 </Flex>
-              </PanelInner>
-            </Panel>
+              </Flex>
+            </PanelInner>
+          </Panel>
 
-            <Flex direction='column' gap={6}>
-              {event &&
-                partitionGroups.map((partitionGroup, rank) => (
-                  <PartitionGroup
-                    key={rank}
-                    rank={rank}
-                    event={event}
-                    partitionGroup={partitionGroup}
-                    participants={participants}
-                    selectedTimetablePartition={selectedTimetablePartition}
-                    handleTimetablePartitionSelect={
-                      handleTimetablePartitionSelect
-                    }
-                  />
-                ))}
-            </Flex>
-          </CustomGrid>
-        </Paper>
-      </Page>
-    </Layout>
+          <Flex direction='column' gap={6}>
+            {event &&
+              partitionGroups.map((partitionGroup, rank) => (
+                <PartitionGroup
+                  key={rank}
+                  rank={rank}
+                  event={event}
+                  partitionGroup={partitionGroup}
+                  participants={participants}
+                  selectedTimetablePartition={selectedTimetablePartition}
+                  handleTimetablePartitionSelect={
+                    handleTimetablePartitionSelect
+                  }
+                />
+              ))}
+          </Flex>
+        </CustomGrid>
+      </Paper>
+    </Page>
   );
 }
 

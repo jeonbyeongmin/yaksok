@@ -10,6 +10,7 @@ import NextNProgress from 'nextjs-progressbar';
 import { ToastContainer } from 'react-toastify';
 import { SWRConfig } from 'swr';
 
+import { Layout } from '@/components/layout/Layout';
 import { darkTheme } from '@/styles/stitches.config';
 import { fetcher } from '@/utils/fetcher';
 import { Noto_Sans_KR } from '@next/font/google';
@@ -49,7 +50,9 @@ function App({ Component, pageProps }: AppProps) {
             draggable
             theme='light'
           />
-          <Component {...pageProps} />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
         </ThemeProvider>
       </SWRConfig>
     </div>
