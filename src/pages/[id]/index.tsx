@@ -27,7 +27,7 @@ interface EventProps {
   event: Event;
 }
 
-function Event({ eventID, participantCID, event }: EventProps) {
+export default function EventPage({ eventID, participantCID, event }: EventProps) {
   const router = useRouter();
   const { t } = useTranslation(['common', 'event-page']);
 
@@ -37,6 +37,7 @@ function Event({ eventID, participantCID, event }: EventProps) {
   const { participant } = useParticipantSWR({
     participantID: participantID ?? '',
   });
+
   const { participants } = useParticipantsSWR({ eventID });
   const { timetable, completeTimetable, handleTimetableChange } = useTimetable(event, participant);
 
@@ -257,5 +258,3 @@ const ButtonWrapper = styled(Flex, {
     pt: '$20',
   },
 });
-
-export default Event;

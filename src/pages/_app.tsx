@@ -4,7 +4,6 @@ import '@/styles/calendar.css';
 import 'react-toastify/dist/ReactToastify.css';
 import '@/styles/toast.css';
 
-import { Analytics } from '@vercel/analytics/react';
 import type { AppProps } from 'next/app';
 import NextNProgress from 'nextjs-progressbar';
 import { Noto_Sans_KR } from '@next/font/google';
@@ -51,7 +50,6 @@ function App({ Component, pageProps }: AppProps) {
             theme="light"
           />
           <Component {...pageProps} />
-          <Analytics />
         </ThemeProvider>
       </SWRConfig>
     </div>
