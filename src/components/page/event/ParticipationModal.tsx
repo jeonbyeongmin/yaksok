@@ -7,7 +7,7 @@ import {
 import { darkTheme, styled } from '@/styles/stitches.config';
 import { useEffect, useState } from 'react';
 
-import { CreateParticipantAPI } from '@/api/participants/create-participant';
+import { createParticipantAPI } from '@/api/participants/create-participant';
 import { logOnBrowser } from 'common/utils/log';
 import { useRouter } from 'next/router';
 
@@ -52,7 +52,7 @@ function ParticipationModal({
     setIsLoading(true);
 
     try {
-      const { participant } = await CreateParticipantAPI(
+      const { participant } = await createParticipantAPI(
         {},
         {
           name,

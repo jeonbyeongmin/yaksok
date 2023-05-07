@@ -4,10 +4,10 @@ import {
   eventFormReducer,
 } from '@/reducers/event-form.reducer';
 
-import { CreateEventAPI } from '@/api/events/create-event';
-import { CreateParticipantAPI } from '@/api/participants/create-participant';
 import type { DateType } from '@/components/page/home/Calendar';
 import type { TFunction } from 'next-i18next';
+import { createEventAPI } from '@/api/events/create-event';
+import { createParticipantAPI } from '@/api/participants/create-participant';
 import { eventFormActions } from '@/actions/event-form.action';
 import { logOnBrowser } from 'common/utils/log';
 
@@ -62,14 +62,14 @@ export const useEventForm = ({ t }: { t: TFunction }) => {
       endTime: Number(eventForm.endTime) - 1,
     };
 
-    const { event } = await CreateEventAPI(params, body);
+    const { event } = await createEventAPI(params, body);
 
     return event._id;
   };
 
   const createParticipant = async (eventId: string) => {
     const { name } = eventForm;
-    await CreateParticipantAPI({}, { name, eventId, availableIndexes: [] });
+    await createParticipantAPI({}, { name, eventId, availableIndexes: [] });
   };
 
   const handleEventCreate = async () => {
