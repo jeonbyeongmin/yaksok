@@ -165,7 +165,6 @@ export default function EventPage({
             timetable={timetable}
             handleTimetableChange={handleTimetableChange}
           />
-
           <Flex direction='column' isFull gap={5}>
             <ButtonWrapper justify='center' isFull>
               <Button
