@@ -1,13 +1,12 @@
-import { useCallback, useMemo, useState } from 'react';
-
 import { Event } from 'common/inerfaces/Event.interface';
 import { Participant } from 'common/inerfaces/Participant.interface';
 import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
 import dayjs from 'dayjs';
+import { useCallback, useMemo, useState } from 'react';
 
 export function useTimetable(
   event: Event | undefined,
-  participants: Participant | Participant[] | undefined
+  participants: Participant | Participant[] | undefined,
 ) {
   const [timetable, setTimetable] = useState<number[][]>([]);
 
@@ -19,7 +18,7 @@ export function useTimetable(
     if (!event) return null;
     const { startDate, endDate, startTime, endTime } = event;
     const timetable = Array.from(Array((endTime - startTime + 1) * 2), () =>
-      new Array(dayjs(endDate).diff(dayjs(startDate), 'day') + 1).fill(0)
+      new Array(dayjs(endDate).diff(dayjs(startDate), 'day') + 1).fill(0),
     );
     return timetable;
   }, [event]);
@@ -45,7 +44,7 @@ export function useTimetable(
 
       return newTimeTable;
     },
-    [getPlainTimetable]
+    [getPlainTimetable],
   );
 
   const completeTimetable = useMemo(() => {
@@ -60,7 +59,9 @@ export function useTimetable(
     const map: { [key: string]: string[] } = {};
     participants.forEach((participant) => {
       participant.availableIndexes.forEach((index) => {
-        map[index] = map[index] ? [...map[index], participant._id] : [participant._id];
+        map[index] = map[index]
+          ? [...map[index], participant._id]
+          : [participant._id];
       });
     });
     return map;
@@ -69,11 +70,13 @@ export function useTimetable(
   const partitionsInfo = useMemo(() => {
     if (!participants || !Array.isArray(participants)) return [];
 
-    const sortedParticipantsByCell = Object.entries(participantsByCell).sort((a, b) => {
-      const [aRow, aCol] = a[0].split('-').map(Number);
-      const [bRow, bCol] = b[0].split('-').map(Number);
-      return aCol === bCol ? aRow - bRow : aCol - bCol;
-    });
+    const sortedParticipantsByCell = Object.entries(participantsByCell).sort(
+      (a, b) => {
+        const [aRow, aCol] = a[0].split('-').map(Number);
+        const [bRow, bCol] = b[0].split('-').map(Number);
+        return aCol === bCol ? aRow - bRow : aCol - bCol;
+      },
+    );
 
     const partitions: TimetablePartition[] = [];
 
@@ -135,18 +138,17 @@ export function useTimetable(
       return 0;
     });
 
-    const splittedByParticipantsLength = partitionsInfo.reduce<TimetablePartition[][]>(
-      (acc, partition) => {
-        const index = partition.participantIDs.length - 1;
-        if (acc[index]) {
-          acc[index].push(partition);
-        } else {
-          acc[index] = [partition];
-        }
-        return acc;
-      },
-      []
-    );
+    const splittedByParticipantsLength = partitionsInfo.reduce<
+      TimetablePartition[][]
+    >((acc, partition) => {
+      const index = partition.participantIDs.length - 1;
+      if (acc[index]) {
+        acc[index].push(partition);
+      } else {
+        acc[index] = [partition];
+      }
+      return acc;
+    }, []);
 
     return splittedByParticipantsLength.reverse();
   }, [partitionsInfo]);

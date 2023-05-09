@@ -31,7 +31,6 @@ export async function fetcher(
       `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}`,
       config,
     );
-    console.log('🚀 ~ file: fetcher.ts:34 ~ response:', response);
 
     const data = await response.json();
 
