@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { isMouseEvent } from '@/hooks/use-drag-select-table/guards';
+import {
+  isMouseEvent,
+  isTouchEvent,
+} from '@/hooks/use-drag-select-table/guards';
 import { getTargetIndexFromEvent } from '@/hooks/use-drag-select-table/utils';
 
 function useDragSelectTable(): [
@@ -17,8 +20,12 @@ function useDragSelectTable(): [
 
   const node = tableRef.current?.querySelector('tbody') ?? tableRef.current;
 
-  const startDrag = useCallback(
+  const handlePointerStart = useCallback(
     (e: Event) => {
+      if (isTouchEvent(e)) {
+        e.preventDefault();
+      }
+
       const index = getTargetIndexFromEvent(e);
 
       if (!index) {
@@ -39,22 +46,7 @@ function useDragSelectTable(): [
     [tableValues],
   );
 
-  const handleTouchStart = useCallback(
-    (e: Event) => {
-      startDrag(e);
-      e.preventDefault();
-    },
-    [startDrag],
-  );
-
-  const handleMouseDown = useCallback(
-    (e: Event) => {
-      startDrag(e);
-    },
-    [startDrag],
-  );
-
-  const handlePoinertMove = useCallback(
+  const handlePointerMove = useCallback(
     (e: Event) => {
       if (isMouseEvent(e) && e.buttons !== 1) {
         return;
@@ -90,7 +82,7 @@ function useDragSelectTable(): [
     [tableValues],
   );
 
-  const handleTouchEnd = useCallback((e: Event) => {
+  const handlePointerEnd = useCallback((e: Event) => {
     e.preventDefault();
   }, []);
 
@@ -114,26 +106,20 @@ function useDragSelectTable(): [
 
   useEffect(() => {
     if (node) {
-      node.addEventListener('touchstart', handleTouchStart);
-      node.addEventListener('mousedown', handleMouseDown);
-      node.addEventListener('touchmove', handlePoinertMove);
-      node.addEventListener('touchend', handleTouchEnd);
-      node.addEventListener('mouseover', handlePoinertMove);
+      node.addEventListener('touchstart', handlePointerStart);
+      node.addEventListener('mousedown', handlePointerStart);
+      node.addEventListener('touchmove', handlePointerMove);
+      node.addEventListener('touchend', handlePointerEnd);
+      node.addEventListener('mouseover', handlePointerMove);
       return () => {
-        node.removeEventListener('touchstart', handleTouchStart);
-        node.removeEventListener('mousedown', handleMouseDown);
-        node.removeEventListener('touchmove', handlePoinertMove);
-        node.removeEventListener('touchend', handleTouchEnd);
-        node.removeEventListener('mouseover', handlePoinertMove);
+        node.removeEventListener('touchstart', handlePointerStart);
+        node.removeEventListener('mousedown', handlePointerStart);
+        node.removeEventListener('touchmove', handlePointerMove);
+        node.removeEventListener('touchend', handlePointerEnd);
+        node.removeEventListener('mouseover', handlePointerMove);
       };
     }
-  }, [
-    handleMouseDown,
-    handleTouchStart,
-    handlePoinertMove,
-    handleTouchEnd,
-    node,
-  ]);
+  }, [handlePointerStart, handlePointerMove, handlePointerEnd, node]);
 
   return [tableRef, tableValues];
 }
