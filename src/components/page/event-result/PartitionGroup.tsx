@@ -1,3 +1,11 @@
+import { Event } from 'common/inerfaces/Event.interface';
+import { Participant } from 'common/inerfaces/Participant.interface';
+import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
+import { useTranslation } from 'next-i18next';
+import { useTheme } from 'next-themes';
+import { useMemo, useState } from 'react';
+
+import PartitionItem from '@/components/page/event-result/PartitionItem';
 import { Box, Flex, Icon, Text } from '@/components/primitive';
 import {
   CollapsibleContent,
@@ -6,14 +14,6 @@ import {
 } from '@/components/primitive/Collapsisble';
 import { Panel, PanelInner } from '@/components/primitive/Panel';
 import { darkTheme, styled } from '@/styles/stitches.config';
-import { useMemo, useState } from 'react';
-
-import { Event } from 'common/inerfaces/Event.interface';
-import { Participant } from 'common/inerfaces/Participant.interface';
-import PartitionItem from '@/components/page/event-result/PartitionItem';
-import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
-import { useTheme } from 'next-themes';
-import { useTranslation } from 'next-i18next';
 
 interface PartitionGroupProps {
   rank: number;
@@ -51,15 +51,15 @@ function PartitionGroup({
   }, [partitionGroup]);
 
   return (
-    <Panel key={rank} align="start" direction="column" gap={5}>
+    <Panel key={rank} align='start' direction='column' gap={5}>
       <PanelInner css={{ pb: '$5' }}>
         <Flex gap={4} isFull>
           <RankWrapper>
             <Text
               content={`${rank + 1}`}
-              color="white"
-              size="lg"
-              weight="bold"
+              color='white'
+              size='lg'
+              weight='bold'
               css={{
                 position: 'absolute',
                 top: '1px',
@@ -69,14 +69,14 @@ function PartitionGroup({
           <UnderLineBox>
             <Text
               content={`${partitionGroup[0].participantIDs.length} ${t('result.title')}`}
-              size="sm"
+              size='sm'
               color={resolvedTheme === 'dark' ? 'white' : 'darken200'}
-              weight="bold"
+              weight='bold'
             />
           </UnderLineBox>
         </Flex>
         <CollapsibleRoot open={open} onOpenChange={setOpen}>
-          <Items direction="column" isFull>
+          <Items direction='column' isFull>
             {partitionGroupCollapseItems.topThreeitems.map((partition) => (
               <PartitionItem
                 key={partition.id}
@@ -104,7 +104,7 @@ function PartitionGroup({
           {partitionGroupCollapseItems.remainItems.length > 0 && (
             <CollapsibleTrigger>
               <CollapsibleTriggerWrapper>
-                <Icon name="caret-down" size={25} />
+                <Icon name='caret-down' size={25} />
               </CollapsibleTriggerWrapper>
             </CollapsibleTrigger>
           )}
@@ -131,14 +131,14 @@ const CollapsibleTriggerWrapper = styled(Flex, {
 });
 
 const RankWrapper = styled(Flex, {
-  justifyContent: 'center',
-  position: 'relative',
-  alignItems: 'center',
-  w: '$13',
-  h: '$13',
-  bgColor: '$primary100',
-  borderRadius: '$pill',
-  flexShrink: 0,
+  'justifyContent': 'center',
+  'position': 'relative',
+  'alignItems': 'center',
+  'w': '$13',
+  'h': '$13',
+  'bgColor': '$primary100',
+  'borderRadius': '$pill',
+  'flexShrink': 0,
   '@bp1': { w: '$15', h: '$15' },
 
   [`.${darkTheme} &`]: { bg: '$darken100' },
