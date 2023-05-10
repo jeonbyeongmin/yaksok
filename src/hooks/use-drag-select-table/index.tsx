@@ -1,9 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import {
-  isMouseEvent,
-  isTouchEvent,
-} from '@/hooks/use-drag-select-table/guards';
+import { isMouseEvent, isTouchEvent } from '@/hooks/use-drag-select-table/guards';
 import {
   convertIndexToString,
   convertStringToIndex,
@@ -15,7 +12,7 @@ function useDragSelectTable(
 ): [React.RefObject<HTMLTableElement>, boolean[][]] {
   const startIndex = useRef<string>('');
   const currentIndex = useRef<string>('');
-  const table = useRef<boolean[][]>([]);
+  const startTable = useRef<boolean[][]>([]);
   const mode = useRef<boolean>(false);
 
   const tableRef = useRef<HTMLTableElement>(null);
@@ -23,19 +20,19 @@ function useDragSelectTable(
 
   const handlePointerStart = useCallback(
     (e: Event) => {
-      if (isTouchEvent(e)) {
-        e.preventDefault();
-      }
-
       const index = getTableCellIndex(e);
 
       if (index === null) {
         return;
       }
 
+      if (isTouchEvent(e) && e.cancelable) {
+        e.preventDefault();
+      }
+
       const { rowIndex, colIndex } = index;
 
-      table.current = [...tableValue];
+      startTable.current = [...tableValue];
       startIndex.current = convertIndexToString(rowIndex, colIndex);
 
       const newTableValues = [...tableValue];
@@ -49,6 +46,10 @@ function useDragSelectTable(
 
   const handlePointerMove = useCallback(
     (e: Event) => {
+      if (startIndex.current === '') {
+        return;
+      }
+
       if (isMouseEvent(e) && e.buttons !== 1) {
         return;
       }
@@ -70,9 +71,7 @@ function useDragSelectTable(
 
       currentIndex.current = indexString;
 
-      const [startRowIndex, startColIndex] = convertStringToIndex(
-        startIndex.current,
-      );
+      const [startRowIndex, startColIndex] = convertStringToIndex(startIndex.current);
       const [minRow, maxRow] = [startRowIndex, rowIndex].sort((a, b) => a - b);
       const [minCol, maxCol] = [startColIndex, colIndex].sort((a, b) => a - b);
 
@@ -80,7 +79,7 @@ function useDragSelectTable(
       newTableValues.forEach((r, i) => {
         r.forEach((_, j) => {
           if (i < minRow || i > maxRow || j < minCol || j > maxCol) {
-            newTableValues[i][j] = table.current[i][j];
+            newTableValues[i][j] = startTable.current[i][j];
           } else {
             newTableValues[i][j] = mode.current;
           }
@@ -93,12 +92,15 @@ function useDragSelectTable(
   );
 
   const handlePointerEnd = useCallback((e: Event) => {
-    e.preventDefault();
+    startIndex.current = '';
+    if (e.cancelable) {
+      e.preventDefault();
+    }
   }, []);
 
-  const node = tableRef.current?.querySelector('tbody') ?? tableRef.current;
-
   useEffect(() => {
+    const node = tableRef.current?.querySelector('tbody') ?? tableRef.current;
+
     if (!initialTable && node) {
       const trs = node.querySelectorAll('tr');
       const newTableValues: boolean[][] = [];
@@ -116,24 +118,28 @@ function useDragSelectTable(
 
       setTableValue(newTableValues);
     }
-  }, [initialTable, node]);
+  }, [initialTable]);
 
   useEffect(() => {
+    const node = tableRef.current?.querySelector('tbody') ?? tableRef.current;
+
     if (node) {
       node.addEventListener('touchstart', handlePointerStart);
       node.addEventListener('mousedown', handlePointerStart);
       node.addEventListener('touchmove', handlePointerMove);
-      node.addEventListener('touchend', handlePointerEnd);
       node.addEventListener('mouseover', handlePointerMove);
+      window.addEventListener('touchend', handlePointerEnd);
+      window.addEventListener('mouseup', handlePointerEnd);
       return () => {
         node.removeEventListener('touchstart', handlePointerStart);
         node.removeEventListener('mousedown', handlePointerStart);
         node.removeEventListener('touchmove', handlePointerMove);
-        node.removeEventListener('touchend', handlePointerEnd);
         node.removeEventListener('mouseover', handlePointerMove);
+        window.removeEventListener('touchend', handlePointerEnd);
+        window.addEventListener('mouseup', handlePointerEnd);
       };
     }
-  }, [handlePointerStart, handlePointerMove, handlePointerEnd, node]);
+  }, [handlePointerStart, handlePointerMove, handlePointerEnd]);
 
   return [tableRef, tableValue];
 }
