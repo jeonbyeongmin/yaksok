@@ -1,24 +1,13 @@
-import dayjs from 'dayjs';
-
-import { VariantProps, darkTheme, styled } from '@/styles/stitches.config';
-import { useCallback, useMemo, useRef } from 'react';
-import { Flex, Text } from '@/components/primitive';
-
 import { TimetablePartition } from 'common/inerfaces/TimetablePartition.interface';
-import { deepCopy2DArray } from 'common/utils/copy';
-import { isMobile } from 'common/utils/detect';
-import { useTheme } from 'next-themes';
+import dayjs from 'dayjs';
 import { useTranslation } from 'next-i18next';
+import { useTheme } from 'next-themes';
+import { useCallback, useMemo, useRef } from 'react';
+
+import { Flex, Text } from '@/components/primitive';
+import { darkTheme, styled, VariantProps } from '@/styles/stitches.config';
 
 type CellType = VariantProps<typeof Cell>;
-
-type TouchEventMapType = {
-  [key: string]: (e: React.TouchEvent<HTMLDivElement>) => void;
-};
-
-type MouseEventMapType = {
-  [key: string]: (e: React.MouseEvent<HTMLDivElement>) => void;
-};
 
 interface TimetableProps {
   startDate: Date;
@@ -48,12 +37,6 @@ function Timetable({
   const { resolvedTheme } = useTheme();
   const { t } = useTranslation('common');
 
-  const startRow = useRef<number>(0);
-  const startCol = useRef<number>(0);
-  const selectMode = useRef<number>(0);
-  const startTimeTable = useRef<number[][]>([]);
-  const moveFlag = useRef<boolean>(false);
-
   const readOnly = useMemo(() => {
     return !handleTimetableChange;
   }, [handleTimetableChange]);
@@ -77,118 +60,13 @@ function Timetable({
     return times;
   }, [endTime, startTime]);
 
-  const handleTouchStart = useCallback(() => {
-    moveFlag.current = false;
-  }, []);
-
-  const handleTouchMove = useCallback(() => {
-    moveFlag.current = true;
-  }, []);
-
-  const handleTouchEnd = useCallback(
-    (e: React.TouchEvent<HTMLDivElement>) => {
-      if (moveFlag.current) return;
-
-      const { dataset } = e.target as HTMLDivElement;
-      const row = Number(dataset.row);
-      const col = Number(dataset.col);
-
-      if (!handleTimetableChange || Number.isNaN(row) || Number.isNaN(col)) return;
-
-      const newTimeTable = [...timetable];
-      newTimeTable[row][col] = newTimeTable[row][col] ? 0 : 1;
-
-      handleTimetableChange(newTimeTable);
-      e.preventDefault();
-    },
-    [handleTimetableChange, timetable]
-  );
-
-  const handleMouseDown = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!handleTimetableChange) return;
-
-      const { dataset } = e.target as HTMLDivElement;
-      const row = Number(dataset.row);
-      const col = Number(dataset.col);
-
-      if (Number.isNaN(row) || Number.isNaN(col)) return;
-
-      const newTimeTable = [...timetable];
-      startTimeTable.current = [...timetable];
-      selectMode.current = newTimeTable[row][col] ? 0 : 1;
-      newTimeTable[row][col] = selectMode.current;
-      startRow.current = row;
-      startCol.current = col;
-
-      handleTimetableChange(newTimeTable);
-    },
-    [handleTimetableChange, timetable]
-  );
-
-  const handleMouseOver = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      const { dataset } = e.target as HTMLDivElement;
-
-      if (!handleTimetableChange || e.buttons !== 1) return;
-
-      const row = Number(dataset.row);
-      const col = Number(dataset.col);
-
-      if (Number.isNaN(row) || Number.isNaN(col) || startTimeTable.current.length === 0) return;
-
-      const newTimeTable = deepCopy2DArray(timetable);
-      const [startRowNum, endRowNum] = [startRow.current, row].sort((a, b) => a - b);
-      const [startColNum, endColNum] = [startCol.current, col].sort((a, b) => a - b);
-
-      for (let i = 0; i < newTimeTable.length; i++) {
-        for (let j = 0; j < newTimeTable[0].length; j++) {
-          if (i < startRowNum || i > endRowNum || j < startColNum || j > endColNum) {
-            newTimeTable[i][j] = startTimeTable.current[i][j];
-            continue;
-          }
-          newTimeTable[i][j] = selectMode.current;
-        }
-      }
-
-      handleTimetableChange(newTimeTable);
-    },
-    [handleTimetableChange, timetable]
-  );
-
-  const handleMouseUp = useCallback(() => {
-    startTimeTable.current = [];
-  }, []);
-
-  const mouseEventMap: MouseEventMapType = {
-    mousedown: handleMouseDown,
-    mouseover: handleMouseOver,
-    mouseup: handleMouseUp,
-  };
-
-  const touchEventMap: TouchEventMapType = {
-    touchstart: handleTouchStart,
-    touchmove: handleTouchMove,
-    touchend: handleTouchEnd,
-  };
-
-  const handleEvent = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
-    if (readOnly) return;
-    const eventType = e.type;
-    if (isMobile()) {
-      const event = e as React.TouchEvent<HTMLDivElement>;
-      touchEventMap[eventType](event);
-    } else {
-      const event = e as React.MouseEvent<HTMLDivElement>;
-      mouseEventMap[eventType](event);
-    }
-  };
-
   const getTimetableBorders = useCallback((row: number, column: number) => {
     const borderTop: CellType['borderTop'] = row === 0 ? 'solidGray' : 'none';
-    const borderLeft: CellType['borderLeft'] = column === 0 ? 'solidGray' : 'none';
+    const borderLeft: CellType['borderLeft'] =
+      column === 0 ? 'solidGray' : 'none';
     const borderRight: CellType['borderRight'] = 'solidGray';
-    const borderBottom: CellType['borderBottom'] = row % 2 !== 0 ? 'solidGray' : 'dashedGray';
+    const borderBottom: CellType['borderBottom'] =
+      row % 2 !== 0 ? 'solidGray' : 'dashedGray';
     return { borderTop, borderLeft, borderRight, borderBottom };
   }, []);
 
@@ -203,28 +81,44 @@ function Timetable({
         return resolvedTheme === 'dark' ? '$lighten200' : '$darken200';
       }
 
-      return value ? `rgba(88, 184, 238, ${(0.8 * value) / participantsNumber})` : '$panel';
+      return value
+        ? `rgba(88, 184, 238, ${(0.8 * value) / participantsNumber})`
+        : '$panel';
     },
-    [participantsNumber, resolvedTheme, selectedTimetablePartition]
+    [participantsNumber, resolvedTheme, selectedTimetablePartition],
   );
 
   const getDay = useCallback(
     (date: dayjs.Dayjs) => {
       return t('days').split(',')[date.get('day')];
     },
-    [t]
+    [t],
   );
 
   return (
-    <TimetableWrapper direction="column" isFull>
+    <TimetableWrapper direction='column' isFull>
       {!isSimple ? (
         <DateRow gap={4} isFull>
           <BlankCell />
           <Flex isFull>
             {dates.map((date, index) => (
-              <DateCell key={index} align="center" justify="center" direction="column">
-                <Text size="sm" color="gray400" content={date.format('MM/DD')} />
-                <Text size="sm" color="gray400" content={getDay(date)} weight="bold" />
+              <DateCell
+                key={index}
+                align='center'
+                justify='center'
+                direction='column'
+              >
+                <Text
+                  size='sm'
+                  color='gray400'
+                  content={date.format('MM/DD')}
+                />
+                <Text
+                  size='sm'
+                  color='gray400'
+                  content={getDay(date)}
+                  weight='bold'
+                />
               </DateCell>
             ))}
           </Flex>
@@ -234,31 +128,34 @@ function Timetable({
       {timetable.map((row, rowIndex) => (
         <Table key={rowIndex} gap={3} isFull>
           {!isSimple ? (
-            <BlankCell align="start" justify="end">
+            <BlankCell align='start' justify='end'>
               {rowIndex % 2 === 0 && (
-                <Text color="gray400" size="sm" content={`${times[rowIndex / 2]}`} />
+                <Text
+                  color='gray400'
+                  size='sm'
+                  content={`${times[rowIndex / 2]}`}
+                />
               )}
             </BlankCell>
           ) : null}
 
-          <Flex
-            isFull
-            onTouchStart={handleEvent}
-            onTouchMove={handleEvent}
-            onTouchEnd={handleEvent}
-            onMouseDown={handleEvent}
-            onMouseOver={handleEvent}
-            onMouseUp={handleEvent}>
+          <Flex isFull>
             {row.map((col, colIndex) => (
-              <Flex key={colIndex} direction="column" isFull>
+              <Flex key={colIndex} direction='column' isFull>
                 <Cell
                   cellHeight={cellHeight}
                   data-row={rowIndex}
                   data-col={colIndex}
                   borderTop={getTimetableBorders(rowIndex, colIndex).borderTop}
-                  borderLeft={getTimetableBorders(rowIndex, colIndex).borderLeft}
-                  borderRight={getTimetableBorders(rowIndex, colIndex).borderRight}
-                  borderBottom={getTimetableBorders(rowIndex, colIndex).borderBottom}
+                  borderLeft={
+                    getTimetableBorders(rowIndex, colIndex).borderLeft
+                  }
+                  borderRight={
+                    getTimetableBorders(rowIndex, colIndex).borderRight
+                  }
+                  borderBottom={
+                    getTimetableBorders(rowIndex, colIndex).borderBottom
+                  }
                   css={{
                     bgColor: getTimetableBackground(rowIndex, colIndex, col),
                   }}
@@ -290,9 +187,9 @@ const DateCell = styled(Flex, {
 });
 
 const BlankCell = styled(Flex, {
-  w: '$10',
+  'w': '$10',
   '@bp1': { w: '$15' },
-  flexShrink: 0,
+  'flexShrink': 0,
 });
 
 const Cell = styled('div', {
@@ -303,7 +200,7 @@ const Cell = styled('div', {
     cellHeight: {
       sm: { minH: '$10' },
       md: {
-        minH: '$25',
+        'minH': '$25',
         '@bp1': { minH: '$18' },
       },
       lg: { minH: '$16' },
