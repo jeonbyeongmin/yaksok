@@ -1,33 +1,18 @@
-import { Button, Flex, Input, Text } from '@/components/primitive';
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-} from '@/components/primitive/Dialog';
-import { darkTheme, styled } from '@/styles/stitches.config';
+import { logOnBrowser } from 'common/utils/log';
 import { useEffect, useState } from 'react';
 
 import { createParticipantAPI } from '@/api/participants/create-participant';
-import { logOnBrowser } from 'common/utils/log';
-import { useRouter } from 'next/router';
+import { Button, Flex, Input, Text } from '@/components/primitive';
+import { Dialog, DialogContent, DialogTitle } from '@/components/primitive/Dialog';
+import { darkTheme, styled } from '@/styles/stitches.config';
 
-interface ParticipationModalProps {
+interface Props {
   eventId: string;
   eventTitle: string;
-  participantID: string;
-  handleParticipantIDChange: (participantID: string) => void;
-  isPossibleCreateParticipant: boolean;
+  changeParticipantId: (participantId: string) => void;
 }
 
-function ParticipationModal({
-  eventId,
-  eventTitle,
-  participantID,
-  handleParticipantIDChange,
-  isPossibleCreateParticipant,
-}: ParticipationModalProps) {
-  const router = useRouter();
-
+export function ParticipationModal({ eventId, eventTitle, changeParticipantId }: Props) {
   const [open, setOpen] = useState<boolean>(false);
   const [name, setName] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -43,12 +28,6 @@ function ParticipationModal({
       return;
     }
 
-    if (!isPossibleCreateParticipant) {
-      alert('이미 모든 참가자가 참여했어요.');
-      router.push('/');
-      return;
-    }
-
     setIsLoading(true);
 
     try {
@@ -61,10 +40,7 @@ function ParticipationModal({
         },
       );
 
-      if (participant) {
-        handleParticipantIDChange(participant._id);
-        setOpen(false);
-      }
+      changeParticipantId(participant._id);
     } catch (error) {
       logOnBrowser(error);
     } finally {
@@ -73,21 +49,15 @@ function ParticipationModal({
   };
 
   useEffect(() => {
-    if (!participantID) {
-      setOpen(true);
-    }
-  }, [participantID]);
+    setOpen(true);
+  }, []);
 
   return (
     <Dialog open={open}>
       <DialogContent>
         <ModalContentWrapper direction='column' gap={8}>
           <DialogTitle>
-            <Text
-              content={`${eventTitle}에 참여하기`}
-              weight='bold'
-              size='lg'
-            />
+            <Text content={`${eventTitle}에 참여하기`} weight='bold' size='lg' />
           </DialogTitle>
           <InputWrapper direction='column' gap={3} isFull>
             <Input
@@ -146,5 +116,3 @@ const ButtonWrapper = styled(Flex, {
 
   mb: '$5',
 });
-
-export default ParticipationModal;

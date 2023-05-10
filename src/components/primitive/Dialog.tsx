@@ -1,3 +1,6 @@
+import { ComponentProps, ElementRef, forwardRef } from 'react';
+
+import { overlayStyles } from '@/components/primitive/Overlay';
 import { CSS, darkTheme, styled } from '@/styles/stitches.config';
 import {
   Close,
@@ -9,10 +12,7 @@ import {
   Title,
   Trigger,
 } from '@radix-ui/react-dialog';
-import { ComponentProps, ElementRef, forwardRef } from 'react';
-
 import { Cross1Icon } from '@radix-ui/react-icons';
-import { overlayStyles } from '@/components/primitive/Overlay';
 
 const fadeIn = `@keyframes fadeIn {
   from {
@@ -41,27 +41,27 @@ const CustomOverlay = styled(Overlay, overlayStyles, {
 });
 
 const CustomContent = styled(Content, {
-  bgColor: '$panel',
-  position: 'fixed',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  'bgColor': '$panel',
+  'position': 'fixed',
+  'top': '50%',
+  'left': '50%',
+  'transform': 'translate(-50%, -50%)',
 
-  maxHeight: '85vh',
+  'maxHeight': '85vh',
 
-  marginTop: '-5vh',
-  animation: `${fadeIn} 125ms linear, ${moveDown} 125ms cubic-bezier(0.22, 1, 0.36, 1)`,
+  'marginTop': '-5vh',
+  'animation': `${fadeIn} 125ms linear, ${moveDown} 125ms cubic-bezier(0.22, 1, 0.36, 1)`,
 
-  p: '$5',
-  borderRadius: '$lg',
+  'p': '$5',
+  'borderRadius': '$lg',
 
-  willChange: 'transform',
+  'willChange': 'transform',
 
   '&:focus': {
     outline: 'none',
   },
 
-  color: '$gray800',
+  'color': '$gray800',
 
   [`.${darkTheme} &`]: {
     color: '$white',
@@ -87,13 +87,13 @@ const DialogContent = forwardRef<ElementRef<typeof CustomContent>, DialogContent
       <CustomContent {...props} ref={forwardedRef}>
         {children}
         {closeButton && (
-          <CustomCloseButton aria-label="Close">
+          <CustomCloseButton aria-label='Close'>
             <Cross1Icon />
           </CustomCloseButton>
         )}
       </CustomContent>
     </Portal>
-  )
+  ),
 );
 
 DialogContent.displayName = 'DialogContent';
@@ -104,4 +104,11 @@ const DialogClose = Close;
 const DialogTitle = Title;
 const DialogDescription = Description;
 
-export { Dialog, DialogTrigger, DialogContent, DialogClose, DialogTitle, DialogDescription };
+export {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogClose,
+  DialogTitle,
+  DialogDescription,
+};
