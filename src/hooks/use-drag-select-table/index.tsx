@@ -4,21 +4,22 @@ import {
   isMouseEvent,
   isTouchEvent,
 } from '@/hooks/use-drag-select-table/guards';
-import { getTargetIndexFromEvent } from '@/hooks/use-drag-select-table/utils';
+import {
+  convertIndexToString,
+  convertStringToIndex,
+  getTableCellIndex,
+} from '@/hooks/use-drag-select-table/utils';
 
-function useDragSelectTable(): [
-  React.RefObject<HTMLTableElement>,
-  boolean[][],
-] {
+function useDragSelectTable(
+  initialTable?: boolean[][],
+): [React.RefObject<HTMLTableElement>, boolean[][]] {
   const startIndex = useRef<string>('');
   const currentIndex = useRef<string>('');
   const table = useRef<boolean[][]>([]);
   const mode = useRef<boolean>(false);
 
   const tableRef = useRef<HTMLTableElement>(null);
-  const [tableValues, setTableValues] = useState<boolean[][]>([]);
-
-  const node = tableRef.current?.querySelector('tbody') ?? tableRef.current;
+  const [tableValue, setTableValue] = useState<boolean[][]>(initialTable ?? []);
 
   const handlePointerStart = useCallback(
     (e: Event) => {
@@ -26,24 +27,24 @@ function useDragSelectTable(): [
         e.preventDefault();
       }
 
-      const index = getTargetIndexFromEvent(e);
+      const index = getTableCellIndex(e);
 
-      if (!index) {
+      if (index === null) {
         return;
       }
 
-      table.current = [...tableValues];
-      startIndex.current = index;
+      const { rowIndex, colIndex } = index;
 
-      const [row, col] = index.split('-').map(Number);
+      table.current = [...tableValue];
+      startIndex.current = convertIndexToString(rowIndex, colIndex);
 
-      const newTableValues = [...tableValues];
-      mode.current = !newTableValues[row][col];
-      newTableValues[row][col] = mode.current;
+      const newTableValues = [...tableValue];
+      mode.current = !newTableValues[rowIndex][colIndex];
+      newTableValues[rowIndex][colIndex] = mode.current;
 
-      setTableValues(newTableValues);
+      setTableValue(newTableValues);
     },
-    [tableValues],
+    [tableValue],
   );
 
   const handlePointerMove = useCallback(
@@ -52,21 +53,30 @@ function useDragSelectTable(): [
         return;
       }
 
-      const index = getTargetIndexFromEvent(e);
-      const isSameIndex = index === currentIndex.current;
+      const index = getTableCellIndex(e);
 
-      if (!index || isSameIndex) {
+      if (index === null) {
         return;
       }
 
-      currentIndex.current = index;
+      const { rowIndex, colIndex } = index;
 
-      const [startRow, startCol] = startIndex.current.split('-').map(Number);
-      const [row, col] = index.split('-').map(Number);
-      const [minRow, maxRow] = [startRow, row].sort((a, b) => a - b);
-      const [minCol, maxCol] = [startCol, col].sort((a, b) => a - b);
+      const indexString = convertIndexToString(rowIndex, colIndex);
+      const isSameAsPrevIndex = indexString === currentIndex.current;
 
-      const newTableValues = tableValues.map((row) => row.slice());
+      if (isSameAsPrevIndex) {
+        return;
+      }
+
+      currentIndex.current = indexString;
+
+      const [startRowIndex, startColIndex] = convertStringToIndex(
+        startIndex.current,
+      );
+      const [minRow, maxRow] = [startRowIndex, rowIndex].sort((a, b) => a - b);
+      const [minCol, maxCol] = [startColIndex, colIndex].sort((a, b) => a - b);
+
+      const newTableValues = tableValue.map((row) => row.slice());
       newTableValues.forEach((r, i) => {
         r.forEach((_, j) => {
           if (i < minRow || i > maxRow || j < minCol || j > maxCol) {
@@ -77,17 +87,19 @@ function useDragSelectTable(): [
         });
       });
 
-      setTableValues(newTableValues);
+      setTableValue(newTableValues);
     },
-    [tableValues],
+    [tableValue],
   );
 
   const handlePointerEnd = useCallback((e: Event) => {
     e.preventDefault();
   }, []);
 
+  const node = tableRef.current?.querySelector('tbody') ?? tableRef.current;
+
   useEffect(() => {
-    if (node) {
+    if (!initialTable && node) {
       const trs = node.querySelectorAll('tr');
       const newTableValues: boolean[][] = [];
       trs.forEach((tr, i) => {
@@ -95,14 +107,16 @@ function useDragSelectTable(): [
         const row: boolean[] = [];
         tds.forEach((td, j) => {
           row.push(false);
-          td.dataset.index = `${i}-${j}`;
         });
-        newTableValues.push(row);
+
+        if (tds.length > 0) {
+          newTableValues.push(row);
+        }
       });
 
-      setTableValues(newTableValues);
+      setTableValue(newTableValues);
     }
-  }, [node]);
+  }, [initialTable, node]);
 
   useEffect(() => {
     if (node) {
@@ -121,7 +135,7 @@ function useDragSelectTable(): [
     }
   }, [handlePointerStart, handlePointerMove, handlePointerEnd, node]);
 
-  return [tableRef, tableValues];
+  return [tableRef, tableValue];
 }
 
 export { useDragSelectTable };
