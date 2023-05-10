@@ -6,9 +6,8 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import LoadingMessage from '@/components/loading-message';
 import PartitionGroup from '@/components/page/event-result/PartitionGroup';
-import LoadingMessage from '@/components/page/LoadingMessage';
-import Timetable from '@/components/page/Timetable';
 import {
   Badge,
   Button,
@@ -21,8 +20,9 @@ import {
 } from '@/components/primitive';
 import { Panel, PanelInner } from '@/components/primitive/Panel';
 import { makeToast } from '@/components/primitive/Toast';
+import Timetable from '@/components/Timetable';
+import { useTimetable } from '@/hooks/use-timetable';
 import { useParticipantsSWR } from '@/hooks/useParticipantsSWR';
-import { useTimetable } from '@/hooks/useTimetable';
 import { getEventById } from '@/pages/api/events/[id]';
 import { styled } from '@/styles/stitches.config';
 
@@ -39,10 +39,7 @@ function EventResult({ eventId, event }: EventResultProps) {
   const { participants, reload } = useParticipantsSWR({
     queries: { eventId },
   });
-  console.log(
-    '🚀 ~ file: result.tsx:43 ~ EventResult ~ participants:',
-    participants,
-  );
+  console.log('🚀 ~ file: result.tsx:43 ~ EventResult ~ participants:', participants);
 
   const {
     timetable,
@@ -144,9 +141,7 @@ function EventResult({ eventId, event }: EventResultProps) {
   };
 
   useEffect(() => {
-    setSelectedParticipant(
-      participants?.map((participant) => participant._id) ?? [],
-    );
+    setSelectedParticipant(participants?.map((participant) => participant._id) ?? []);
   }, [participants]);
 
   useEffect(() => {
@@ -170,11 +165,7 @@ function EventResult({ eventId, event }: EventResultProps) {
             onClick={handleCopyClipBoard}
             radius='pill'
           >
-            <Text
-              content={t('result-page:button.share')}
-              color='white'
-              weight='bold'
-            />
+            <Text content={t('result-page:button.share')} color='white' weight='bold' />
           </Button>
         </ButtonWrapper>
 
@@ -207,9 +198,9 @@ function EventResult({ eventId, event }: EventResultProps) {
                 <Text content={event?.title ?? ''} size='lg' weight='bold' />
               </Flex>
               <Text
-                content={`${participants?.length}/${
-                  event?.participantsNumber
-                } ${t('result-page:timetable.participate')}`}
+                content={`${participants?.length}/${event?.participantsNumber} ${t(
+                  'result-page:timetable.participate',
+                )}`}
                 size='xs'
               />
               <Flex isFull gap={7}>
@@ -249,9 +240,7 @@ function EventResult({ eventId, event }: EventResultProps) {
                   partitionGroup={partitionGroup}
                   participants={participants}
                   selectedTimetablePartition={selectedTimetablePartition}
-                  handleTimetablePartitionSelect={
-                    handleTimetablePartitionSelect
-                  }
+                  handleTimetablePartitionSelect={handleTimetablePartitionSelect}
                 />
               ))}
           </Flex>
@@ -290,10 +279,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     props: {
       eventId: id,
       event,
-      ...(await serverSideTranslations(ctx.locale ?? 'en', [
-        'common',
-        'result-page',
-      ])),
+      ...(await serverSideTranslations(ctx.locale ?? 'en', ['common', 'result-page'])),
     },
   };
 };
