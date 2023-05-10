@@ -11,6 +11,7 @@ import { ToastContainer } from 'react-toastify';
 import { SWRConfig } from 'swr';
 
 import { Layout } from '@/components/layout';
+import { GlobalStateProvider } from '@/contexts/global-state-provider';
 import { darkTheme } from '@/styles/stitches.config';
 import { fetcher } from '@/utils/fetcher';
 import { Noto_Sans_KR } from '@next/font/google';
@@ -23,39 +24,41 @@ const notoSans = Noto_Sans_KR({
 
 function App({ Component, pageProps }: AppProps) {
   return (
-    <div className={notoSans.className}>
-      <NextNProgress options={{ showSpinner: false }} />
-      <SWRConfig
-        value={{
-          revalidateOnFocus: false,
-          fetcher,
-        }}
-      >
-        <ThemeProvider
-          attribute='class'
-          defaultTheme='system'
-          enableColorScheme={false}
+    <GlobalStateProvider>
+      <div className={notoSans.className}>
+        <NextNProgress options={{ showSpinner: false }} />
+        <SWRConfig
           value={{
-            light: 'light',
-            dark: darkTheme.className,
+            revalidateOnFocus: false,
+            fetcher,
           }}
         >
-          <ToastContainer
-            position='top-right'
-            newestOnTop
-            closeOnClick
-            rtl={false}
-            closeButton={false}
-            pauseOnFocusLoss
-            draggable
-            theme='light'
-          />
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </ThemeProvider>
-      </SWRConfig>
-    </div>
+          <ThemeProvider
+            attribute='class'
+            defaultTheme='system'
+            enableColorScheme={false}
+            value={{
+              light: 'light',
+              dark: darkTheme.className,
+            }}
+          >
+            <ToastContainer
+              position='top-right'
+              newestOnTop
+              closeOnClick
+              rtl={false}
+              closeButton={false}
+              pauseOnFocusLoss
+              draggable
+              theme='light'
+            />
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </ThemeProvider>
+        </SWRConfig>
+      </div>
+    </GlobalStateProvider>
   );
 }
 
