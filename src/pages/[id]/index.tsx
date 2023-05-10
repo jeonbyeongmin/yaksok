@@ -10,6 +10,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { updateParticipantAPI } from '@/api/participants/update-participant';
 import ParticipationModal from '@/components/page/event/ParticipationModal';
 import LoadingMessage from '@/components/page/LoadingMessage';
+import { Table } from '@/components/page/table';
 import Timetable from '@/components/page/Timetable';
 import { Button, Flex, Icon, Page, Paper, Text } from '@/components/primitive';
 import { makeToast } from '@/components/primitive/Toast';
@@ -165,6 +166,7 @@ export default function EventPage({
             timetable={timetable}
             handleTimetableChange={handleTimetableChange}
           />
+          <Table />
           <Flex direction='column' isFull gap={5}>
             <ButtonWrapper justify='center' isFull>
               <Button
