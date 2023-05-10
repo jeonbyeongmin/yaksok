@@ -8,16 +8,12 @@ interface AnimateContainerProps {
 
 export function AnimateContainer({ children }: AnimateContainerProps) {
   return (
-    <Container justify="center" align="center">
+    <Container justify='center' align='center'>
       <UnderLayer />
       <Wrapper>
-        {/* <Ball variant={3} />
-        <Ball variant={2} />
-        <Ball variant={1} />
-        <Ball variant={4} />
-        <Ball variant={5} />
-        <Ball variant={6} /> */}
-        {children}
+        <Inner justify='center' align='center' direction='column'>
+          {children}
+        </Inner>
       </Wrapper>
     </Container>
   );
@@ -25,7 +21,7 @@ export function AnimateContainer({ children }: AnimateContainerProps) {
 
 const Container = styled(Flex, {
   w: '$full',
-  h: '$200',
+  h: '$100',
 });
 
 const Wrapper = styled(Flex, {
@@ -43,54 +39,11 @@ const UnderLayer = styled(Box, {
   zIndex: -1,
 });
 
-const Ball = styled(Box, {
-  borderRadius: '$pill',
-  position: 'absolute',
-  zIndex: -1,
-
-  variants: {
-    variant: {
-      1: {
-        width: '80rem',
-        height: '80rem',
-        bg: '$linearOvall300',
-        transform: 'rotate(-4.19deg)',
-        filter: 'blur(25px)',
-        position: 'absolute',
-        top: '-50rem',
-        // left: '50rem',
-      },
-      2: {
-        width: '40rem',
-        height: '40rem',
-        bg: '$linearOvall200',
-        position: 'absolute',
-        filter: 'blur(25px)',
-      },
-      3: {
-        width: '40rem',
-        height: '40rem',
-        bg: '$linearOvall100',
-        position: 'absolute',
-        filter: 'blur(25px)',
-      },
-      4: {
-        width: '7rem',
-        height: '7rem',
-        bg: '$linearOvall400',
-        position: 'absolute',
-      },
-      5: {
-        width: '4rem',
-        height: '4rem',
-        bg: '$linearOvall500',
-        position: 'absolute',
-      },
-      6: {
-        width: '10rem',
-        bg: '$linearOvall600',
-        position: 'absolute',
-      },
-    },
-  },
+const Inner = styled(Flex, {
+  'w': '$full',
+  'h': '$full',
+  'pt': '$30',
+  'px': '$10',
+  'gap': '$20',
+  '@bp1': { w: '$250' },
 });

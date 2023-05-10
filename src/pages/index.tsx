@@ -1,23 +1,15 @@
-import { GetServerSideProps } from 'next';
+import type { GetServerSideProps } from 'next';
+
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
 
 import { AnimateContainer } from '@/components/page/home/AnimateContainer';
-import { Calendar } from '@/components/page/home/Calendar';
-import { ParticipantNumberSelector } from '@/components/page/home/ParticipantNumberSelector';
+import { Calendar } from '@/components/page/home/calendar';
 import { SelectorCard } from '@/components/page/home/SelectorCard';
 import { TimeSelector } from '@/components/page/home/TimeSelector';
-import {
-  Box,
-  Button,
-  Flex,
-  Grid,
-  Icon,
-  Input,
-  Text,
-} from '@/components/primitive';
-import { useEventForm } from '@/hooks/useEventForm';
+import { Box, Button, Flex, Grid, Icon, Input, Text } from '@/components/primitive';
+import { useEventForm } from '@/hooks/use-event-form';
 import { styled } from '@/styles/stitches.config';
 
 export default function Home() {
@@ -29,8 +21,6 @@ export default function Home() {
     isLoading,
     error,
     handleTitleChange,
-    handleNameChange,
-    handleParticipantsNumberChange,
     handleDateChange,
     handleStartTime,
     handleEndTime,
@@ -38,9 +28,9 @@ export default function Home() {
   } = useEventForm({ t });
 
   const handleSubmit = async () => {
-    const eventID = await handleEventCreate();
-    if (eventID) {
-      router.push(`${eventID}`);
+    const eventId = await handleEventCreate();
+    if (eventId) {
+      router.push(`${eventId}`);
     }
   };
 
@@ -48,32 +38,16 @@ export default function Home() {
     <>
       <TopsideWrapper justify='center' align='center'>
         <AnimateContainer>
-          <TopsideInner justify='center' align='center' direction='column'>
-            <Input
-              name='title'
-              leftElement={<Icon name='calendar' size={20} />}
-              placeholder={t('home-page:form.event-title.placeholder')}
-              value={eventForm.title}
-              onChange={handleTitleChange}
-              variant='blurred'
-              size='xl'
-              radius='pill'
-            />
-            <TopsideSubInner direction='column' align='center' gap={7}>
-              <Input
-                name='name'
-                placeholder={t('home-page:form.name.placeholder')}
-                onChange={handleNameChange}
-                value={eventForm.name}
-                size='md'
-                variant='blurred'
-              />
-              <ParticipantNumberSelector
-                handleValue={handleParticipantsNumberChange}
-                value={eventForm.participantsNumber}
-              />
-            </TopsideSubInner>
-          </TopsideInner>
+          <Input
+            name='title'
+            leftElement={<Icon name='calendar' size={20} />}
+            placeholder={t('home-page:form.event-title.placeholder')}
+            value={eventForm.title}
+            onChange={handleTitleChange}
+            variant='blurred'
+            size='xl'
+            radius='pill'
+          />
         </AnimateContainer>
       </TopsideWrapper>
       <BottomsideWrapper>
@@ -106,12 +80,7 @@ export default function Home() {
         <ErrorWrapper>
           <Text content={error} color='red' size='sm' />
         </ErrorWrapper>
-        <Button
-          size='2xl'
-          onClick={handleSubmit}
-          radius='pill'
-          isLoading={isLoading}
-        >
+        <Button size='2xl' onClick={handleSubmit} radius='pill' isLoading={isLoading}>
           <Text
             content={t('home-page:button.submit')}
             color='white'
@@ -138,25 +107,8 @@ const CustomGrid = styled(Grid, {
 });
 
 const TopsideWrapper = styled(Flex, {
-  'h': '$160',
-  '@bp1': { h: '$180' },
-  '@bp2': { h: '$200' },
-  '@bp3': { h: '$200' },
-});
-
-const TopsideInner = styled(Flex, {
-  'w': '$full',
-  'h': '$full',
-  'pt': '$30',
-  'px': '$10',
-  'gap': '$20',
-  '@bp1': { w: '$250' },
-});
-
-const TopsideSubInner = styled(Flex, {
-  w: '$150',
-  px: '$10',
-  gap: '$20',
+  'h': '$100',
+  '@bp1': { h: '$140' },
 });
 
 const BottomsideWrapper = styled(Box, {
