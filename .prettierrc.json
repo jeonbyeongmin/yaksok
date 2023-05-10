@@ -5,7 +5,7 @@
   "singleQuote": true,
   "jsxSingleQuote": true,
   "trailingComma": "all",
-  "printWidth": 80,
+  "printWidth": 90,
   "proseWrap": "preserve",
   "arrowParens": "always",
   "quoteProps": "consistent",
