@@ -1,10 +1,8 @@
 import { EventFormActionType, EventFormActionTypes } from '@/actions/event-form.action';
-import { DateType } from '@/components/page/home/Calendar';
+import { DateType } from '@/components/page/home/calendar';
 
 type EventFormType = {
   title: string;
-  name: string;
-  participantsNumber: string | undefined;
   date: DateType | null;
   startTime: string;
   endTime: string;
@@ -12,8 +10,6 @@ type EventFormType = {
 
 export const eventFormInitialState: EventFormType = {
   title: '',
-  name: '',
-  participantsNumber: undefined,
   date: null,
   startTime: '0',
   endTime: '1',
@@ -29,18 +25,6 @@ export function eventFormReducer(eventForm: EventFormType, action: EventFormActi
       return {
         ...eventForm,
         title: payload.title,
-      };
-    }
-    case EventFormActionTypes.CHANGE_NAME: {
-      return {
-        ...eventForm,
-        name: payload.name,
-      };
-    }
-    case EventFormActionTypes.CHANGE_PARTICIPANTS_NUMBER: {
-      return {
-        ...eventForm,
-        participantsNumber: payload.participantsNumber,
       };
     }
     case EventFormActionTypes.CHANGE_DATE: {

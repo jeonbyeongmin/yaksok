@@ -5,5 +5,4 @@ export interface Event {
   startTime: number;
   endTime: number;
   title: string;
-  participantsNumber: number;
 }
