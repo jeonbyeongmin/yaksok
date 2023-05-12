@@ -1,4 +1,4 @@
-import type { Event } from 'common/interfaces/Event.interface';
+import type { Event } from 'common/interfaces/event.interface';
 
 import { createContext, useContext, useMemo } from 'react';
 
