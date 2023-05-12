@@ -1,7 +1,7 @@
 import { Loader } from '@/components/primitive';
 import { Flex } from '@/components/primitive/flex';
 import { Text } from '@/components/primitive/text';
-import { darkTheme, styled } from '@/styles/stitches.config';
+import { styled } from '@/styles/stitches.config';
 
 export function LoadingMessage() {
   return (
@@ -19,17 +19,14 @@ export function LoadingMessage() {
 }
 
 const LoadingMessageWrapper = styled(Flex, {
-  color: '$gray800',
   position: 'fixed',
   top: 0,
   left: 0,
   right: 0,
   bottom: 0,
-  bgColor: 'rgba(0, 0, 0, .3)',
+  bgColor: 'rgba(0, 0, 0, .5)',
   backdropFilter: 'blur(10px)',
   zIndex: 1000,
 
-  [`.${darkTheme} &`]: {
-    color: '$white',
-  },
+  color: '$white',
 });

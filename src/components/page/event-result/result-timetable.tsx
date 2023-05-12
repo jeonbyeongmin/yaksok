@@ -25,7 +25,7 @@ export function ResultTimetable({
                   'h': '$10',
                   '@bp1': { h: '$16' },
                   'bgColor': isIndexInPartition(rowIndex, columnIndex, selectedPartition)
-                    ? 'rgba(88, 184, 255)'
+                    ? '$darken100'
                     : `rgba(88, 184, 238, ${
                         timetable[rowIndex][columnIndex] / participantsLength
                       })`,
