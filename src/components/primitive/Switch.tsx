@@ -1,6 +1,7 @@
-import { Flex } from '@/components/primitive/Flex';
-import { ReactNode } from 'react';
 import { motion } from 'framer-motion';
+import { ReactNode } from 'react';
+
+import { Flex } from '@/components/primitive/Flex';
 import { styled } from '@/styles/stitches.config';
 
 const SwitchRoot = styled(Flex, {
@@ -66,7 +67,8 @@ export function Switch({ icon, checked, onSwitch }: SwitchProps) {
       <SwitchThumb
         checked={checked}
         transition={{ type: 'spring', stiffness: 700, damping: 30 }}
-        layout>
+        layout
+      >
         {icon}
       </SwitchThumb>
     </SwitchRoot>
