@@ -3,7 +3,7 @@ import { Box } from '@/components/primitive/box';
 import { Button } from '@/components/primitive/button';
 import { Flex } from '@/components/primitive/flex';
 import { Grid } from '@/components/primitive/grid';
-import { Icon } from '@/components/primitive/Icon';
+import { Icon } from '@/components/primitive/icon';
 import { IconButton } from '@/components/primitive/icon-button';
 import { Input } from '@/components/primitive/input';
 import { Loader } from '@/components/primitive/loader';

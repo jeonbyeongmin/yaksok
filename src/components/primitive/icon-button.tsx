@@ -5,7 +5,7 @@ import {
   ButtonCompound,
   ButtonRadius,
 } from '@/components/primitive/button';
-import { Icon, IconName } from '@/components/primitive/Icon';
+import { Icon, IconName } from '@/components/primitive/icon';
 import { CSS, darkTheme, styled } from '@/styles/stitches.config';
 
 type IconButtonVariants = ComponentProps<typeof CustomIconButton>;
