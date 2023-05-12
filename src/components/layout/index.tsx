@@ -1,5 +1,5 @@
-import { Footer } from '@/components/layout/footer';
-import { Header } from '@/components/layout/header';
+import { Footer } from '@/components/layout/Footer';
+import { Header } from '@/components/layout/Header';
 import { SEO } from '@/components/layout/seo';
 import { Box } from '@/components/primitive/Box';
 import { styled } from '@/styles/stitches.config';

@@ -1,4 +1,4 @@
-import { Participant } from 'common/inerfaces/Participant.interface';
+import { Participant } from 'common/interfaces/Participant.interface';
 import mongoose from 'mongoose';
 
 const ParticipantScheme = new mongoose.Schema<Participant>(
@@ -10,10 +10,7 @@ const ParticipantScheme = new mongoose.Schema<Participant>(
   { timestamps: true },
 );
 
-ParticipantScheme.index(
-  { createdAt: 1 },
-  { expireAfterSeconds: 60 * 60 * 24 * 7 },
-);
+ParticipantScheme.index({ createdAt: 1 }, { expireAfterSeconds: 60 * 60 * 24 * 7 });
 
 export default mongoose.models.Participant ||
   mongoose.model('Participant', ParticipantScheme);
