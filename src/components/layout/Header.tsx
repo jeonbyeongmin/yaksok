@@ -28,13 +28,7 @@ export function Header() {
         <Switch
           onSwitch={onSwitch}
           checked={isOn}
-          icon={
-            isOn ? (
-              <Icon name='moon' size={16} />
-            ) : (
-              <Icon name='sun' size={16} />
-            )
-          }
+          icon={isOn ? <Icon name='moon' size={16} /> : <Icon name='sun' size={16} />}
         />
       </HeaderInner>
     </HeaderWrapper>
