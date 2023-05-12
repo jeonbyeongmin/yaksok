@@ -21,9 +21,13 @@ export function generateTimetable({
   event,
   participants,
 }: {
-  event: Event;
+  event?: Event;
   participants: Participant[] | Participant | undefined;
 }) {
+  if (!event) {
+    return [];
+  }
+
   const { startDate, endDate, startTime, endTime } = event;
   const timetable: number[][] = Array.from(Array((endTime - startTime + 1) * 2), () =>
     new Array(dayjs(endDate).diff(dayjs(startDate), 'day') + 1).fill(0),

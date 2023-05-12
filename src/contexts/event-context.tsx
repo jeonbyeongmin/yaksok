@@ -5,7 +5,7 @@ import { createContext, useContext, useMemo } from 'react';
 import { useEventSWR } from '@/hooks/swr/use-event-swr';
 
 type EventContextType = {
-  event: Event;
+  event?: Event;
   isLoading: boolean;
 };
 

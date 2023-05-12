@@ -10,16 +10,7 @@ export function useEventSWR({ eventId }: { eventId: string }) {
   );
 
   return {
-    event: data?.event ?? emptyEvent,
+    event: data?.event,
     isLoading: isValidating,
   };
 }
-
-const emptyEvent = {
-  _id: '',
-  startDate: new Date(),
-  endDate: new Date(),
-  startTime: 0,
-  endTime: 0,
-  title: '',
-};
