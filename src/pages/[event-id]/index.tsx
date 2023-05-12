@@ -1,6 +1,6 @@
-import { Event } from 'common/inerfaces/Event.interface';
-import dayjs from 'dayjs';
-import { GetServerSideProps } from 'next';
+import type { Event } from 'common/inerfaces/Event.interface';
+import type { GetServerSideProps } from 'next';
+
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import nookies from 'nookies';
 import { useMemo, useState } from 'react';
@@ -12,10 +12,11 @@ import { ParticipationModal } from '@/components/page/event-detail/participation
 import { ShareButton } from '@/components/page/event-detail/share-button';
 import { SubmitButton } from '@/components/page/event-detail/submit-button';
 import { Flex, Page, Paper } from '@/components/primitive';
+import { useParticipantSWR } from '@/hooks/swr/use-participant-swr';
 import { useDragSelectTable } from '@/hooks/use-drag-select-table';
-import { useParticipantSWR } from '@/hooks/useParticipantSWR';
 import { getEventById } from '@/pages/api/events/[id]';
 import { darkTheme, styled } from '@/styles/stitches.config';
+import { convertNumberTableToBooleanTable, generateTimetable } from '@/utils/timetable';
 
 interface EventProps {
   participantId?: string;
@@ -28,17 +29,8 @@ export default function EventPage({ participantId: pid, event }: EventProps) {
   const { participant, isLoading } = useParticipantSWR({ participantId });
 
   const initialTimetable = useMemo(() => {
-    const { startDate, endDate, startTime, endTime } = event;
-    const timetable = Array.from(Array((endTime - startTime + 1) * 2), () =>
-      new Array(dayjs(endDate).diff(dayjs(startDate), 'day') + 1).fill(0),
-    );
-    if (participant) {
-      participant.availableIndexes.forEach((availableIndex) => {
-        const [rowIndex, colIndex] = availableIndex.split('-').map(Number);
-        timetable[rowIndex][colIndex] += 1;
-      });
-    }
-    return timetable.map((row) => row.map((value) => !!value));
+    const timetable = generateTimetable({ event, participants: participant });
+    return convertNumberTableToBooleanTable(timetable);
   }, [event, participant]);
 
   const [timetableRef, timetableValue] = useDragSelectTable(initialTimetable);
@@ -88,9 +80,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const eventId = params['event-id'];
 
   if (Array.isArray(eventId)) {
-    return {
-      notFound: true,
-    };
+    throw new Error('eventId is array');
   }
 
   let participantId = null;
