@@ -1,4 +1,4 @@
-import type { Event } from 'common/inerfaces/Event.interface';
+import type { Event } from 'common/interfaces/Event.interface';
 import type { EventQueries } from '@/api/events/events-path';
 
 import { generateEventsPath } from '@/api/events/events-path';

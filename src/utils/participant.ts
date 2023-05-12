@@ -1,5 +1,5 @@
 import type { TimetablePartition } from '@/types/timetable.type';
-import type { Participant } from 'common/inerfaces/Participant.interface';
+import type { Participant } from 'common/interfaces/Participant.interface';
 
 export function generatePartitionGroups(participants: Participant[]) {
   const participantsByCell: { [key: string]: string[] } = {};
