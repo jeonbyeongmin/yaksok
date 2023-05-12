@@ -27,10 +27,7 @@ export async function fetcher(
   }
 
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}`,
-      config,
-    );
+    const response = await fetch(`/api/${endpoint}`, config);
 
     const data = await response.json();
 
