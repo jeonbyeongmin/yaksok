@@ -8,9 +8,8 @@ const EventSchema = new mongoose.Schema<Event>(
     startTime: Number,
     endTime: Number,
     title: String,
-    participantsNumber: Number,
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 EventSchema.index({ createdAt: 1 }, { expireAfterSeconds: 60 * 60 * 24 * 7 });
