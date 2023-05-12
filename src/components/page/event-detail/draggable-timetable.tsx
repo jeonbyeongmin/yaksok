@@ -1,4 +1,4 @@
-import type { Event } from 'common/inerfaces/Event.interface';
+import type { Event } from 'common/interfaces/Event.interface';
 
 import dayjs from 'dayjs';
 import { useTranslation } from 'next-i18next';
