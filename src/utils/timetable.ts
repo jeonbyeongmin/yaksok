@@ -1,5 +1,5 @@
-import type { Event } from 'common/interfaces/Event.interface';
-import type { Participant } from 'common/interfaces/Participant.interface';
+import type { Event } from 'common/interfaces/event.interface';
+import type { Participant } from 'common/interfaces/participant.interface';
 
 import dayjs from 'dayjs';
 

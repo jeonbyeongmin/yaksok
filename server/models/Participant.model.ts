@@ -1,4 +1,4 @@
-import { Participant } from 'common/interfaces/Participant.interface';
+import { Participant } from 'common/interfaces/participant.interface';
 import mongoose from 'mongoose';
 
 const ParticipantScheme = new mongoose.Schema<Participant>(
