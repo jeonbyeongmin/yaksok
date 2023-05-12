@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import dbConnect from 'server/lib/mongoose/dbConnect';
-import Event from 'server/models/Event.model';
+import Event from 'server/models/event.model';
 
 export const getEventById = async (id: string) => {
   await dbConnect();
@@ -8,10 +8,7 @@ export const getEventById = async (id: string) => {
   return JSON.parse(JSON.stringify(event));
 };
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
     query: { id },
     method,

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 import { createParticipantAPI } from '@/api/participants/create-participant';
 import { Button, Flex, Input, Text } from '@/components/primitive';
-import { Dialog, DialogContent, DialogTitle } from '@/components/primitive/Dialog';
+import { Dialog, DialogContent, DialogTitle } from '@/components/primitive/dialog';
 import { darkTheme, styled } from '@/styles/stitches.config';
 
 interface Props {

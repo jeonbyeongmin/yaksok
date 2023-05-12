@@ -2,7 +2,7 @@ import type {
   ParticipantQueries,
   ParticipantResources,
 } from '@/api/participants/participants-path';
-import type { Participant } from 'common/inerfaces/Participant.interface';
+import type { Participant } from 'common/inerfaces/participant.interface';
 
 import { generateParticipantsPath } from '@/api/participants/participants-path';
 import { fetcher } from '@/utils/fetcher';

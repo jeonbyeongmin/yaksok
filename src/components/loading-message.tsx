@@ -1,6 +1,6 @@
 import { Loader } from '@/components/primitive';
-import { Flex } from '@/components/primitive/Flex';
-import { Text } from '@/components/primitive/Text';
+import { Flex } from '@/components/primitive/flex';
+import { Text } from '@/components/primitive/text';
 import { darkTheme, styled } from '@/styles/stitches.config';
 
 export function LoadingMessage() {

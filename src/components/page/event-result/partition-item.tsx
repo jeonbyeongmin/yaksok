@@ -4,7 +4,7 @@ import { convertIndexToDate, convertIndexToTime } from 'common/utils/convert';
 import { useMemo, useState } from 'react';
 
 import { Flex, IconButton, Text } from '@/components/primitive';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/primitive/Popover';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/primitive/popover';
 import { useEvent } from '@/contexts/event-context';
 import { useParticipants } from '@/contexts/participants-context';
 import { useHover } from '@/hooks/use-hover';
