@@ -2,7 +2,7 @@ import { logOnBrowser } from 'common/utils/log';
 import { useTranslation } from 'next-i18next';
 
 import { Button, Icon, Text } from '@/components/primitive';
-import { makeToast } from '@/components/primitive/Toast';
+import { makeToast } from '@/components/primitive/toast';
 
 export function ShareButton() {
   const { t } = useTranslation(['common', 'event-page']);

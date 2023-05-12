@@ -1,11 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import dbConnect from 'server/lib/mongoose/dbConnect';
-import Participant from 'server/models/Participant.model';
+import Participant from 'server/models/participant.model';
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
     query: { id },
     method,

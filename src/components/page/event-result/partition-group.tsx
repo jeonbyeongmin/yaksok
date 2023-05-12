@@ -10,8 +10,8 @@ import {
   CollapsibleContent,
   CollapsibleRoot,
   CollapsibleTrigger,
-} from '@/components/primitive/Collapsisble';
-import { Panel, PanelInner } from '@/components/primitive/Panel';
+} from '@/components/primitive/collapsisble';
+import { Panel, PanelInner } from '@/components/primitive/panel';
 import { darkTheme, styled } from '@/styles/stitches.config';
 
 interface PartitionGroupProps {
