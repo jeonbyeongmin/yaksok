@@ -1,4 +1,4 @@
-import type { Event } from 'common/interfaces/Event.interface';
+import type { Event } from 'common/interfaces/event.interface';
 import type { GetServerSideProps } from 'next';
 
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';

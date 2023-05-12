@@ -1,4 +1,4 @@
-import type { Participant } from 'common/interfaces/Participant.interface';
+import type { Participant } from 'common/interfaces/participant.interface';
 import type { ReadParticipantsReturn } from '@/api/participants/read-participants';
 
 import { createContext, useContext, useMemo } from 'react';
