@@ -4,10 +4,10 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
 
-import { AnimateContainer } from '@/components/page/home/AnimateContainer';
+import { AnimateContainer } from '@/components/page/home/animate-container';
 import { Calendar } from '@/components/page/home/calendar';
-import { SelectorCard } from '@/components/page/home/SelectorCard';
-import { TimeSelector } from '@/components/page/home/TimeSelector';
+import { SelectorCard } from '@/components/page/home/selector-card';
+import { TimeSelector } from '@/components/page/home/time-selector';
 import { Box, Button, Flex, Grid, Icon, Input, Text } from '@/components/primitive';
 import { useEventForm } from '@/hooks/use-event-form';
 import { styled } from '@/styles/stitches.config';

@@ -2,7 +2,7 @@ import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 
 import { Button, Flex, Icon, Text } from '@/components/primitive';
-import { makeToast } from '@/components/primitive/Toast';
+import { makeToast } from '@/components/primitive/toast';
 import { useEventId } from '@/contexts/event-id-context';
 import { useParticipantsDispatch } from '@/contexts/participants-context';
 import { styled } from '@/styles/stitches.config';

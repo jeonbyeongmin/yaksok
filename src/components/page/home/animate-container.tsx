@@ -1,5 +1,5 @@
-import { Box } from '@/components/primitive/Box';
-import { Flex } from '@/components/primitive/Flex';
+import { Box } from '@/components/primitive/box';
+import { Flex } from '@/components/primitive/flex';
 import { styled } from '@/styles/stitches.config';
 
 interface AnimateContainerProps {
