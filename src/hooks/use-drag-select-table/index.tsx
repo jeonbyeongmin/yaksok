@@ -130,15 +130,15 @@ function useDragSelectTable(
       node.addEventListener('mousedown', handlePointerStart);
       node.addEventListener('touchmove', handlePointerMove);
       node.addEventListener('mouseover', handlePointerMove);
-      window.addEventListener('touchend', handlePointerEnd);
-      window.addEventListener('mouseup', handlePointerEnd);
+      node.addEventListener('touchend', handlePointerEnd);
+      node.addEventListener('mouseup', handlePointerEnd);
       return () => {
         node.removeEventListener('touchstart', handlePointerStart);
         node.removeEventListener('mousedown', handlePointerStart);
         node.removeEventListener('touchmove', handlePointerMove);
         node.removeEventListener('mouseover', handlePointerMove);
-        window.removeEventListener('touchend', handlePointerEnd);
-        window.addEventListener('mouseup', handlePointerEnd);
+        node.removeEventListener('touchend', handlePointerEnd);
+        node.addEventListener('mouseup', handlePointerEnd);
       };
     }
   }, [handlePointerStart, handlePointerMove, handlePointerEnd]);
