@@ -1,6 +1,5 @@
+import { Flex } from '@/components/primitive/flex';
 import { darkTheme, styled } from '@/styles/stitches.config';
-
-import { Flex } from '@/components/primitive/Flex';
 
 export const Panel = styled(Flex, {
   w: '$full',
@@ -10,12 +9,12 @@ export const Panel = styled(Flex, {
 });
 
 export const PanelInner = styled(Flex, {
-  position: 'relative',
-  flexDirection: 'column',
-  w: '$full',
-  p: '$10',
-  pt: '$10',
-  color: '$gray800',
+  'position': 'relative',
+  'flexDirection': 'column',
+  'w': '$full',
+  'p': '$10',
+  'pt': '$10',
+  'color': '$gray800',
 
   '@bp1': { p: '$15' },
 

@@ -1,4 +1,4 @@
-import { Flex } from '@/components/primitive/Flex';
+import { Flex } from '@/components/primitive/flex';
 import { styled } from '@/styles/stitches.config';
 
 export const Page = styled(Flex, {

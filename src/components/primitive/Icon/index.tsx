@@ -1,25 +1,25 @@
-import { CalendarIcon } from '@/components/primitive/Icon/CalendarIcon';
-import { CaretDownIcon } from '@/components/primitive/Icon/CaretDownIcon';
-import { CaretRightIcon } from '@/components/primitive/Icon/CaretRightIcon';
-import { CaretUpIcon } from '@/components/primitive/Icon/CaretUpIcon';
-import type { IconType } from '@/types/icon.type';
-import { MoonIcon } from '@/components/primitive/Icon/MoonIcon';
-import { PersonIcon } from '@/components/primitive/Icon/PersonIcon';
-import { RefreshIcon } from '@/components/primitive/Icon/RefreshIcon';
-import { ShareIcon } from '@/components/primitive/Icon/ShareIcon';
-import { SunIcon } from '@/components/primitive/Icon/SunIcon';
+import { CalendarIcon } from '@/components/primitive/icon/calendar-icon';
+import { CaretDownIcon } from '@/components/primitive/icon/caret-down-icon';
+import { CaretRightIcon } from '@/components/primitive/icon/caret-right-icon';
+import { CaretUpIcon } from '@/components/primitive/icon/caret-up-icon';
+import { MoonIcon } from '@/components/primitive/icon/moon-icon';
+import { PersonIcon } from '@/components/primitive/icon/person-icon';
+import { RefreshIcon } from '@/components/primitive/icon/refresh-icon';
+import { ShareIcon } from '@/components/primitive/icon/share-icon';
+import { SunIcon } from '@/components/primitive/icon/sun-icon';
 
+import type { IconType } from '@/types/icon.type';
 // add new icons here
 const iconMap = {
-  calendar: CalendarIcon,
+  'calendar': CalendarIcon,
   'caret-down': CaretDownIcon,
   'caret-right': CaretRightIcon,
   'caret-up': CaretUpIcon,
-  moon: MoonIcon,
-  person: PersonIcon,
-  refresh: RefreshIcon,
-  share: ShareIcon,
-  sun: SunIcon,
+  'moon': MoonIcon,
+  'person': PersonIcon,
+  'refresh': RefreshIcon,
+  'share': ShareIcon,
+  'sun': SunIcon,
 };
 
 export type IconName = keyof typeof iconMap;

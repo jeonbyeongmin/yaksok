@@ -1,5 +1,6 @@
-import { Flex, IconButton } from '@/components/primitive';
 import type { Meta, StoryObj } from '@storybook/react';
+
+import { Flex, IconButton } from '@/components/primitive';
 
 const meta: Meta<typeof IconButton> = {
   title: 'Primitive / IconButton',
@@ -23,15 +24,15 @@ export const WithIconType: Story = {
   render: (args) => {
     return (
       <Flex gap={5}>
-        <IconButton {...args} name="calendar" />
-        <IconButton {...args} name="caret-down" />
-        <IconButton {...args} name="caret-right" />
-        <IconButton {...args} name="caret-up" />
-        <IconButton {...args} name="moon" />
-        <IconButton {...args} name="person" />
-        <IconButton {...args} name="refresh" />
-        <IconButton {...args} name="share" />
-        <IconButton {...args} name="sun" />
+        <IconButton {...args} name='calendar' />
+        <IconButton {...args} name='caret-down' />
+        <IconButton {...args} name='caret-right' />
+        <IconButton {...args} name='caret-up' />
+        <IconButton {...args} name='moon' />
+        <IconButton {...args} name='person' />
+        <IconButton {...args} name='refresh' />
+        <IconButton {...args} name='share' />
+        <IconButton {...args} name='sun' />
       </Flex>
     );
   },
@@ -46,10 +47,10 @@ export const WithVariant: Story = {
   render: (args) => {
     return (
       <Flex gap={5}>
-        <IconButton {...args} variant="solid" />
-        <IconButton {...args} variant="outline" />
-        <IconButton {...args} variant="ghost" />
-        <IconButton {...args} variant="embossing" />
+        <IconButton {...args} variant='solid' />
+        <IconButton {...args} variant='outline' />
+        <IconButton {...args} variant='ghost' />
+        <IconButton {...args} variant='embossing' />
       </Flex>
     );
   },
@@ -64,8 +65,8 @@ export const WithColorScheme: Story = {
   render: (args) => {
     return (
       <Flex gap={5}>
-        <IconButton {...args} colorScheme="gray" />
-        <IconButton {...args} colorScheme="primary" />
+        <IconButton {...args} colorScheme='gray' />
+        <IconButton {...args} colorScheme='primary' />
       </Flex>
     );
   },
@@ -96,14 +97,14 @@ export const WithRadius: Story = {
   render: (args) => {
     return (
       <Flex gap={5}>
-        <IconButton {...args} radius="xs" />
-        <IconButton {...args} radius="sm" />
-        <IconButton {...args} radius="md" />
-        <IconButton {...args} radius="lg" />
-        <IconButton {...args} radius="xl" />
-        <IconButton {...args} radius="2xl" />
-        <IconButton {...args} radius="3xl" />
-        <IconButton {...args} radius="pill" />
+        <IconButton {...args} radius='xs' />
+        <IconButton {...args} radius='sm' />
+        <IconButton {...args} radius='md' />
+        <IconButton {...args} radius='lg' />
+        <IconButton {...args} radius='xl' />
+        <IconButton {...args} radius='2xl' />
+        <IconButton {...args} radius='3xl' />
+        <IconButton {...args} radius='pill' />
       </Flex>
     );
   },

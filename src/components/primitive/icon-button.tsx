@@ -1,7 +1,12 @@
-import { ButtonColorScheme, ButtonCompound, ButtonRadius } from '@/components/primitive/Button';
+import { ComponentProps, forwardRef, MouseEvent } from 'react';
+
+import {
+  ButtonColorScheme,
+  ButtonCompound,
+  ButtonRadius,
+} from '@/components/primitive/button';
+import { Icon, IconName } from '@/components/primitive/icon';
 import { CSS, darkTheme, styled } from '@/styles/stitches.config';
-import { ComponentProps, MouseEvent, forwardRef } from 'react';
-import { Icon, IconName } from '@/components/primitive/Icon';
 
 type IconButtonVariants = ComponentProps<typeof CustomIconButton>;
 type IconButtonVariant = 'solid' | 'outline' | 'ghost' | 'embossing';
@@ -48,14 +53,14 @@ const CustomIconButton = styled('button', {
     },
 
     radius: {
-      xs: { borderRadius: '$xs' },
-      sm: { borderRadius: '$sm' },
-      md: { borderRadius: '$md' },
-      lg: { borderRadius: '$lg' },
-      xl: { borderRadius: '$xl' },
+      'xs': { borderRadius: '$xs' },
+      'sm': { borderRadius: '$sm' },
+      'md': { borderRadius: '$md' },
+      'lg': { borderRadius: '$lg' },
+      'xl': { borderRadius: '$xl' },
       '2xl': { borderRadius: '$2xl' },
       '3xl': { borderRadius: '$3xl' },
-      pill: { borderRadius: '$pill' },
+      'pill': { borderRadius: '$pill' },
     },
 
     shadow: {
@@ -96,7 +101,7 @@ const CustomIconButton = styled('button', {
       variant: 'embossing',
       colorScheme: 'gray',
       css: {
-        color: '$gray300',
+        'color': '$gray300',
         '@hover': {
           '&:hover:not(:disabled)': {
             color: '$gray500',
@@ -106,7 +111,7 @@ const CustomIconButton = styled('button', {
         '&:hover:active': { color: '$gray600' },
 
         [`.${darkTheme} &`]: {
-          color: '$gray100',
+          'color': '$gray100',
           '@hover': {
             '&:hover:not(:disabled)': {
               color: '$gray300',
@@ -121,7 +126,7 @@ const CustomIconButton = styled('button', {
       variant: 'embossing',
       colorScheme: 'primary',
       css: {
-        color: '$primary100',
+        'color': '$primary100',
         '@hover': {
           '&:hover:not(:disabled)': {
             color: '$primary200',
@@ -131,7 +136,7 @@ const CustomIconButton = styled('button', {
         '&:hover:active': { color: '$primary300' },
 
         [`.${darkTheme} &`]: {
-          color: '$lighten300',
+          'color': '$lighten300',
           '@hover': {
             '&:hover:not(:disabled)': {
               color: '$primary200',

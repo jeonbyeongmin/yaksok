@@ -5,7 +5,7 @@ import { useCallback, useState } from 'react';
 import { EventResultCalendarPanelButtons } from '@/components/page/event-result/event-result-calendar-panel-buttons';
 import { ResultTimetable } from '@/components/page/event-result/result-timetable';
 import { Badge, Flex, Icon, Text } from '@/components/primitive';
-import { Panel, PanelInner } from '@/components/primitive/Panel';
+import { Panel, PanelInner } from '@/components/primitive/panel';
 import { useEvent } from '@/contexts/event-context';
 import { useParticipants } from '@/contexts/participants-context';
 import { generateTimetable } from '@/utils/timetable';

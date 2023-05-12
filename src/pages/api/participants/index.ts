@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import dbConnect from 'server/lib/mongoose/dbConnect';
 import Participant from 'server/models/Participant.model';
 
-import type { Participant as ParticipantType } from 'common/inerfaces/Participant.interface';
+import type { Participant as ParticipantType } from 'common/inerfaces/participant.interface';
 export const getParticipants = async (eventId: string) => {
   await dbConnect();
   const participants = await Participant.find({ eventId });

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Flex } from '@/components/primitive/Flex';
-import { Loader } from '@/components/primitive/Loader';
+import { Flex } from '@/components/primitive/flex';
+import { Loader } from '@/components/primitive/loader';
 
 const meta: Meta<typeof Loader> = {
   title: 'Primitive / Loader',
@@ -21,10 +21,10 @@ export const WithColor: Story = {
   render: (args) => {
     return (
       <Flex gap={5}>
-        <Loader {...args} color="primary" />
-        <Loader {...args} color="gray" />
+        <Loader {...args} color='primary' />
+        <Loader {...args} color='gray' />
         <Flex css={{ bgColor: '$primary300' }}>
-          <Loader {...args} color="white" />
+          <Loader {...args} color='white' />
         </Flex>
       </Flex>
     );

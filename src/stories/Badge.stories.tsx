@@ -1,4 +1,5 @@
 import { Badge, Flex } from '@/components/primitive';
+
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof Badge> = {
@@ -31,8 +32,8 @@ export const WithColorScheme: Story = {
   render: (args) => {
     return (
       <Flex gap={5}>
-        <Badge {...args} colorScheme="gray" content="gray" />
-        <Badge {...args} colorScheme="primary" content="primary" />
+        <Badge {...args} colorScheme='gray' content='gray' />
+        <Badge {...args} colorScheme='primary' content='primary' />
       </Flex>
     );
   },
@@ -46,10 +47,10 @@ export const WithSize: Story = {
   },
   render: (args) => {
     return (
-      <Flex gap={5} align="start">
-        <Badge {...args} size="xs" content="xs" />
-        <Badge {...args} size="sm" content="sm" />
-        <Badge {...args} size="md" content="md" />
+      <Flex gap={5} align='start'>
+        <Badge {...args} size='xs' content='xs' />
+        <Badge {...args} size='sm' content='sm' />
+        <Badge {...args} size='md' content='md' />
       </Flex>
     );
   },
@@ -63,15 +64,15 @@ export const WithRadius: Story = {
   },
   render: (args) => {
     return (
-      <Flex gap={5} align="start">
-        <Badge {...args} radius="xs" content="xs" />
-        <Badge {...args} radius="sm" content="sm" />
-        <Badge {...args} radius="md" content="md" />
-        <Badge {...args} radius="lg" content="lg" />
-        <Badge {...args} radius="xl" content="xl" />
-        <Badge {...args} radius="2xl" content="2xl" />
-        <Badge {...args} radius="3xl" content="3xl" />
-        <Badge {...args} radius="pill" content="pill" />
+      <Flex gap={5} align='start'>
+        <Badge {...args} radius='xs' content='xs' />
+        <Badge {...args} radius='sm' content='sm' />
+        <Badge {...args} radius='md' content='md' />
+        <Badge {...args} radius='lg' content='lg' />
+        <Badge {...args} radius='xl' content='xl' />
+        <Badge {...args} radius='2xl' content='2xl' />
+        <Badge {...args} radius='3xl' content='3xl' />
+        <Badge {...args} radius='pill' content='pill' />
       </Flex>
     );
   },
@@ -85,9 +86,9 @@ export const WithActive: Story = {
   },
   render: (args) => {
     return (
-      <Flex gap={5} align="start">
-        <Badge {...args} active={false} content="false" />
-        <Badge {...args} active={true} content="true" />
+      <Flex gap={5} align='start'>
+        <Badge {...args} active={false} content='false' />
+        <Badge {...args} active={true} content='true' />
       </Flex>
     );
   },
@@ -101,9 +102,9 @@ export const WithClickable: Story = {
   },
   render: (args) => {
     return (
-      <Flex gap={5} align="start">
-        <Badge {...args} clickable={false} content="false" />
-        <Badge {...args} clickable={true} content="true" />
+      <Flex gap={5} align='start'>
+        <Badge {...args} clickable={false} content='false' />
+        <Badge {...args} clickable={true} content='true' />
       </Flex>
     );
   },

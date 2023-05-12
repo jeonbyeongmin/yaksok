@@ -1,6 +1,6 @@
 import { ComponentProps, ElementRef, forwardRef } from 'react';
 
-import { overlayStyles } from '@/components/primitive/Overlay';
+import { overlayStyles } from '@/components/primitive/overlay';
 import { CSS, darkTheme, styled } from '@/styles/stitches.config';
 import {
   Close,

@@ -1,7 +1,7 @@
 import { useTranslation } from 'next-i18next';
 
 import { Button, Flex, Icon, Text } from '@/components/primitive';
-import { makeToast } from '@/components/primitive/Toast';
+import { makeToast } from '@/components/primitive/toast';
 import { styled } from '@/styles/stitches.config';
 
 export function EventResultHead() {

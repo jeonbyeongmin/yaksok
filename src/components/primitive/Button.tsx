@@ -1,7 +1,8 @@
-import { CSS, darkTheme, styled } from '@/styles/stitches.config';
-import { ComponentProps, ReactNode, forwardRef, useMemo } from 'react';
+import { ComponentProps, forwardRef, ReactNode, useMemo } from 'react';
 
-import { Loader } from '@/components/primitive/Loader';
+import { Loader } from '@/components/primitive/loader';
+import { CSS, darkTheme, styled } from '@/styles/stitches.config';
+
 import type { Radii } from '@/types/theme.type';
 
 export type ButtonVariants = ComponentProps<typeof CustomButton>;
@@ -33,7 +34,7 @@ export const ButtonCompound = [
     variant: 'solid',
     colorScheme: 'gray',
     css: {
-      bgColor: '$gray100',
+      'bgColor': '$gray100',
       '@hover': {
         '&:hover:not(:disabled)': {
           bgColor: '$gray200',
@@ -43,8 +44,8 @@ export const ButtonCompound = [
       '&:hover:active': { bgColor: '$gray300' },
 
       [`.${darkTheme} &`]: {
-        bgColor: '$gray600',
-        color: '$white',
+        'bgColor': '$gray600',
+        'color': '$white',
         '@hover': {
           '&:hover:not(:disabled)': {
             bgColor: '$gray700',
@@ -59,8 +60,8 @@ export const ButtonCompound = [
     variant: 'solid',
     colorScheme: 'primary',
     css: {
-      bgColor: '$primary100',
-      color: '$white',
+      'bgColor': '$primary100',
+      'color': '$white',
       '@hover': {
         '&:hover:not(:disabled)': {
           bgColor: '$primary200',
@@ -71,7 +72,7 @@ export const ButtonCompound = [
       '&:disabled': { bgColor: '$gray200' },
 
       [`.${darkTheme} &`]: {
-        bgColor: '$darken100',
+        'bgColor': '$darken100',
         '@hover': {
           '&:hover:not(:disabled)': {
             bgColor: '$darken200',
@@ -89,8 +90,8 @@ export const ButtonCompound = [
     variant: 'outline',
     colorScheme: 'gray',
     css: {
-      border: '1px solid $gray200',
-      color: '$gray300',
+      'border': '1px solid $gray200',
+      'color': '$gray300',
       '@hover': {
         '&:hover:not(:disabled)': {
           bgColor: '$gray100',
@@ -109,8 +110,8 @@ export const ButtonCompound = [
     variant: 'outline',
     colorScheme: 'primary',
     css: {
-      border: '1px solid $primary200',
-      color: '$primary200',
+      'border': '1px solid $primary200',
+      'color': '$primary200',
       '@hover': {
         '&:hover:not(:disabled)': {
           bgColor: '$lighten400',
@@ -131,7 +132,7 @@ export const ButtonCompound = [
     variant: 'ghost',
     colorScheme: 'gray',
     css: {
-      color: '$gray300',
+      'color': '$gray300',
       '@hover': {
         '&:hover:not(:disabled)': {
           bgColor: '$gray100',
@@ -141,7 +142,7 @@ export const ButtonCompound = [
       '&:hover:active': { bgColor: '$gray200' },
 
       [`.${darkTheme} &`]: {
-        color: '$gray100',
+        'color': '$gray100',
         '@hover': {
           '&:hover:not(:disabled)': {
             bgColor: '$gray600',
@@ -156,7 +157,7 @@ export const ButtonCompound = [
     variant: 'ghost',
     colorScheme: 'primary',
     css: {
-      color: '$primary200',
+      'color': '$primary200',
       '@hover': {
         '&:hover:not(:disabled)': {
           bgColor: '$lighten300',
@@ -166,7 +167,7 @@ export const ButtonCompound = [
       '&:hover:active': { bgColor: '$lighten200' },
 
       [`.${darkTheme} &`]: {
-        color: '$lighten300',
+        'color': '$lighten300',
         '@hover': {
           '&:hover:not(:disabled)': {
             bgColor: '$darken100',
@@ -181,32 +182,32 @@ export const ButtonCompound = [
 
 const CustomButton = styled('button', {
   // Reset
-  all: 'unset',
-  cursor: 'pointer',
-  WebkitTapHighlightColor: 'transparent',
-  userSelect: 'none',
-  fontVariantNumeric: 'tabular-nums',
+  'all': 'unset',
+  'cursor': 'pointer',
+  'WebkitTapHighlightColor': 'transparent',
+  'userSelect': 'none',
+  'fontVariantNumeric': 'tabular-nums',
 
   // Custom
-  display: 'inline-flex',
-  flexShrink: 0,
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: '$4',
+  'display': 'inline-flex',
+  'flexShrink': 0,
+  'alignItems': 'center',
+  'justifyContent': 'center',
+  'gap': '$4',
 
-  boxSizing: 'border-box',
+  'boxSizing': 'border-box',
   '&::before': { boxSizing: 'border-box' },
   '&::after': { boxSizing: 'border-box' },
   '&:disabled': { cursor: 'not-allowed' },
 
-  transition: '$fast',
+  'transition': '$fast',
 
   // Variants
-  variants: {
+  'variants': {
     size: {
-      xs: {
-        px: '$8',
-        gap: '$3',
+      'xs': {
+        'px': '$8',
+        'gap': '$3',
         '@bp0': {
           height: '$14',
           minW: '$30',
@@ -215,9 +216,9 @@ const CustomButton = styled('button', {
           height: '$16',
         },
       },
-      sm: {
-        px: '$10',
-        gap: '$3',
+      'sm': {
+        'px': '$10',
+        'gap': '$3',
 
         '@bp0': {
           height: '$18',
@@ -227,9 +228,9 @@ const CustomButton = styled('button', {
           height: '$20',
         },
       },
-      md: {
-        px: '$12',
-        gap: '$2',
+      'md': {
+        'px': '$12',
+        'gap': '$2',
         '@bp0': {
           height: '$20',
           minW: '$60',
@@ -238,9 +239,9 @@ const CustomButton = styled('button', {
           height: '$22',
         },
       },
-      lg: {
-        px: '$12',
-        gap: '$2',
+      'lg': {
+        'px': '$12',
+        'gap': '$2',
         '@bp0': {
           height: '$22',
           minW: '$70',
@@ -249,8 +250,8 @@ const CustomButton = styled('button', {
           height: '$24',
         },
       },
-      xl: {
-        px: '$14',
+      'xl': {
+        'px': '$14',
         '@bp0': {
           height: '$24',
           minW: '$80',
@@ -260,7 +261,7 @@ const CustomButton = styled('button', {
         },
       },
       '2xl': {
-        px: '$14',
+        'px': '$14',
         '@bp0': {
           height: '$28',
           minW: '$100',
@@ -272,14 +273,14 @@ const CustomButton = styled('button', {
     },
 
     radius: {
-      xs: { borderRadius: '$xs' },
-      sm: { borderRadius: '$sm' },
-      md: { borderRadius: '$md' },
-      lg: { borderRadius: '$lg' },
-      xl: { borderRadius: '$xl' },
+      'xs': { borderRadius: '$xs' },
+      'sm': { borderRadius: '$sm' },
+      'md': { borderRadius: '$md' },
+      'lg': { borderRadius: '$lg' },
+      'xl': { borderRadius: '$xl' },
       '2xl': { borderRadius: '$2xl' },
       '3xl': { borderRadius: '$3xl' },
-      pill: { borderRadius: '$pill' },
+      'pill': { borderRadius: '$pill' },
     },
 
     shadow: {
@@ -325,7 +326,7 @@ const CustomButton = styled('button', {
     },
   },
 
-  compoundVariants: [
+  'compoundVariants': [
     ...ButtonCompound,
 
     // Link
@@ -333,11 +334,11 @@ const CustomButton = styled('button', {
       variant: 'link',
       colorScheme: 'gray',
       css: {
-        color: '$gray300',
+        'color': '$gray300',
         '&:active': { color: '$gray500' },
         '&:hover:active': { color: '$gray500' },
         [`.${darkTheme} &`]: {
-          color: '$gray100',
+          'color': '$gray100',
           '&:active': { color: '$gray300' },
           '&:hover:active': { color: '$gray300' },
         },
@@ -347,11 +348,11 @@ const CustomButton = styled('button', {
       variant: 'link',
       colorScheme: 'primary',
       css: {
-        color: '$primary300',
+        'color': '$primary300',
         '&:active': { color: '$darken200' },
         '&:hover:active': { color: '$darken200' },
         [`.${darkTheme} &`]: {
-          color: '$lighten300',
+          'color': '$lighten300',
           '&:active': { color: '$primary200' },
           '&:hover:active': { color: '$primary200' },
         },
@@ -359,7 +360,7 @@ const CustomButton = styled('button', {
     },
   ],
 
-  defaultVariants: {
+  'defaultVariants': {
     size: 'md',
     variant: 'solid',
     colorScheme: 'primary',
@@ -398,7 +399,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) =>
       variant={variant}
       onClick={!isLoading ? onClick : undefined}
       loading={isLoading}
-      {...rest}>
+      {...rest}
+    >
       {isLoading ? (
         <Loader size={size} color={loaderColor} />
       ) : (

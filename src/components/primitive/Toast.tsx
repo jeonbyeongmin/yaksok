@@ -1,7 +1,8 @@
-import { Flex } from '@/components/primitive/Flex';
-import { Text } from '@/components/primitive/Text';
-import { styled } from '@/styles/stitches.config';
 import { toast } from 'react-toastify';
+
+import { Flex } from '@/components/primitive/flex';
+import { Text } from '@/components/primitive/text';
+import { styled } from '@/styles/stitches.config';
 
 interface ToastProps {
   title?: string;
@@ -18,9 +19,9 @@ const Wrapper = styled(Flex, {
 
 const ToastComponent = ({ title, message }: ToastProps) => {
   return (
-    <Wrapper direction="column" gap={2}>
-      {title && <Text content={title} weight="bold" />}
-      <Text content={message} size="sm" />
+    <Wrapper direction='column' gap={2}>
+      {title && <Text content={title} weight='bold' />}
+      <Text content={message} size='sm' />
     </Wrapper>
   );
 };

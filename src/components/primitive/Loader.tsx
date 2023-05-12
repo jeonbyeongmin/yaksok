@@ -1,6 +1,6 @@
-import { Transition, motion } from 'framer-motion';
+import { motion, Transition } from 'framer-motion';
 
-import { ButtonColorScheme } from '@/components/primitive/Button';
+import { ButtonColorScheme } from '@/components/primitive/button';
 import { styled } from '@/styles/stitches.config';
 
 const Wrapper = styled('div', {
@@ -15,23 +15,23 @@ const CircleContainer = styled(motion.div, {
 
   variants: {
     size: {
-      xs: {
+      'xs': {
         width: '2rem',
         height: '2rem',
       },
-      sm: {
+      'sm': {
         width: '2rem',
         height: '2rem',
       },
-      md: {
+      'md': {
         width: '3rem',
         height: '3rem',
       },
-      lg: {
+      'lg': {
         width: '3rem',
         height: '3rem',
       },
-      xl: {
+      'xl': {
         width: '4rem',
         height: '4rem',
       },
@@ -114,9 +114,10 @@ export const Loader = ({ size, color }: LoaderProps) => {
     <Wrapper>
       <CircleContainer
         variants={loadingContainerVariants}
-        initial="start"
-        animate="end"
-        size={size}>
+        initial='start'
+        animate='end'
+        size={size}
+      >
         <Circle
           color={color}
           variants={loadingCircleVariants}

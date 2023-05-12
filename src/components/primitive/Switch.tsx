@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { ReactNode } from 'react';
 
-import { Flex } from '@/components/primitive/Flex';
+import { Flex } from '@/components/primitive/flex';
 import { styled } from '@/styles/stitches.config';
 
 const SwitchRoot = styled(Flex, {

@@ -1,4 +1,4 @@
-import type { Participant } from 'common/inerfaces/Participant.interface';
+import type { Participant } from 'common/inerfaces/participant.interface';
 import type { ParticipantQueries } from '@/api/participants/participants-path';
 
 import { generateParticipantsPath } from '@/api/participants/participants-path';
