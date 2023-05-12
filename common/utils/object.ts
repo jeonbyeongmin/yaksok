@@ -1,6 +1,6 @@
 export function omit<T extends Record<string, any>, K extends keyof T>(
   object: T,
-  keysToOmit: K[] = []
+  keysToOmit: K[] = [],
 ) {
   const clone: Record<string, unknown> = Object.assign({}, object);
   for (const key of keysToOmit) {
@@ -11,7 +11,10 @@ export function omit<T extends Record<string, any>, K extends keyof T>(
   return clone as Omit<T, K>;
 }
 
-export function pick<T extends Record<string, any>, K extends keyof T>(object: T, keysToPick: K[]) {
+export function pick<T extends Record<string, any>, K extends keyof T>(
+  object: T,
+  keysToPick: K[],
+) {
   const result = {} as { [P in K]: T[P] };
   for (const key of keysToPick) {
     if (key in object) {

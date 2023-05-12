@@ -2,12 +2,13 @@
 
 import '@/styles/globals.css';
 
-import { Flex, Icon, Switch } from '../src/components/primitive';
-import React, { useEffect, useState } from 'react';
 import { ThemeProvider, useTheme } from 'next-themes';
-import { darkTheme, styled } from '../src/styles/stitches.config';
+import React, { useEffect, useState } from 'react';
 
 import { Preview } from '@storybook/react';
+
+import { Flex, Icon, Switch } from '../src/components/primitive';
+import { darkTheme, styled } from '../src/styles/stitches.config';
 
 const preview: Preview = {
   parameters: {
@@ -16,14 +17,15 @@ const preview: Preview = {
   decorators: [
     (Story) => (
       <ThemeProvider
-        attribute="class"
-        defaultTheme="system"
+        attribute='class'
+        defaultTheme='system'
         enableColorScheme={false}
         value={{
           light: 'light',
           dark: 'dark-theme',
-        }}>
-        <StoryWrapper direction="column" gap={10}>
+        }}
+      >
+        <StoryWrapper direction='column' gap={10}>
           <SwitchWithHook />
           <Story />
         </StoryWrapper>
@@ -60,7 +62,7 @@ const SwitchWithHook = () => {
     <Switch
       onSwitch={onSwitch}
       checked={isOn}
-      icon={isOn ? <Icon name="moon" size={16} /> : <Icon name="sun" size={16} />}
+      icon={isOn ? <Icon name='moon' size={16} /> : <Icon name='sun' size={16} />}
     />
   );
 };

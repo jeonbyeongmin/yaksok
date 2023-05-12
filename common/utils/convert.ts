@@ -13,7 +13,7 @@ type ConvertIndexToDateOption = {
 export const convertIndexToDate = (
   index: number,
   startDate: Date,
-  option?: ConvertIndexToDateOption
+  option?: ConvertIndexToDateOption,
 ) => {
   const date = dayjs(startDate).add(index, 'day');
   const { isShort } = option || {};

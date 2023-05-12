@@ -1,7 +1,7 @@
-import { useMemo } from 'react';
 import dayjs from 'dayjs';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
+import { useMemo } from 'react';
 import { OnChangeDateCallback, OnChangeDateRangeCallback } from 'react-calendar';
 
 const ReactCalendar = dynamic(() => import('react-calendar'), { ssr: false });
@@ -32,12 +32,12 @@ export function Calendar({ date, onChange }: CalendarProps) {
 
   return (
     <ReactCalendar
-      minDetail="month"
+      minDetail='month'
       onChange={onChange}
       formatDay={(_, date) => dayjs(date).format('D')}
       value={date}
       selectRange={true}
-      calendarType="US"
+      calendarType='US'
       allowPartialRange={true}
       minDate={minDate}
       maxDate={maxDate}
