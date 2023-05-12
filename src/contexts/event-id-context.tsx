@@ -10,7 +10,7 @@ interface Props {
 const EventIdProvider = ({ children }: Props) => {
   const router = useRouter();
 
-  const queries = useMemo(() => router.query['board-id'], [router.query]);
+  const queries = useMemo(() => router.query['event-id'], [router.query]);
 
   const eventId = useMemo(() => {
     return Array.isArray(queries) ? queries[0] : queries ?? '';
