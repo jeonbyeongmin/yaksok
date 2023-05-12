@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import dbConnect from 'server/lib/mongoose/dbConnect';
-import Participant from 'server/models/Participant.model';
+import Participant from 'server/models/participant.model';
 
 import type { Participant as ParticipantType } from 'common/interfaces/participant.interface';
 export const getParticipants = async (eventId: string) => {

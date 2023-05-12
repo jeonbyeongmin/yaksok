@@ -1,12 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import dbConnect from 'server/lib/mongoose/dbConnect';
-import Event from 'server/models/Event.model';
+import Event from 'server/models/event.model';
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { method } = req;
 
   await dbConnect();
